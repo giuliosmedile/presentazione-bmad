@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "html-slides": {
+      "command": "npx",
+      "args": ["-y", "bluedusk/html-slides"]
+    }
+  }
+}

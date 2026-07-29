@@ -1,0 +1,15 @@
+# Export in PDF: 16 MB di binario che si rigenerano dall'HTML.
+# bash "<plugin>/scripts/export-pdf.sh" oltre-il-vibe-coding.html
+*.pdf
+
+# Versioning fatto in casa. Da qui in poi ci pensa git.
+*.bak
+*.bak[0-9]*
+
+# Cartelle di lavoro temporanee
+build/
+build-demo/
+
+# Windows
+Thumbs.db
+desktop.ini
