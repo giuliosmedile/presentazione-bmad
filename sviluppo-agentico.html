@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="it"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="html-slides v0.9.4">
+<title>Sviluppo Agentico — dal prompt al processo</title>
+
+<!-- Font: Caprasimo (titoli) + Figtree (testo) + JetBrains Mono (codice). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caprasimo&amp;family=Figtree:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+
+<style>
+/* ===========================================
+   TEMA — Organic
+   Fondo crema, inchiostro caldo, accenti terracotta
+   e oliva. Titoli in Caprasimo, testo in Figtree.
+   Forme molto arrotondate, ombre morbide.
+   Cambia i valori in :root per ricolorare tutto.
+   =========================================== */
+
+:root {
+  /* — ruoli principali — */
+  --color-bg: #f5ead8;
+  --color-surface: #ebddc5;
+  --color-text: #201e1d;
+  --color-accent: #c67139;
+  --color-accent-2: #7a8a5e;
+  --color-divider: rgba(32, 30, 29, 0.16);
+
+  /* — rampe tonali sulla stessa scala di luminosità — */
+  --color-neutral-100: #f9f4ed;
+  --color-neutral-200: #eee7db;
+  --color-neutral-300: #dcd3c4;
+  --color-neutral-400: #c0b6a5;
+  --color-neutral-500: #a19786;
+  --color-neutral-600: #82796a;
+  --color-neutral-700: #645c50;
+  --color-neutral-800: #474238;
+  --color-neutral-900: #2e2b25;
+
+  --color-accent-100: #fff2eb;
+  --color-accent-200: #ffe1d0;
+  --color-accent-300: #ffc6a5;
+  --color-accent-400: #f6a06b;
+  --color-accent-500: #d67f48;
+  --color-accent-600: #b2622d;
+  --color-accent-700: #8c491a;
+  --color-accent-800: #643312;
+  --color-accent-900: #402310;
+
+  --color-accent-2-100: #f0fae1;
+  --color-accent-2-200: #e1eecc;
+  --color-accent-2-300: #ccdbb2;
+  --color-accent-2-400: #aebf92;
+  --color-accent-2-500: #8fa073;
+  --color-accent-2-600: #728157;
+  --color-accent-2-700: #56633f;
+  --color-accent-2-800: #3d472b;
+  --color-accent-2-900: #272e1b;
+
+  --color-danger: #b3543a;
+
+  --font-heading: 'Caprasimo', Georgia, serif;
+  --font-heading-weight: 400;
+  --font-body: 'Figtree', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-card: 32px;
+
+  --shadow-sm: 0 1px 2px rgba(46, 43, 37, 0.14);
+  --shadow-md: 0 3px 10px rgba(46, 43, 37, 0.16);
+  --shadow-lg: 0 12px 32px rgba(46, 43, 37, 0.22);
+
+  /* Alias usati dai componenti ereditati dal deck precedente,
+     rimappati sui token Organic: un solo punto da toccare. */
+  --bg: var(--color-bg);
+  --bg-card: var(--color-surface);
+  --bg-card-hover: var(--color-neutral-200);
+  --text: var(--color-text);
+  --text-muted: var(--color-neutral-700);
+  --text-dim: var(--color-neutral-600);
+  --border: var(--color-divider);
+  --border-hover: var(--color-accent-400);
+  --accent-blue: var(--color-accent);
+  --accent-green: var(--color-accent-2-700);
+  --accent-orange: var(--color-accent-600);
+  --accent-purple: var(--color-accent-700);
+  --accent-yellow: var(--color-accent-500);
+  --accent-red: var(--color-danger);
+}
+
+/* ===========================================
+   BASE
+   =========================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  font-weight: 400;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.deck { position: relative; width: 100vw; height: 100vh; }
+
+/* Lavatura calda appena percettibile: dà profondità senza sporcare la carta */
+.deck::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse at 12% 88%, rgba(198, 113, 57, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 88% 12%, rgba(122, 138, 94, 0.07) 0%, transparent 55%);
+}
+
+.slide {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: clamp(26px, 5vh, 58px) clamp(34px, 7vw, 120px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+.slide.active { opacity: 1; pointer-events: auto; }
+
+/* Pulviscolo caldo al posto delle particelle chiare del tema scuro */
+.particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle {
+  position: absolute; width: 2px; height: 2px; border-radius: 50%;
+  background: rgba(100, 92, 80, 0.16); animation: floatP linear infinite;
+}
+@keyframes floatP {
+  0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+  10% { opacity: 0.7; } 90% { opacity: 0.7; }
+  100% { transform: translateY(-10vh) translateX(25px); opacity: 0; }
+}
+
+/* ===========================================
+   CHROME (branding, avanzamento, contatore, dots)
+   =========================================== */
+
+.branding {
+  position: fixed; top: 24px; right: 32px; z-index: 100;
+  font-size: 13px; font-weight: 600; color: var(--color-neutral-600);
+  display: flex; align-items: center; gap: 8px;
+}
+.branding-icon {
+  width: 22px; height: 22px; border: 1.5px solid var(--color-neutral-500);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 11px;
+}
+.progress-bar {
+  position: fixed; bottom: 0; left: 0; height: 4px; z-index: 100;
+  background: var(--color-accent);
+  border-radius: 0 999px 999px 0;
+  transition: width 0.4s ease;
+}
+.slide-counter {
+  position: fixed; bottom: 20px; right: 32px; font-size: 13px;
+  font-weight: 600; color: var(--color-neutral-600); z-index: 100; font-variant-numeric: tabular-nums;
+}
+.nav-hints {
+  position: fixed; bottom: 20px; left: 32px; font-size: 12px;
+  color: var(--color-neutral-600); z-index: 100;
+}
+.nav-hints kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 24px; height: 22px; padding: 0 7px;
+  background: var(--color-surface); border: 1px solid var(--color-divider);
+  border-radius: 999px; font-size: 11px; font-family: var(--font-body); margin: 0 2px;
+}
+.slide-nav {
+  position: fixed; right: 16px; top: 50%; transform: translateY(-50%);
+  z-index: 100; display: flex; flex-direction: column; gap: 7px;
+}
+.slide-nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--color-neutral-400); cursor: pointer; transition: all 0.3s ease;
+}
+.slide-nav-dot.active { background: var(--color-accent); transform: scale(1.6); }
+.slide-nav-dot:hover { background: var(--color-accent-400); transform: scale(1.3); }
+
+/* ===========================================
+   TIPOGRAFIA
+   =========================================== */
+
+h1, h2, h3, .cb-heading, .card-title, .flip-title, .arch-label, .vs-name,
+.stat-number, .agenda-title, .loop-label, .auth-name, .loop-center-main, .dialog-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+}
+
+h1 { font-size: clamp(34px, 4.6vw, 62px); margin-bottom: 20px; text-align: center; }
+h2 { font-size: clamp(26px, 3.2vw, 46px); margin-bottom: 12px; text-align: center; }
+
+/* Occhiello: unico elemento in Figtree grassetto maiuscolo */
+.slide-tag {
+  font-family: var(--font-body);
+  font-size: clamp(11px, 1.05vw, 14px); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-accent-700); margin-bottom: 16px;
+}
+.subtitle {
+  font-size: clamp(15px, 1.6vw, 22px); color: var(--color-neutral-700);
+  font-weight: 400; line-height: 1.5; text-align: center; max-width: 820px;
+}
+strong { font-weight: 700; color: var(--color-text); }
+
+/* Su carta chiara l'accento pieno regge solo nel testo display.
+   Per le etichette piccole si scende di uno o due gradini,
+   altrimenti in proiezione spariscono. */
+.highlight-blue { color: var(--color-accent); }
+.highlight-green { color: var(--color-accent-2-700); }
+.highlight-orange { color: var(--color-accent-600); }
+.highlight-purple { color: var(--color-accent-700); }
+.highlight-red { color: var(--color-danger); }
+.highlight-yellow { color: var(--color-accent-700); }
+.vs-label-top.highlight-blue, .flip-subtitle.highlight-blue { color: var(--color-accent-700); }
+
+.gradient-text, .rainbow-text {
+  background: linear-gradient(100deg, var(--color-accent-600), var(--color-accent-2-700));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.rainbow-line {
+  width: 180px; height: 3px; border-radius: 999px; margin: 20px 0;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2));
+}
+
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+
+/* Lavature d'accento, molto tenui su carta chiara */
+.glow-blob { position: absolute; width: 420px; height: 420px; border-radius: 50%; filter: blur(120px); pointer-events: none; }
+.glow-blue { background: radial-gradient(circle, rgba(198,113,57,0.30) 0%, transparent 70%); }
+.glow-purple { background: radial-gradient(circle, rgba(140,73,26,0.22) 0%, transparent 70%); }
+.glow-green { background: radial-gradient(circle, rgba(122,138,94,0.26) 0%, transparent 70%); }
+.glow-orange { background: radial-gradient(circle, rgba(214,127,72,0.26) 0%, transparent 70%); }
+
+/* ===========================================
+   ICONE — tratto, non emoji
+   Dimensionate in em: basta impostare font-size sul contenitore.
+   =========================================== */
+.ic {
+  display: block; width: 1em; height: 1em;
+  fill: none; stroke: currentColor; stroke-width: 2.25;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ===========================================
+   ANIMAZIONI
+   =========================================== */
+@keyframes fadeInUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes bounceIn {
+  0% { opacity:0; transform: scale(0.72) translateY(26px); }
+  60% { opacity:1; transform: scale(1.02) translateY(-4px); }
+  100% { opacity:1; transform: scale(1) translateY(0); }
+}
+@keyframes bounceInSoft {
+  0% { opacity:0; transform: translateY(26px); }
+  60% { opacity:1; transform: translateY(-5px); }
+  100% { opacity:1; transform: translateY(0); }
+}
+@keyframes slideInLeft { from { opacity:0; transform:translateX(-44px); } to { opacity:1; transform:translateX(0); } }
+@keyframes slideInRight { from { opacity:0; transform:translateX(44px); } to { opacity:1; transform:translateX(0); } }
+@keyframes countPop {
+  0% { opacity:0; transform: scale(0.6); }
+  60% { transform: scale(1.06); }
+  100% { opacity:1; transform: scale(1); }
+}
+@keyframes floatBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes softRise { from { opacity:0; transform: translateY(18px); } to { opacity:1; transform: translateY(0); } }
+@keyframes pulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(198,113,57,0.28); }
+  50% { box-shadow: 0 0 0 10px rgba(198,113,57,0); }
+}
+
+/* Personalità: ingressi morbidi, un filo elastici */
+.slide.active .anim-1 { animation: softRise 0.6s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
+.slide.active .anim-2 { animation: softRise 0.6s cubic-bezier(0.16,1,0.3,1) 0.20s both; }
+.slide.active .anim-3 { animation: softRise 0.7s cubic-bezier(0.16,1,0.3,1) 0.32s both; }
+.slide.active .anim-4 { animation: softRise 0.6s cubic-bezier(0.16,1,0.3,1) 0.46s both; }
+.slide.active .anim-5 { animation: softRise 0.6s cubic-bezier(0.16,1,0.3,1) 0.60s both; }
+.slide.active .bounce-1 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.18s both; }
+.slide.active .bounce-2 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.30s both; }
+.slide.active .bounce-3 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.42s both; }
+.slide.active .bounce-4 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.54s both; }
+.slide.active .slide-l { animation: slideInLeft 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
+.slide.active .slide-r { animation: slideInRight 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
+.slide.active .pop-1 { animation: countPop 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
+.slide.active .pop-2 { animation: countPop 0.6s cubic-bezier(0.16,1,0.3,1) 0.42s both; }
+.slide.active .pop-3 { animation: countPop 0.6s cubic-bezier(0.16,1,0.3,1) 0.56s both; }
+.slide.active .stag-1 { animation: bounceInSoft 0.5s ease 0.14s both; }
+.slide.active .stag-2 { animation: bounceInSoft 0.5s ease 0.24s both; }
+.slide.active .stag-3 { animation: bounceInSoft 0.5s ease 0.34s both; }
+.slide.active .stag-4 { animation: bounceInSoft 0.5s ease 0.44s both; }
+.slide.active .stag-5 { animation: bounceInSoft 0.5s ease 0.54s both; }
+
+/* ===========================================
+   SUPERFICI COMUNI
+   Un'unica regola per tutte le "schede": carta
+   color superficie, angoli molto morbidi, ombra leggera.
+   =========================================== */
+
+.flip-front, .flip-back, .card-v2, .stat-card, .arch-box, .vs-card,
+.auth-front, .auth-back, .status-item, .table-wrap, .cta-box,
+.cb-card, .agenda-card, .loop-node {
+  background: var(--color-surface);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.card-v2:hover, .stat-card:hover, .arch-box:hover, .vs-card:hover,
+.status-item:hover, .table-wrap:hover, .cta-box:hover, .cb-card:hover,
+.agenda-card:hover, .loop-node:hover, .flip-card:hover .flip-front,
+.auth-flip:hover .auth-front {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-300);
+}
+
+/* ===========================================
+   FLIP CARD
+   =========================================== */
+.flip-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 1.8vw, 24px);
+  width: 100%; max-width: 960px; margin-top: clamp(14px, 2.4vh, 26px);
+}
+.flip-bounce-wrap { perspective: 1200px; }
+.flip-card {
+  height: clamp(150px, 22vh, 200px); cursor: pointer; position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.flip-card.flipped { transform: rotateY(180deg); }
+
+.flip-front, .flip-back {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  padding: clamp(16px, 2vw, 26px);
+  display: flex; flex-direction: column;
+}
+.flip-front { justify-content: center; }
+.flip-front .flip-hint {
+  position: absolute; bottom: 11px; right: 16px;
+  font-size: 10px; color: var(--color-neutral-600);
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.flip-back {
+  background: var(--color-neutral-100);
+  transform: rotateY(180deg);
+  justify-content: center; align-items: center; text-align: center;
+}
+.flip-back .flip-detail { font-size: clamp(13px, 1.2vw, 16px); color: var(--color-neutral-700); line-height: 1.55; }
+.flip-back .flip-detail strong { color: var(--color-text); }
+.flip-icon-big { font-size: clamp(26px, 3vh, 36px); margin-bottom: 12px; color: var(--color-accent-600); }
+.flip-icon-big .ic { margin: 0 auto; }
+
+/* Le varianti colore agiscono sul bordo e sull'icona */
+.flip-front.border-orange { border-color: var(--color-accent-300); }
+.flip-front.border-yellow { border-color: var(--color-accent-2-300); }
+.flip-front.border-red { border-color: var(--color-neutral-300); }
+.flip-front.border-orange .flip-icon { color: var(--color-accent-600); }
+.flip-front.border-yellow .flip-icon { color: var(--color-accent-2-700); }
+.flip-front.border-red .flip-icon { color: var(--color-accent-700); }
+
+.flip-title { font-size: clamp(16px, 1.5vw, 22px); margin-bottom: 4px; }
+.flip-subtitle { font-size: clamp(13px, 1.15vw, 16px); font-weight: 600; }
+.flip-icon { font-size: clamp(20px, 2.6vh, 30px); margin-bottom: 10px; color: var(--color-accent-600); }
+.flip-icon .ic { margin: 0 auto; }
+
+/* ===========================================
+   CARD ESPANDIBILI
+   =========================================== */
+.card-v2 {
+  padding: clamp(16px, 2vw, 26px); position: relative;
+  cursor: pointer; overflow: hidden;
+}
+.card-v2:hover { transform: translateY(-3px); background: var(--color-neutral-200); }
+.card-v2.glow-orange { border-color: var(--color-accent-200); }
+.card-v2.glow-blue { border-color: var(--color-accent-300); }
+.card-v2.glow-green { border-color: var(--color-accent-2-300); }
+.card-v2.glow-purple { border-color: var(--color-neutral-300); }
+.card-v2.glow-orange .card-icon { color: var(--color-accent-600); }
+.card-v2.glow-blue .card-icon { color: var(--color-accent); }
+.card-v2.glow-green .card-icon { color: var(--color-accent-2-700); }
+.card-v2.glow-purple .card-icon { color: var(--color-accent-700); }
+
+.card-v2 .card-icon { font-size: clamp(20px, 2.6vh, 30px); margin-bottom: 12px; transition: transform 0.3s ease; }
+.card-v2:hover .card-icon { transform: scale(1.12); }
+.card-v2 .card-title { font-size: clamp(16px, 1.4vw, 21px); margin-bottom: 3px; }
+.card-v2 .card-desc { font-size: clamp(13px, 1.15vw, 16px); color: var(--color-neutral-700); line-height: 1.45; }
+
+.card-expand {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s ease, margin-top 0.3s ease;
+  margin-top: 0;
+}
+.card-v2.expanded .card-expand { max-height: 160px; opacity: 1; margin-top: 12px; }
+.card-expand-inner {
+  padding-top: 12px; border-top: 1px solid var(--color-divider);
+  font-size: clamp(12px, 1.05vw, 14px); color: var(--color-neutral-700); line-height: 1.5;
+}
+.card-expand-inner code {
+  font-family: var(--font-mono); background: var(--color-neutral-100);
+  padding: 2px 7px; border-radius: 999px; font-size: 0.92em;
+}
+.card-v2 .expand-hint {
+  position: absolute; bottom: 10px; right: 14px;
+  font-size: 14px; color: var(--color-neutral-500); opacity: 0.6;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.card-v2 .expand-hint .ic { stroke-width: 2.5; }
+.card-v2:hover .expand-hint { opacity: 1; }
+.card-v2.expanded .expand-hint { transform: rotate(180deg); }
+
+/* ===========================================
+   BLOCCHI DI CODICE
+   Restano scuri: sono l'unica isola d'inchiostro
+   sulla carta, e il contrasto li rende il fuoco della slide.
+   =========================================== */
+.code-window {
+  width: 100%; max-width: 820px;
+  background: var(--color-neutral-900);
+  border-radius: var(--radius-lg); overflow: hidden;
+  margin-top: clamp(14px, 2.4vh, 26px);
+  box-shadow: var(--shadow-lg); text-align: left;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.code-window:hover { transform: translateY(-2px); box-shadow: 0 18px 44px rgba(46,43,37,0.28); }
+.code-titlebar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 13px 20px; background: var(--color-neutral-800);
+}
+.code-dot { width: 11px; height: 11px; border-radius: 50%; }
+.code-dot.red { background: #e0785a; }
+.code-dot.yellow { background: #e0b95a; }
+.code-dot.green { background: #8fbf6f; }
+.code-filename {
+  font-size: clamp(11px, 1.05vw, 14px); color: var(--color-neutral-400);
+  font-family: var(--font-mono); margin-left: 8px;
+}
+.code-body {
+  padding: 18px 24px; font-family: var(--font-mono);
+  font-size: clamp(12px, 1.15vw, 15px); line-height: 1.7; overflow-x: auto;
+  white-space: pre; text-align: left; color: var(--color-neutral-200);
+}
+/* Evidenziazione volutamente sobria: due accenti, non otto colori */
+.code-body .ln { color: var(--color-neutral-600); user-select: none; display: inline-block; width: 24px; text-align: right; margin-right: 20px; }
+.code-body .kw { color: var(--color-accent-300); }
+.code-body .fn { color: var(--color-accent-2-300); }
+.code-body .str { color: var(--color-accent-2-200); }
+.code-body .tag { color: var(--color-accent-400); }
+.code-body .prop { color: var(--color-neutral-200); }
+.code-body .attr { color: var(--color-neutral-300); }
+.code-body .punc { color: var(--color-neutral-400); }
+.code-body .comment { color: var(--color-neutral-500); font-style: italic; }
+
+/* Barra dei tab dell'IDE (slide 2) */
+.ide-tabs { display: flex; align-items: stretch; background: var(--color-neutral-800); }
+.ide-tab {
+  padding: 12px 20px; font-family: var(--font-mono);
+  font-size: clamp(10px, 1vw, 13px); color: var(--color-neutral-400); white-space: nowrap;
+}
+.ide-tab.active { color: var(--color-accent-300); box-shadow: inset 0 -2px 0 var(--color-accent-400); }
+
+/* ===========================================
+   MOCK BLOCCO NOTE (slide 1)
+   Finestra chiarissima: contrasta con la carta
+   quel tanto che basta, e con l'IDE scuro moltissimo.
+   =========================================== */
+.np-window {
+  width: 100%; max-width: 820px;
+  margin-top: clamp(14px, 2.4vh, 26px);
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg); overflow: hidden; text-align: left;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.np-window:hover { transform: translateY(-2px); box-shadow: 0 18px 44px rgba(46,43,37,0.26); }
+.np-titlebar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 18px; background: var(--color-neutral-200);
+  border-bottom: 1px solid var(--color-divider);
+}
+.np-title { font-family: var(--font-mono); font-size: clamp(10px, 1vw, 13px); color: var(--color-neutral-700); }
+.np-buttons { color: var(--color-neutral-500); font-size: clamp(9px, 0.95vw, 12px); letter-spacing: 5px; }
+.np-menu {
+  display: flex; gap: clamp(10px, 1.6vw, 22px);
+  padding: 6px 18px; background: var(--color-neutral-100);
+  border-bottom: 1px solid var(--color-divider);
+  font-size: clamp(10px, 1vw, 12px); color: var(--color-neutral-700);
+}
+.np-body {
+  padding: 18px 20px; background: var(--color-neutral-100); color: var(--color-text);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(11px, 1.15vw, 14px); line-height: 1.65;
+  white-space: pre; overflow-x: auto;
+}
+
+/* ===========================================
+   FLUSSO ARCHITETTURALE
+   =========================================== */
+.arch-flow {
+  display: flex; align-items: center; gap: clamp(10px, 1.4vw, 20px);
+  width: 100%; max-width: 1040px; margin-top: clamp(16px, 3vh, 34px);
+}
+.arch-box {
+  flex: 1; min-width: 0;
+  padding: clamp(18px, 2.4vw, 30px) clamp(10px, 1.4vw, 20px);
+  text-align: center; cursor: default;
+}
+.arch-box:hover { transform: translateY(-4px); }
+.arch-box.box-blue { border-color: var(--color-accent-300); }
+.arch-box.box-yellow { border-color: var(--color-accent-200); }
+.arch-box.box-green { border-color: var(--color-accent-2-300); }
+
+.arch-icon { font-size: clamp(24px, 3.4vh, 40px); margin-bottom: 14px; transition: transform 0.3s ease; }
+.arch-icon .ic { margin: 0 auto; }
+.arch-box.box-blue .arch-icon { color: var(--color-accent); }
+.arch-box.box-yellow .arch-icon { color: var(--color-accent-600); }
+.arch-box.box-green .arch-icon { color: var(--color-accent-2-700); }
+.arch-box:hover .arch-icon { animation: floatBob 1.6s ease infinite; }
+.arch-label { font-size: clamp(18px, 1.7vw, 25px); }
+.arch-label.text-blue { color: var(--color-accent-600); }
+.arch-label.text-yellow { color: var(--color-accent-600); }
+.arch-label.text-green { color: var(--color-accent-2-700); }
+.arch-role { font-size: clamp(12px, 1.15vw, 16px); color: var(--color-neutral-700); margin-top: 5px; }
+.arch-detail {
+  font-size: clamp(10px, 0.95vw, 13px); color: var(--color-neutral-700); margin-top: 10px;
+  font-family: var(--font-mono);
+  background: var(--color-neutral-100); padding: 5px 10px; border-radius: 999px;
+}
+
+.arch-arrow {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  flex-shrink: 0; min-width: 56px; color: var(--color-neutral-600);
+}
+.arch-arrow span { font-size: clamp(10px, 0.95vw, 13px); white-space: nowrap; font-style: italic; color: var(--color-neutral-600); }
+.arrow-line { width: 38px; height: 2px; background: var(--color-neutral-400); position: relative; border-radius: 999px; }
+.arrow-line::after {
+  content: ''; position: absolute; right: -1px; top: -4px;
+  border: 5px solid transparent; border-left: 6px solid var(--color-neutral-400);
+}
+
+/* ===========================================
+   STATISTICHE
+   =========================================== */
+.stats-row { display: flex; gap: clamp(14px, 1.8vw, 26px); margin-top: clamp(16px, 3vh, 34px); width: 100%; max-width: 1040px; }
+.stat-card { flex: 1; padding: clamp(20px, 2.6vw, 36px); text-align: left; }
+.stat-card:hover { transform: translateY(-4px); }
+.stat-number { font-size: clamp(40px, 5.4vw, 72px); line-height: 1; margin-bottom: 10px; }
+.stat-number.blue { color: var(--color-accent-600); }
+.stat-number.green { color: var(--color-accent-2-700); }
+.stat-number.orange { color: var(--color-danger); }
+.stat-label { font-size: clamp(15px, 1.4vw, 20px); font-weight: 700; margin-bottom: 5px; }
+.stat-desc { font-size: clamp(13px, 1.15vw, 16px); color: var(--color-neutral-700); line-height: 1.45; }
+
+/* ===========================================
+   CONFRONTO VS
+   =========================================== */
+.vs-container { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); margin-top: clamp(16px, 3vh, 34px); width: 100%; max-width: 980px; }
+.vs-card { flex: 1; padding: clamp(20px, 2.6vw, 34px) clamp(14px, 1.8vw, 26px); text-align: center; }
+.vs-card:hover { transform: translateY(-4px); }
+.vs-card.card-left { border-color: var(--color-neutral-300); }
+.vs-card.card-right { border-color: var(--color-accent-300); }
+.vs-label-top { font-size: clamp(10px, 0.95vw, 13px); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 10px; }
+.vs-name { font-size: clamp(28px, 2.8vw, 42px); margin-bottom: 12px; }
+.vs-desc { font-size: clamp(13px, 1.2vw, 17px); color: var(--color-neutral-700); margin-bottom: 12px; line-height: 1.5; }
+.vs-badge {
+  display: inline-block; font-size: clamp(11px, 1.05vw, 14px); font-family: var(--font-mono);
+  padding: 5px 14px; border-radius: 999px;
+  background: var(--color-neutral-100); color: var(--color-neutral-700);
+}
+.vs-plus {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 22px;
+  background: var(--color-accent); color: var(--color-bg);
+  animation: pulseRing 3s ease infinite;
+}
+.vs-plus .ic { stroke-width: 2.5; }
+
+/* ===========================================
+   CONFRONTO FLIP (prima / dopo)
+   =========================================== */
+.auth-compare { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); margin-top: clamp(16px, 3vh, 34px); width: 100%; max-width: 900px; perspective: 1200px; }
+.auth-flip-wrap { flex: 1; perspective: 1200px; }
+.auth-flip {
+  height: clamp(200px, 30vh, 290px); cursor: pointer; position: relative;
+  transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.auth-flip.flipped { transform: rotateY(180deg); }
+.auth-front, .auth-back {
+  position: absolute; inset: 0; backface-visibility: hidden;
+  padding: clamp(18px, 2.2vw, 30px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+.auth-back { background: var(--color-neutral-100); transform: rotateY(180deg); }
+.auth-front.bad { border-color: rgba(179, 84, 58, 0.45); }
+.auth-front.good { border-color: var(--color-accent-2-300); }
+.auth-front.bad .auth-icon, .auth-front.bad .auth-status { color: var(--color-danger); }
+.auth-front.good .auth-icon, .auth-front.good .auth-status { color: var(--color-accent-2-700); }
+.auth-icon { font-size: clamp(24px, 3.4vh, 40px); margin-bottom: 14px; }
+.auth-icon .ic { margin: 0 auto; }
+.auth-name { font-size: clamp(17px, 1.5vw, 23px); margin-bottom: 8px; }
+.auth-status { font-size: clamp(22px, 3vh, 34px); margin-bottom: 10px; }
+.auth-status .ic { margin: 0 auto; stroke-width: 2.5; }
+.auth-desc { font-size: clamp(12px, 1.1vw, 15px); color: var(--color-neutral-600); font-family: var(--font-mono); }
+.auth-vs { font-size: clamp(15px, 1.4vw, 20px); font-weight: 700; color: var(--color-neutral-600); flex-shrink: 0; font-style: italic; }
+.auth-front .flip-hint { position: absolute; bottom: 12px; font-size: 10px; color: var(--color-neutral-600); letter-spacing: 0.1em; text-transform: uppercase; }
+.auth-back .flip-detail { line-height: 1.55; }
+
+/* ===========================================
+   GRIGLIA CASI D'USO
+   =========================================== */
+.use-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 1.6vw, 20px); width: 100%; max-width: 960px; margin-top: clamp(14px, 2.4vh, 30px); }
+
+/* ===========================================
+   TIMELINE DI STATO
+   =========================================== */
+.status-timeline { width: 100%; max-width: 840px; margin-top: clamp(14px, 2.6vh, 30px); display: flex; flex-direction: column; gap: clamp(8px, 1.2vh, 13px); }
+.status-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: clamp(10px, 1.4vh, 16px) clamp(14px, 1.8vw, 24px);
+  border-radius: 999px; cursor: default;
+}
+.status-item:hover { transform: translateX(7px); background: var(--color-neutral-200); }
+.status-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.status-dot.green { background: var(--color-accent-2-600); }
+.status-dot.yellow { background: var(--color-accent-500); }
+.status-dot.orange { background: var(--color-accent-600); }
+.status-dot.red { background: var(--color-danger); }
+.status-text { font-size: clamp(13px, 1.2vw, 18px); color: var(--color-neutral-700); line-height: 1.4; }
+.status-text strong { color: var(--color-text); }
+
+/* ===========================================
+   BOX CALL-TO-ACTION
+   =========================================== */
+.cta-box {
+  margin-top: clamp(16px, 3vh, 32px); padding: clamp(20px, 2.6vw, 34px) clamp(24px, 3vw, 44px);
+  background: var(--color-surface); text-align: center; max-width: 740px;
+}
+.cta-box .bullet { color: var(--color-accent); font-size: 8px; line-height: 1; }
+
+/* ===========================================
+   TABELLA
+   =========================================== */
+.table-wrap { width: 100%; max-width: 960px; margin-top: clamp(14px, 2.4vh, 26px); overflow: hidden; }
+.table-wrap table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 1.2vw, 16px); }
+.table-wrap thead th {
+  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.6vw, 22px); text-align: left;
+  font-weight: 700; font-size: clamp(10px, 0.95vw, 12px);
+  color: var(--color-neutral-600); text-transform: uppercase; letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--color-divider);
+}
+.table-wrap tbody td {
+  padding: clamp(9px, 1.3vh, 15px) clamp(12px, 1.6vw, 22px);
+  border-bottom: 1px solid rgba(32,30,29,0.08); color: var(--color-text);
+}
+.table-wrap tbody tr:last-child td { border-bottom: none; }
+.table-wrap tbody tr { transition: background 0.2s ease; }
+.table-wrap tbody tr:hover { background: rgba(32,30,29,0.04); }
+.table-wrap .cell-highlight { font-weight: 700; }
+.table-wrap .cell-muted { color: var(--color-neutral-600); }
+
+/* ===========================================
+   BLOCCO DI CONTENUTO
+   =========================================== */
+.cb-wrap {
+  width: 100%; max-width: 860px; text-align: left;
+  display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 16px);
+}
+.cb-number {
+  font-family: var(--font-mono); font-size: clamp(12px, 1.1vw, 15px); font-weight: 700;
+  letter-spacing: 0.1em; color: var(--color-accent-600);
+}
+.cb-heading { font-size: clamp(26px, 3.2vw, 46px); color: var(--color-text); text-align: left; }
+.cb-body { font-size: clamp(15px, 1.5vw, 21px); line-height: 1.6; color: var(--color-neutral-700); max-width: 720px; }
+.cb-body .cb-accent { font-weight: 700; color: var(--color-text); }
+
+.cb-pair { display: flex; gap: clamp(10px, 1.5vw, 20px); width: 100%; margin-top: clamp(4px, 1vh, 8px); }
+@media (max-width: 700px) { .cb-pair { flex-direction: column; } }
+
+.cb-card { flex: 1; padding: clamp(14px, 2vw, 26px); }
+.cb-card.problem { background: #f6e3d8; border-color: rgba(179, 84, 58, 0.28); }
+.cb-card.fix { background: var(--color-accent-2-200); border-color: var(--color-accent-2-300); }
+.cb-card.fix.accent-green { background: var(--color-accent-2-200); }
+
+.cb-card-label {
+  font-family: var(--font-body); font-size: clamp(10px, 0.95vw, 13px); font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: clamp(6px, 1vh, 10px);
+  display: flex; align-items: center; gap: 0.5em;
+}
+.cb-card-label.problem-label { color: var(--color-danger); }
+.cb-card-label.fix-label { color: var(--color-accent-2-800); }
+.cb-card-text { font-size: clamp(13px, 1.25vw, 17px); line-height: 1.55; color: var(--color-neutral-800); }
+.cb-card.fix .cb-card-text { color: var(--color-accent-2-900); }
+.cb-card-text .cb-cmd { font-family: var(--font-mono); font-weight: 600; color: var(--color-accent-700); }
+
+.cb-keyquote {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(22px, 2.8vw, 40px); line-height: 1.2; color: var(--color-text);
+  border-left: 4px solid var(--color-accent); padding-left: clamp(14px, 2vw, 26px);
+}
+.cb-detail { font-size: clamp(13px, 1.25vw, 18px); line-height: 1.6; color: var(--color-neutral-700); max-width: 680px; margin-top: clamp(6px, 1vh, 12px); }
+
+/* ===========================================
+   GRIGLIA AGENDA (slide 4)
+   =========================================== */
+.agenda-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 1.6vw, 22px);
+  width: 100%; max-width: 980px; margin-top: clamp(16px, 3vh, 34px);
+}
+@media (max-width: 700px) { .agenda-grid { grid-template-columns: 1fr; } }
+.agenda-card { padding: clamp(16px, 2.2vw, 30px); text-align: left; }
+.agenda-card:hover { transform: translateY(-4px); }
+.agenda-num {
+  font-family: var(--font-mono); font-size: clamp(11px, 1.05vw, 14px); font-weight: 700;
+  letter-spacing: 0.1em; color: var(--color-accent-700); margin-bottom: clamp(6px, 1vh, 12px);
+}
+.agenda-title { font-size: clamp(17px, 1.6vw, 24px); margin-bottom: 6px; }
+.agenda-desc { font-size: clamp(12px, 1.15vw, 16px); color: var(--color-neutral-700); line-height: 1.45; }
+
+/* ===========================================
+   LOOP AGENTICO (slide 7)
+   Tutto derivato da --ls: nodi e testi restano
+   in proporzione all'anello a ogni risoluzione.
+   =========================================== */
+.loop-diagram {
+  --ls: clamp(240px, 50vh, 440px);
+  position: relative; width: var(--ls); aspect-ratio: 1 / 1;
+  margin-top: clamp(6px, 1.5vh, 18px); flex-shrink: 0;
+}
+.loop-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.loop-track {
+  fill: none; stroke: var(--color-neutral-300); stroke-width: 2;
+  stroke-dasharray: 5 11; animation: loopFlow 4s linear infinite;
+}
+@keyframes loopFlow { to { stroke-dashoffset: -160; } }
+.loop-arc { fill: none; stroke-width: 3; stroke-linecap: round; }
+.loop-arc.a1 { stroke: var(--color-accent); }
+.loop-arc.a2 { stroke: var(--color-accent-600); }
+.loop-arc.a3 { stroke: var(--color-accent-2-700); }
+
+.loop-pos { position: absolute; transform: translate(-50%, -50%); width: calc(var(--ls) * 0.30); }
+.loop-pos-center { width: auto; pointer-events: none; }
+
+.loop-node {
+  text-align: center; cursor: default;
+  border-radius: var(--radius-md);
+  padding: calc(var(--ls) * 0.022) calc(var(--ls) * 0.015);
+}
+.loop-node:hover { transform: scale(1.05); }
+.loop-node.node-blue { border-color: var(--color-accent-300); }
+.loop-node.node-yellow { border-color: var(--color-accent-200); }
+.loop-node.node-green { border-color: var(--color-accent-2-300); }
+
+.loop-icon { font-size: calc(var(--ls) * 0.072); line-height: 1; margin-bottom: calc(var(--ls) * 0.012); }
+.loop-icon .ic { margin: 0 auto; stroke-width: 2.5; }
+.node-blue .loop-icon, .node-blue .loop-label { color: var(--color-accent-700); }
+.node-yellow .loop-icon, .node-yellow .loop-label { color: var(--color-accent-600); }
+.node-green .loop-icon, .node-green .loop-label { color: var(--color-accent-2-700); }
+.loop-node:hover .loop-icon { animation: floatBob 1.6s ease infinite; }
+.loop-label { font-size: calc(var(--ls) * 0.055); line-height: 1.1; }
+.loop-role {
+  font-size: calc(var(--ls) * 0.036); color: var(--color-neutral-600);
+  margin-top: 2px; line-height: 1.25;
+  min-height: calc(var(--ls) * 0.036 * 1.25 * 2);
+}
+.loop-detail {
+  font-family: var(--font-mono); font-size: calc(var(--ls) * 0.029);
+  color: var(--color-neutral-700); line-height: 1.3;
+  margin-top: calc(var(--ls) * 0.016);
+  background: var(--color-neutral-100);
+  padding: calc(var(--ls) * 0.008) calc(var(--ls) * 0.014);
+  border-radius: 999px;
+  min-height: calc(var(--ls) * 0.029 * 1.3 * 2 + var(--ls) * 0.016);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.loop-center { text-align: center; }
+.loop-center-top {
+  font-family: var(--font-mono); font-size: calc(var(--ls) * 0.030);
+  letter-spacing: 0.28em; text-transform: uppercase; color: var(--color-neutral-600);
+}
+.loop-center-main { font-size: calc(var(--ls) * 0.062); color: var(--color-neutral-700); line-height: 1.1; }
+
+.loop-step {
+  position: absolute; transform: translate(-50%, -50%);
+  font-size: calc(var(--ls) * 0.034); color: var(--color-neutral-600);
+  font-style: italic; white-space: nowrap; pointer-events: none;
+}
+.loop-step.step-1 { left: 72.7%; top: 36.9%; }
+.loop-step.step-2 { left: 50%; top: 76.25%; }
+.loop-step.step-3 { left: 27.3%; top: 36.9%; }
+
+/* ===========================================
+   ADATTAMENTO VIEWPORT
+   Ogni slide sta in 100vh, senza scroll.
+   Breakpoint su altezza: 700 / 600 / 500 px.
+   =========================================== */
+
+@media (max-height: 700px) {
+  .flip-card { height: clamp(140px, 21vh, 170px); }
+  .auth-flip { height: clamp(190px, 28vh, 240px); }
+  .code-body { line-height: 1.55; padding: 14px 18px; }
+  .np-body { line-height: 1.5; padding: 12px 16px; }
+  .status-timeline { margin-top: 16px; }
+  .cta-box { margin-top: 18px; }
+}
+
+@media (max-height: 600px) {
+  .slide { padding: 16px 30px; }
+  h1 { font-size: clamp(24px, 3.4vw, 38px); margin-bottom: 10px; }
+  h2, .cb-heading { font-size: clamp(19px, 2.3vw, 30px); margin-bottom: 8px; }
+  .cb-body { font-size: clamp(13px, 1.3vw, 17px); }
+  .cb-keyquote { font-size: clamp(18px, 2.1vw, 28px); }
+  .subtitle { font-size: clamp(12px, 1.25vw, 16px); }
+  .slide-tag { margin-bottom: 8px; }
+  .flip-card { height: clamp(120px, 19vh, 145px); }
+  .auth-flip { height: clamp(165px, 25vh, 205px); }
+  .stat-number { font-size: clamp(30px, 4.2vw, 48px); }
+  .code-body { font-size: clamp(10px, 0.95vw, 12px); line-height: 1.45; padding: 12px 14px; }
+  .np-body { font-size: clamp(9px, 0.95vw, 11px); line-height: 1.4; padding: 10px 14px; }
+  .ide-tab { padding: 7px 14px; }
+  .arch-icon, .auth-icon { font-size: clamp(20px, 2.6vh, 28px); margin-bottom: 8px; }
+  .status-timeline { gap: 7px; margin-top: 14px; }
+  .stats-row, .vs-container, .auth-compare, .arch-flow, .agenda-grid { margin-top: 16px; gap: 12px; }
+}
+
+@media (max-height: 500px) {
+  .slide { padding: 12px 24px; }
+  h1 { font-size: clamp(20px, 2.8vw, 30px); margin-bottom: 8px; }
+  h2, .cb-heading { font-size: clamp(16px, 1.9vw, 24px); }
+  .cb-body { font-size: clamp(11px, 1.1vw, 15px); }
+  .subtitle { font-size: clamp(10px, 1.05vw, 14px); }
+  .flip-card { height: clamp(100px, 17vh, 120px); }
+  .flip-icon { font-size: clamp(16px, 2vh, 22px); margin-bottom: 4px; }
+  .auth-flip { height: clamp(140px, 22vh, 168px); }
+  .stat-number { font-size: clamp(24px, 3.2vw, 36px); }
+  .code-body { font-size: 9.5px; line-height: 1.35; }
+  .np-body { font-size: 9px; line-height: 1.3; }
+  .status-item { padding: 6px 14px; }
+  .status-text { font-size: clamp(11px, 1.05vw, 14px); }
+  .rainbow-line { margin: 10px 0; }
+  .agenda-title { font-size: clamp(13px, 1.3vw, 17px); }
+  .agenda-desc { font-size: clamp(10px, 1vw, 13px); }
+  .nav-hints, .branding { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .particles { display: none; }
+}
+
+/* ===========================================
+   MODALITÀ EDITING
+   Hover in alto a sinistra oppure tasto E.
+   Le modifiche vanno in localStorage; Ctrl+S esporta.
+   =========================================== */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle {
+  position: fixed; top: 16px; left: 16px; z-index: 10001;
+  width: 46px; height: 46px; border-radius: 999px;
+  border: 1px solid var(--color-divider); background: var(--color-surface);
+  color: var(--color-accent-700); font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease, background 0.3s ease;
+  box-shadow: var(--shadow-md);
+}
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--color-accent); color: var(--color-bg); border-color: var(--color-accent); }
+.edit-toggle .ic { width: 20px; height: 20px; }
+
+body.editing [contenteditable="true"] {
+  outline: 1px dashed rgba(198,113,57,0.5); outline-offset: 3px; border-radius: 6px;
+}
+body.editing [contenteditable="true"]:focus {
+  outline: 2px solid var(--color-accent); background: rgba(198,113,57,0.08);
+}
+.edit-banner {
+  position: fixed; bottom: 58px; left: 50%; transform: translateX(-50%);
+  z-index: 10001; padding: 10px 20px; border-radius: 999px;
+  background: var(--color-surface); border: 1px solid var(--color-accent-300);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text); font-size: 14px;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.edit-banner.show { opacity: 1; }
+</style>
+</head>
+<body class="">
+
+<!-- Chrome: particelle, branding, dots, barra di avanzamento, contatore, suggerimenti -->
+<div class="particles" id="particles"></div>
+<div class="branding"><div class="branding-icon">A</div> Sviluppo Agentico</div>
+<div class="slide-nav" id="slideNav"><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot active"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div><div class="slide-nav-dot"></div></div>
+<div class="progress-bar" id="progress" style="width: 10%;"></div>
+<div class="slide-counter" id="counter">3 / 30</div>
+<div class="nav-hints"><span><kbd>←</kbd><kbd>→</kbd> naviga · <kbd>E</kbd> modifica</span></div>
+
+<!-- Controlli della modalità editing -->
+<div class="edit-hotzone"></div>
+<button class="edit-toggle" id="editToggle" title="Modalità modifica (E)"><svg class="ic" viewBox="0 0 24 24"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="m15 5 4 4"/></svg></button>
+<div class="edit-banner show" id="editBanner">Modifiche salvate nel browser.</div>
+
+<div class="deck" id="deck">
+
+  <!-- ============ 0 · TITOLO ============ -->
+  <div class="slide active" data-slide="0">
+    <div class="glow-blob glow-blue" style="top:-100px;left:-100px;"></div>
+    <div class="glow-blob glow-purple" style="bottom:-120px;right:-80px;"></div>
+    <p class="slide-tag anim-1" data-edit-key="s0-e0">Meetup · sviluppo assistito da agenti</p>
+    <h1 class="anim-2" data-edit-key="s0-e1">Sviluppo <span class="rainbow-text">agentico</span><br>dal prompt al processo</h1>
+    <p class="subtitle anim-3" data-edit-key="s0-e2">Come uso gli agenti nel lavoro quotidiano, e come framework come BMAD e Graphify trasformano la velocità in qualità.</p>
+    <div class="rainbow-line anim-4"></div>
+    <p class="subtitle anim-5" style="font-size:14px;margin-top:8px;" data-edit-key="s0-e3">di <strong>[Il tuo nome]</strong> · [ruolo / azienda]</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Sviluppo agentico: dal prompt al processo","script":"Buonasera. Nei prossimi trenta minuti vi racconto come è cambiato il mio modo di scrivere software da quando ho smesso di chattare con un modello e ho iniziato a costruirci intorno un processo. Vedremo il metodo, due strumenti concreti — BMAD e Graphify — e anche gli errori che ho fatto per arrivarci.","notes":["Il tema è il processo, non il modello","Tre parti: metodo, strumenti, trappole","Tutto quello che mostro è replicabile da domani"]}
+    </script>
+  </div>
+
+  <!-- ============ 1 · HOOK — IL BLOCCO NOTE ============ -->
+  <div class="slide" data-slide="1">
+    <p class="slide-tag anim-1" data-edit-key="s1-e0">Alzata di mano</p>
+    <h2 class="anim-2" data-edit-key="s1-e1">Chi ha scritto codice <span class="highlight-orange">così</span>, nell'ultimo anno?</h2>
+    <div class="np-window anim-3">
+      <div class="np-titlebar">
+        <span class="np-title">Senza nome — Blocco note</span>
+        <span class="np-buttons">− □ ×</span>
+      </div>
+      <div class="np-menu"><span>File</span><span>Modifica</span><span>Formato</span><span>Visualizza</span><span>?</span></div>
+      <div class="np-body">export async function getUserOrders(userId: string) {
+  const user = await db.users.findById(userId);
+  if (!user) throw new NotFoundError("utente non trovato");
+  const orders = await db.orders.findMany({ userId });
+  return orders.filter(o =&gt; o.status !== "cancelled");
+}</div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Chi ha scritto codice così?","script":"Partiamo con una domanda, e vi chiedo di alzare davvero la mano. Chi di voi, nell'ultimo anno, ha scritto codice in una finestra come questa? ... Bene. Nessuna mano, o quasi. Me lo aspettavo.","notes":["Domanda di apertura con alzata di mano","Blocco note: nessuna evidenziazione, nessun completamento, nessun controllo","La funzione mostrata è la stessa della slide successiva"]}
+    </script>
+  </div>
+
+  <!-- ============ 2 · HOOK — LO STESSO CODICE IN UN IDE ============ -->
+  <div class="slide" data-slide="2">
+    <p class="slide-tag anim-1" data-edit-key="s2-e0"><br></p>
+    <h2 class="anim-2" data-edit-key="s2-e1">E chi l'ha scritta <span class="highlight-blue">così</span>?</h2>
+    <div class="code-window anim-3">
+      <div class="ide-tabs">
+        <span class="ide-tab active">orders.service.ts</span>
+        <span class="ide-tab">orders.repo.ts</span>
+        <span class="ide-tab">orders.test.ts</span>
+      </div>
+      <div class="code-body"><span class="ln">1</span><span class="kw">export async function</span> <span class="fn">getUserOrders</span><span class="punc">(</span><span class="attr">userId</span><span class="punc">:</span> <span class="prop">string</span><span class="punc">) {</span>
+<span class="ln">2</span>  <span class="kw">const</span> <span class="prop">user</span> <span class="punc">=</span> <span class="kw">await</span> <span class="prop">db</span><span class="punc">.</span><span class="prop">users</span><span class="punc">.</span><span class="fn">findById</span><span class="punc">(</span><span class="attr">userId</span><span class="punc">);</span>
+<span class="ln">3</span>  <span class="kw">if</span> <span class="punc">(!</span><span class="prop">user</span><span class="punc">)</span> <span class="kw">throw new</span> <span class="tag">NotFoundError</span><span class="punc">(</span><span class="str">"utente non trovato"</span><span class="punc">);</span>
+<span class="ln">4</span>  <span class="kw">const</span> <span class="prop">orders</span> <span class="punc">=</span> <span class="kw">await</span> <span class="prop">db</span><span class="punc">.</span><span class="prop">orders</span><span class="punc">.</span><span class="fn">findMany</span><span class="punc">({</span> <span class="attr">userId</span> <span class="punc">});</span>
+<span class="ln">5</span>  <span class="kw">return</span> <span class="prop">orders</span><span class="punc">.</span><span class="fn">filter</span><span class="punc">(</span><span class="attr">o</span> <span class="punc">=&gt;</span> <span class="prop">o</span><span class="punc">.</span><span class="prop">status</span> <span class="punc">!==</span> <span class="str">"cancelled"</span><span class="punc">);</span>
+<span class="ln">6</span><span class="punc">}</span>
+</div>
+    </div>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,15px);" data-edit-key="s2-e2"><br></p>
+    <script type="application/json" class="slide-notes">
+    {"title":"E chi l'ha scritta così?","script":"Stessa funzione, identica riga per riga. Qui invece le mani si alzano tutte. E notate cosa vi dà questa finestra e l'altra no: i colori che vi fanno vedere un errore prima di salvare, il completamento, il salto alla definizione, il rinomina in tutto il progetto, il debugger.","notes":["Il codice è identico: cambia solo lo strumento","L'IDE aggiunge evidenziazione, completamento e navigazione","Refactoring e debugger sono il salto vero","Nessuno di noi discute più se valga la pena usarlo"]}
+    </script>
+  </div>
+
+  <!-- ============ 3 · HOOK — IL PIVOT ============ -->
+  <div class="slide" data-slide="3">
+    <div class="glow-blob glow-orange" style="top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1" data-edit-key="s3-e0">Il punto</p>
+      <blockquote class="cb-keyquote anim-2" data-edit-key="s3-e1">Con il blocco note si può.<br>È solo <span class="highlight-orange">parecchio farraginoso</span>.</blockquote>
+      <p class="cb-detail anim-3" data-edit-key="s3-e2">Nessuno dei due strumenti scrive il codice al posto tuo. Cambia quanto attrito c'è fra l'idea che hai in testa e il codice che finisce nel repository. <span class="cb-accent">L'IDE non ci ha resi programmatori migliori: ci ha tolto il lavoro che non serviva a niente.</span></p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Il blocco note funziona, ma è farraginoso","script":"Ed è questo il punto: nessuno dei due strumenti scrive il codice al posto vostro. Quello che cambia è l'attrito fra l'idea che avete in testa e il codice che finisce nel repository. L'IDE non ci ha resi programmatori migliori. Ci ha tolto il lavoro che non serviva a niente.","notes":["Entrambi gli strumenti permettono di scrivere lo stesso codice","La differenza è l'attrito, non la capacità","L'IDE ha eliminato lavoro accessorio, non ha sostituito il pensiero"]}
+    </script>
+  </div>
+
+  <!-- ============ 4 · HOOK — LA PROMESSA ============ -->
+  <div class="slide" data-slide="4">
+    <div class="glow-blob glow-blue" style="top:20%;left:10%;"></div>
+    <div class="glow-blob glow-green" style="bottom:10%;right:15%;"></div>
+    <p class="slide-tag anim-1" data-edit-key="s4-e0">Di cosa parliamo stasera</p>
+    <h2 class="anim-2" data-edit-key="s4-e1">Sviluppo <span class="gradient-text">AI-augmented</span></h2>
+    <p class="subtitle anim-2" data-edit-key="s4-e2">Gli agenti come strumento di lavoro, al pari di un IDE. Nella sua forma matura lo chiamiamo <strong>sviluppo agentico</strong>: non un assistente a cui chiedere, ma un pezzo del ciclo di sviluppo.</p>
+    <div class="agenda-grid anim-3">
+      <div class="agenda-card bounce-1">
+        <div class="agenda-num" data-edit-key="s4-e3">01</div>
+        <div class="agenda-title" data-edit-key="s4-e4">Il metodo</div>
+        <div class="agenda-desc" data-edit-key="s4-e5">Come lavoro io ogni giorno, passo per passo</div>
+      </div>
+      <div class="agenda-card bounce-2">
+        <div class="agenda-num" data-edit-key="s4-e6">02</div>
+        <div class="agenda-title" data-edit-key="s4-e7">I framework</div>
+        <div class="agenda-desc" data-edit-key="s4-e8">BMAD e Graphify, provati su lavoro vero</div>
+      </div>
+      <div class="agenda-card bounce-3">
+        <div class="agenda-num" data-edit-key="s4-e9">03</div>
+        <div class="agenda-title" data-edit-key="s4-e10">Le trappole</div>
+        <div class="agenda-desc" data-edit-key="s4-e11">Gli errori che ho pagato, così li evitate voi</div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Di cosa parliamo stasera","script":"Stasera vi racconto lo sviluppo AI-augmented: gli agenti usati come strumento di lavoro, esattamente come usiamo un IDE. Nella sua forma matura lo chiamiamo sviluppo agentico. Tre blocchi: il metodo che uso ogni giorno, due framework che ho sperimentato su lavoro vero — BMAD e Graphify — e le trappole in cui sono già caduto io.","notes":["Gli agenti come strumento, non come assistente a cui chiedere","AI-augmented e agentico indicano lo stesso percorso, a maturità diversa","Tre blocchi: metodo, framework, trappole","I framework sono stati provati su progetti reali, non su esempi giocattolo"]}
+    </script>
+  </div>
+
+  <!-- ============ 5 · NON È AUTOCOMPLETE ============ -->
+  <div class="slide" data-slide="5">
+    <div class="glow-blob glow-purple" style="top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1" data-edit-key="s5-e0">Il punto di partenza</p>
+      <blockquote class="cb-keyquote anim-2" data-edit-key="s5-e1">Un agente non completa la riga.<br>Chiude un compito.</blockquote>
+      <p class="cb-detail anim-3" data-edit-key="s5-e2">L'autocomplete suggerisce il prossimo token e aspetta te. Un agente legge il repository, decide cosa toccare, esegue comandi, guarda l'output e riprova. È un loop chiuso: <span class="cb-accent">pianifica, agisce, verifica</span>. Il che sposta il tuo lavoro da "scrivere codice" a "definire l'obiettivo e giudicare il risultato".</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Non è autocomplete","script":"La differenza non è la qualità dei suggerimenti. È che l'agente ha un loop chiuso: pianifica, agisce, verifica, corregge. E questo cambia il mio ruolo: passo da chi scrive ogni riga a chi definisce l'obiettivo e giudica il risultato.","notes":["Autocomplete: suggerisce e aspetta","Agente: legge, decide, esegue, verifica","Il ruolo dello sviluppatore si sposta verso obiettivo e giudizio"]}
+    </script>
+  </div>
+
+  <!-- ============ 6 · ASSISTENTE VS AGENTE ============ -->
+  <div class="slide" data-slide="6">
+    <div class="glow-blob glow-blue" style="top:30%;left:20%;"></div>
+    <p class="slide-tag anim-1" data-edit-key="s6-e0">Due modi di lavorare</p>
+    <h2 class="anim-2" data-edit-key="s6-e1">Assistente e agente non sono la stessa cosa</h2>
+    <div class="vs-container anim-3">
+      <div class="vs-card card-left slide-l">
+        <div class="vs-label-top highlight-purple" data-edit-key="s6-e2">Modalità chat</div>
+        <div class="vs-name highlight-purple" data-edit-key="s6-e3">Assistente</div>
+        <div class="vs-desc" data-edit-key="s6-e4">Tu porti il contesto, lui produce testo. Copi, incolli, adatti. La memoria del progetto sta tutta nella tua testa.</div>
+        <div class="vs-badge" data-edit-key="s6-e5">tu fai da compilatore umano</div>
+      </div>
+      <div class="vs-plus anim-3"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+      <div class="vs-card card-right slide-r">
+        <div class="vs-label-top highlight-blue" data-edit-key="s6-e6">Modalità agentica</div>
+        <div class="vs-name gradient-text" data-edit-key="s6-e7">Agente</div>
+        <div class="vs-desc" data-edit-key="s6-e8">Il contesto lo prende da solo dal repository, esegue test e comandi, itera sull'errore. Tu definisci vincoli e criteri di accettazione.</div>
+        <div class="vs-badge" data-edit-key="s6-e9">tu fai da tech lead</div>
+      </div>
+    </div>
+    <p class="subtitle anim-4 mt-24" style="font-size:15px;" data-edit-key="s6-e10">Il salto di produttività non arriva dal modello più forte. Arriva dal togliere te dal ciclo di copia-incolla.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Assistente vs agente","script":"In modalità chat sono io il collo di bottiglia: seleziono il contesto, incollo, adatto, riprovo. In modalità agentica quel lavoro lo fa lo strumento, e io salgo di livello: definisco vincoli e criteri di accettazione, come farebbe un tech lead con una persona del team.","notes":["Chat: il contesto lo porta l'umano","Agentico: il contesto lo raccoglie l'agente","Il guadagno viene dal togliere il copia-incolla dal ciclo","Cambia il ruolo: da esecutore a tech lead"]}
+    </script>
+  </div>
+
+  <!-- ============ 7 · IL LOOP AGENTICO ============ -->
+  <div class="slide" data-slide="7">
+    <p class="slide-tag anim-1" data-edit-key="s7-e0">Come funziona davvero</p>
+    <h2 class="anim-2" data-edit-key="s7-e1">Il <span class="highlight-blue">loop</span> che gira finché non è <span class="highlight-green">verde</span></h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s7-e2">Ogni giro parte dal contesto e finisce con una prova oggettiva. Poi ricomincia.</p>
+
+    <!-- Loop agentico: anello SVG con tre nodi disposti sulla circonferenza.
+         Le tre arcate hanno una punta di freccia in fondo (senso orario);
+         i puntini sulla traccia scorrono per suggerire il movimento. -->
+    <div class="loop-diagram anim-3">
+      <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
+        <defs>
+          <marker id="loopArrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent-blue)"></path>
+          </marker>
+          <marker id="loopArrowYellow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent-yellow)"></path>
+          </marker>
+          <marker id="loopArrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent-green)"></path>
+          </marker>
+        </defs>
+        <circle class="loop-track" cx="200" cy="200" r="140"></circle>
+        <path class="loop-arc a1" d="M 270 78.8 A 140 140 0 0 1 340 200" marker-end="url(#loopArrowBlue)"></path>
+        <path class="loop-arc a2" d="M 270 321.2 A 140 140 0 0 1 130 321.2" marker-end="url(#loopArrowYellow)"></path>
+        <path class="loop-arc a3" d="M 60 200 A 140 140 0 0 1 130 78.8" marker-end="url(#loopArrowGreen)"></path>
+      </svg>
+
+      <!-- Il wrapper .loop-pos fa solo il posizionamento (translate -50%).
+           L'animazione sta sul figlio, altrimenti le keyframe bounce/blur
+           sovrascriverebbero il transform di centratura. -->
+      <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
+        <div class="loop-center anim-4">
+          <div class="loop-center-top">loop</div>
+          <div class="loop-center-main" data-edit-key="s7-e3">agentico</div>
+        </div>
+      </div>
+
+      <div class="loop-pos" style="left:50%;top:15%;">
+        <div class="loop-node node-blue bounce-1">
+          <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
+          <div class="loop-label text-blue" data-edit-key="s7-e4">Contesto</div>
+          <div class="loop-role" data-edit-key="s7-e5">cosa sa l'agente</div>
+          <div class="loop-detail" data-edit-key="s7-e6">regole, spec, codice</div>
+        </div>
+      </div>
+      <div class="loop-pos" style="left:80.3%;top:67.5%;">
+        <div class="loop-node node-yellow bounce-2">
+          <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94z"/></svg></div>
+          <div class="loop-label text-yellow" data-edit-key="s7-e7">Azione</div>
+          <div class="loop-role" data-edit-key="s7-e8">cosa fa l'agente</div>
+          <div class="loop-detail" data-edit-key="s7-e9">edit, comandi, tool</div>
+        </div>
+      </div>
+      <div class="loop-pos" style="left:19.7%;top:67.5%;">
+        <div class="loop-node node-green bounce-3">
+          <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div class="loop-label text-green" data-edit-key="s7-e10">Verifica</div>
+          <div class="loop-role" data-edit-key="s7-e11">com'è andata</div>
+          <div class="loop-detail" data-edit-key="s7-e12">test, lint, build</div>
+        </div>
+      </div>
+
+      <!-- Etichette dei tre passaggi, appoggiate sulle arcate -->
+      <span class="loop-step step-1" data-edit-key="s7-e13">pianifica</span>
+      <span class="loop-step step-2" data-edit-key="s7-e14">misura</span>
+      <span class="loop-step step-3" data-edit-key="s7-e15">corregge</span>
+    </div>
+
+    <p class="subtitle anim-5" style="font-size:14px;margin-top:clamp(8px,1.5vh,18px);" data-edit-key="s7-e16">Se la verifica non è automatica, il loop non si chiude: resti tu a fare da test suite.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Il loop agentico","script":"Tre stadi che girano in cerchio: contesto, azione, verifica, e si riparte. Il terzo è quello che la gente sottovaluta. Se il progetto non ha test, lint o build che diano un segnale automatico, l'agente non ha modo di capire se ha sbagliato, il loop non si chiude, e il giudizio torna tutto sulle vostre spalle.","notes":["Contesto: regole, spec, codice rilevante","Azione: modifiche ai file, comandi, strumenti","Verifica: test, lint, build come segnale oggettivo","La correzione rientra nel contesto del giro successivo","Senza verifica automatica il loop non si chiude"]}
+    </script>
+  </div>
+
+  <!-- ============ 8 · IL COLLO DI BOTTIGLIA ============ -->
+  <div class="slide" data-slide="8">
+    <div class="glow-blob glow-green" style="top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1" data-edit-key="s8-e0">La tesi della serata</p>
+      <blockquote class="cb-keyquote anim-2" data-edit-key="s8-e1">Il collo di bottiglia non è il modello.<br>È il contesto.</blockquote>
+      <p class="cb-detail anim-3" data-edit-key="s8-e2">A parità di modello, la differenza tra un risultato mediocre e uno che passa la review sta in cosa l'agente sa quando inizia: le convenzioni del progetto, il perché delle scelte fatte, i vincoli non scritti. <span class="cb-accent">Tutto il metodo che vedrete serve a una cosa sola: mettere le informazioni giuste nel contesto giusto, al momento giusto.</span></p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Il collo di bottiglia è il contesto","script":"Questa è la tesi della serata. Cambiare modello dà un miglioramento marginale. Cambiare quello che il modello sa quando inizia a lavorare dà un miglioramento strutturale. Tutto il resto della presentazione è come organizzare quel contesto.","notes":["A parità di modello, vince il contesto migliore","Convenzioni, motivazioni delle scelte, vincoli impliciti","Il metodo serve a portare l'informazione giusta al momento giusto"]}
+    </script>
+  </div>
+
+  <!-- ============ 9 · LE QUATTRO LEVE ============ -->
+  <div class="slide" data-slide="9">
+    <h2 class="anim-1" data-edit-key="s9-e0">Le quattro leve del <span class="highlight-blue">contesto</span></h2>
+    <p class="subtitle anim-2" style="font-size:15px;" data-edit-key="s9-e1">Clicca le card per il dettaglio</p>
+    <div class="flip-grid anim-3">
+      <div class="flip-bounce-wrap bounce-1">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-front border-orange">
+            <div class="flip-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
+            <div class="flip-title" data-edit-key="s9-e2">Istruzioni</div>
+            <div class="flip-subtitle highlight-orange" data-edit-key="s9-e3">le regole di casa</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-icon-big"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
+            <div class="flip-detail" data-edit-key="s9-e4">Un file di regole nel repo — <strong>convenzioni, comandi, cosa non toccare</strong> — letto a ogni sessione. Sostituisce le venti righe di preambolo che riscrivevi ogni volta.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-bounce-wrap bounce-2">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-front border-yellow">
+            <div class="flip-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z"/></svg></div>
+            <div class="flip-title" data-edit-key="s9-e5">Conoscenza</div>
+            <div class="flip-subtitle highlight-yellow" data-edit-key="s9-e6">il perché delle scelte</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-icon-big"><svg class="ic" viewBox="0 0 24 24"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V18h8v-3.3A7 7 0 0 0 12 2z"/></svg></div>
+            <div class="flip-detail" data-edit-key="s9-e7">Spec, decisioni architetturali, glossario di dominio. <strong>Il codice dice cosa fa, non perché</strong>. Il perché va scritto, o l'agente lo reinventa ogni volta.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-bounce-wrap bounce-3">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-front border-red">
+            <div class="flip-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></div>
+            <div class="flip-title" data-edit-key="s9-e8">Strumenti</div>
+            <div class="flip-subtitle highlight-red" data-edit-key="s9-e9">le mani dell'agente</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-icon-big"><svg class="ic" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></svg></div>
+            <div class="flip-detail" data-edit-key="s9-e10">Shell, test runner, git, server MCP verso i sistemi interni. <strong>Un agente senza strumenti può solo scrivere testo</strong>; con gli strumenti può verificare da solo.</div>
+          </div>
+        </div>
+      </div>
+      <div class="flip-bounce-wrap bounce-4">
+        <div class="flip-card" onclick="this.classList.toggle('flipped')">
+          <div class="flip-front border-orange">
+            <div class="flip-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+            <div class="flip-title" data-edit-key="s9-e11">Verifica</div>
+            <div class="flip-subtitle highlight-orange" data-edit-key="s9-e12">il segnale di stop</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="flip-back">
+            <div class="flip-icon-big"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+            <div class="flip-detail" data-edit-key="s9-e13">Criteri di accettazione espliciti, test, lint, type check. <strong>Definisci "fatto" prima di partire</strong>, altrimenti l'agente si ferma quando sembra plausibile.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Le quattro leve del contesto","script":"Quando un risultato agentico è deludente, quasi sempre manca una di queste quattro cose. Regole di progetto, conoscenza del perché, strumenti per agire, e un criterio oggettivo di completamento. Sono le quattro leve su cui lavorare, in quest'ordine.","notes":["Istruzioni: convenzioni e comandi nel repo","Conoscenza: spec e decisioni architetturali, il perché","Strumenti: shell, test, git, MCP verso i sistemi interni","Verifica: criteri di accettazione definiti prima di partire"]}
+    </script>
+  </div>
+
+  <!-- ============ 10 · IL MIO FLUSSO ============ -->
+  <div class="slide" data-slide="10">
+    <p class="slide-tag anim-1" data-edit-key="s10-e0">Il metodo, in pratica</p>
+    <h2 class="anim-2" data-edit-key="s10-e1">Come lavoro io, in <span class="highlight-green">cinque passi</span></h2>
+    <div class="status-timeline">
+      <div class="status-item stag-1"><div class="status-dot green"></div><div class="status-text" data-edit-key="s10-e2"><strong>1 · Capire</strong> — esploro il problema e il codice esistente, senza scrivere una riga</div></div>
+      <div class="status-item stag-2"><div class="status-dot green"></div><div class="status-text" data-edit-key="s10-e3"><strong>2 · Pianificare</strong> — produco una spec e un piano, e li correggo finché reggono</div></div>
+      <div class="status-item stag-3"><div class="status-dot yellow"></div><div class="status-text" data-edit-key="s10-e4"><strong>3 · Eseguire</strong> — una fetta alla volta, ognuna con criteri di accettazione</div></div>
+      <div class="status-item stag-4"><div class="status-dot orange"></div><div class="status-text" data-edit-key="s10-e5"><strong>4 · Verificare</strong> — test, review automatica, poi la mia review da umano</div></div>
+      <div class="status-item stag-5"><div class="status-dot green"></div><div class="status-text" data-edit-key="s10-e6"><strong>5 · Consolidare</strong> — quello che ho imparato torna nel repo come regola o documento</div></div>
+    </div>
+    <p class="subtitle anim-4 mt-16" style="font-size:14px;" data-edit-key="s10-e7">Non è un flusso nuovo: è il ciclo di sviluppo di sempre, con l'agente su ogni passo.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Il mio flusso in cinque passi","script":"Questo è lo scheletro. Noterete che non c'è niente di rivoluzionario: capire, pianificare, eseguire, verificare, consolidare. È il ciclo di sviluppo che facciamo da sempre. La differenza è che ogni passo produce un artefatto scritto, e quell'artefatto diventa il contesto del passo successivo.","notes":["Capire prima di scrivere","Pianificare e correggere il piano, non il codice","Eseguire a fette con criteri chiari","Verificare in automatico e poi a mano","Consolidare l'apprendimento nel repository"]}
+    </script>
+  </div>
+
+  <!-- ============ 11 · PASSO 1 ============ -->
+  <div class="slide" data-slide="11">
+    <div class="glow-blob glow-blue" style="top:-10%;right:-10%;"></div>
+    <div class="cb-wrap anim-3">
+      <span class="cb-number anim-1" data-edit-key="s11-e0">01</span>
+      <h2 class="cb-heading anim-2" data-edit-key="s11-e1">Capire prima di <span class="highlight-blue">generare</span></h2>
+      <p class="cb-body anim-3" data-edit-key="s11-e2">La prima cosa che chiedo non è codice: è una <span class="cb-accent">mappa</span>. Dove vive questa funzionalità, chi la chiama, quali test la coprono, quali sono i vincoli. In sola lettura, senza permessi di scrittura.</p>
+      <p class="cb-body anim-4" data-edit-key="s11-e3">Serve a due cose: io capisco il pezzo di sistema che sto per toccare, e l'agente costruisce il contesto che userà dopo. Dieci minuti qui evitano un'ora di correzioni.</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"01 · Capire prima di generare","script":"La prima richiesta non è mai 'scrivimi la feature'. È 'spiegami come funziona questa parte'. Faccio esplorare in sola lettura: dove sta il codice, chi lo chiama, cosa lo testa. Serve a me per capire, e serve all'agente per costruire il contesto che userà dopo.","notes":["Prima richiesta: mappa del codice, non codice","Esplorazione in sola lettura, senza permessi di scrittura","Individuo dipendenze, test esistenti e vincoli","Il tempo speso qui si recupera in fase di correzione"]}
+    </script>
+  </div>
+
+  <!-- ============ 12 · PASSO 2 ============ -->
+  <div class="slide" data-slide="12">
+    <div class="glow-blob glow-purple" style="top:-10%;right:-10%;"></div>
+    <div class="cb-wrap anim-3">
+      <span class="cb-number anim-1" data-edit-key="s12-e0">02</span>
+      <h2 class="cb-heading anim-2" data-edit-key="s12-e1">Il piano è <span class="highlight-purple">l'artefatto</span></h2>
+      <p class="cb-body anim-3" data-edit-key="s12-e2">Prima del codice pretendo un piano scritto: file da toccare, ordine delle modifiche, casi limite, cosa <span class="cb-accent">non</span> va fatto. Lo leggo e lo correggo lì, dove correggere costa una frase.</p>
+      <p class="cb-body anim-4" data-edit-key="s12-e3">Un piano sbagliato si riscrive in due minuti. Trecento righe di codice sbagliate si riscrivono in un pomeriggio — e spesso si tengono per pigrizia.</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"02 · Il piano è l'artefatto","script":"Questo è il passo che mi ha cambiato di più il rendimento. Non chiedo mai codice per primo: chiedo un piano. File da toccare, ordine, casi limite, e soprattutto cosa non fare. Lo correggo lì, dove una correzione costa una frase invece di un pomeriggio.","notes":["Il piano precede sempre il codice","Contiene file, ordine, casi limite e vincoli negativi","Correggere il piano costa una frase","Il rischio del codice sbagliato è che lo si tenga per pigrizia"]}
+    </script>
+  </div>
+
+  <!-- ============ 13 · PASSO 3 ============ -->
+  <div class="slide" data-slide="13">
+    <div class="glow-blob glow-green" style="top:-10%;right:-10%;"></div>
+    <div class="cb-wrap anim-3">
+      <span class="cb-number anim-1" data-edit-key="s13-e0">03</span>
+      <h2 class="cb-heading anim-2" data-edit-key="s13-e1">Fette piccole, <span class="highlight-green">verificabili</span></h2>
+      <p class="cb-body anim-3" data-edit-key="s13-e2">Ogni unità di lavoro è una fetta che sta in una review: un comportamento, i suoi test, la sua documentazione. <span class="cb-accent">Se non riesco a descrivere il criterio di accettazione in tre righe, la fetta è troppo grande.</span></p>
+      <p class="cb-body anim-4" data-edit-key="s13-e3">Il vantaggio è doppio: l'agente ha un obiettivo netto, e io ho un diff che riesco davvero a leggere.</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"03 · Fette piccole e verificabili","script":"Chiedere una feature intera in un colpo è il modo più veloce per ottenere un diff di ottocento righe che nessuno legge. Lavoro a fette: un comportamento, i suoi test, la sua documentazione. La regola pratica è che se non riesco a scrivere il criterio di accettazione in tre righe, la fetta è troppo grande.","notes":["Unità di lavoro = un comportamento con i suoi test","Criterio di accettazione in tre righe, altrimenti si divide","Obiettivo netto per l'agente","Diff leggibile per l'umano che fa review"]}
+    </script>
+  </div>
+
+  <!-- ============ 14 · PASSO 4 ============ -->
+  <div class="slide" data-slide="14">
+    <div class="glow-blob glow-blue" style="top:-10%;left:-10%;"></div>
+    <div class="cb-wrap">
+      <span class="cb-number anim-1" data-edit-key="s14-e0">04</span>
+      <h2 class="cb-heading anim-2" data-edit-key="s14-e1">Verificare: <span class="highlight-orange">due passaggi</span>, non uno</h2>
+      <div class="cb-pair">
+        <div class="cb-card problem bounce-1">
+          <div class="cb-card-label problem-label">⚠ L'errore</div>
+          <p class="cb-card-text" data-edit-key="s14-e2">Leggere il diff e dire "sembra giusto". A colpo d'occhio il codice generato è quasi sempre plausibile: nomi sensati, struttura pulita. È esattamente questo che abbassa la guardia.</p>
+        </div>
+        <div class="cb-card fix accent-green bounce-2">
+          <div class="cb-card-label fix-label">✓ Cosa faccio</div>
+          <p class="cb-card-text" data-edit-key="s14-e3">Prima la macchina: test, lint, type check, e una review automatica con occhi diversi da chi ha scritto. Poi io, ma solo su ciò che conta: confini dei dati, errori, sicurezza, casi limite.</p>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"04 · Verificare in due passaggi","script":"Il codice generato è pericoloso proprio perché è plausibile. Nomi sensati, struttura ordinata, e tu abbassi la guardia. Quindi separo: prima il segnale automatico — test, lint, type check, una review fatta da un agente diverso da quello che ha scritto — e poi la mia attenzione umana, concentrata sui confini dei dati, la gestione degli errori e la sicurezza.","notes":["Il codice generato appare plausibile: rischio di review superficiale","Primo passaggio automatico: test, lint, type check","Review fatta da un agente diverso da chi ha scritto","Secondo passaggio umano su dati, errori, sicurezza, casi limite"]}
+    </script>
+  </div>
+
+  <!-- ============ 15 · PASSO 5 ============ -->
+  <div class="slide" data-slide="15">
+    <div class="glow-blob glow-purple" style="top:-10%;left:-10%;"></div>
+    <div class="cb-wrap anim-3">
+      <span class="cb-number anim-1" data-edit-key="s15-e0">05</span>
+      <h2 class="cb-heading anim-2" data-edit-key="s15-e1">Ogni correzione diventa una <span class="highlight-purple">regola</span></h2>
+      <p class="cb-body anim-3" data-edit-key="s15-e2">Quando correggo la stessa cosa due volte, non la correggo una terza: la scrivo. <span class="cb-accent">Nel file di regole del progetto, o come decisione architetturale documentata.</span></p>
+      <p class="cb-body anim-4" data-edit-key="s15-e3">È il passo che quasi tutti saltano — ed è quello che fa la differenza tra un agente che resta un principiante per sempre e uno che il mese dopo conosce il progetto meglio di un nuovo assunto.</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"05 · Consolidare l'apprendimento","script":"Regola personale: se correggo la stessa cosa due volte, la terza la scrivo nel repository. Nel file di regole o come decisione architetturale. È il passo che tutti saltano, ed è quello che determina se il vostro setup migliora nel tempo o resta fermo al primo giorno.","notes":["Correzione ripetuta due volte va scritta nel repo","Destinazione: file di regole o decisione architetturale","È l'unico modo per cui il setup migliora nel tempo","Senza questo passo l'agente resta sempre al primo giorno"]}
+    </script>
+  </div>
+
+  <!-- ============ 16 · STRUTTURA DEL REPO ============ -->
+  <div class="slide" data-slide="16">
+    <p class="slide-tag anim-1" data-edit-key="s16-e0">Dove vive il contesto</p>
+    <h2 class="anim-2" data-edit-key="s16-e1">Il contesto è <span class="highlight-blue">codice versionato</span></h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s16-e2">Se sta in un prompt che tieni in un file di appunti, non esiste per il team.</p>
+    <div class="code-window anim-3">
+      <div class="code-titlebar">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-filename">struttura del progetto</span>
+      </div>
+      <div class="code-body"><span class="ln">1</span><span class="prop">progetto/</span>
+<span class="ln">2</span>├── <span class="fn">CLAUDE.md</span>            <span class="comment"># convenzioni, comandi, cosa non toccare</span>
+<span class="ln">3</span>├── <span class="prop">docs/</span>
+<span class="ln">4</span>│   ├── <span class="fn">prd.md</span>           <span class="comment"># cosa costruiamo e perché</span>
+<span class="ln">5</span>│   ├── <span class="fn">architecture.md</span>  <span class="comment"># vincoli tecnici e decisioni</span>
+<span class="ln">6</span>│   └── <span class="prop">stories/</span>         <span class="comment"># unità di lavoro auto-contenute</span>
+<span class="ln">7</span>├── <span class="prop">.claude/</span>
+<span class="ln">8</span>│   ├── <span class="fn">settings.json</span>    <span class="comment"># permessi, hook, server MCP</span>
+<span class="ln">9</span>│   └── <span class="prop">skills/</span>          <span class="comment"># procedure ripetibili del team</span>
+<span class="ln">10</span>└── <span class="prop">src/</span>
+</div>
+    </div>
+    <p class="subtitle anim-4 mt-16" style="font-size:14px;" data-edit-key="s16-e3">Il contesto entra in code review come tutto il resto.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Il contesto è codice versionato","script":"Regola che considero non negoziabile: il contesto dell'agente sta nel repository, non nei vostri appunti. File di convenzioni, documenti di prodotto e architettura, storie di lavoro, configurazione dei permessi e degli strumenti. Così viene revisionato, condiviso e migliorato come qualunque altro file.","notes":["File di convenzioni alla radice del repo","docs con prodotto, architettura e storie","Configurazione di permessi, hook e MCP versionata","Procedure ripetibili come skill condivise","Il contesto passa dalla code review"]}
+    </script>
+  </div>
+
+  <!-- ============ 17 · PERCHÉ UN FRAMEWORK ============ -->
+  <div class="slide" data-slide="17">
+    <div class="glow-blob glow-orange" style="top:20%;left:50%;"></div>
+    <div class="cb-wrap">
+      <p class="slide-tag anim-1" data-edit-key="s17-e0">Il salto successivo</p>
+      <h2 class="cb-heading anim-2" data-edit-key="s17-e1">Perché non basta la <span class="highlight-orange">buona volontà</span></h2>
+      <div class="cb-pair">
+        <div class="cb-card problem bounce-1">
+          <div class="cb-card-label problem-label">⚠ Il problema</div>
+          <p class="cb-card-text" data-edit-key="s17-e2">Il metodo funziona finché lo applichi tu, in giornate buone. Poi arriva la fretta: salti il piano, allarghi la fetta, ti fidi del diff. E il team non può copiare quello che sta nella tua testa.</p>
+        </div>
+        <div class="cb-card fix bounce-2">
+          <div class="cb-card-label fix-label">✓ La risposta</div>
+          <p class="cb-card-text" data-edit-key="s17-e3">Un framework rende il metodo un default: ruoli, artefatti e passaggi definiti una volta e riusati da tutti. Smette di dipendere dalla disciplina del singolo.</p>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Perché serve un framework","script":"Il metodo che ho descritto funziona, ma ha un difetto: dipende dalla mia disciplina. Nelle giornate di fretta salto il piano e allargo la fetta. E soprattutto non è trasferibile: il team non può copiare quello che sta nella mia testa. Un framework trasforma il metodo in un default condiviso.","notes":["Il metodo personale dipende dalla disciplina individuale","Sotto pressione si saltano i passi che contano","Non è trasferibile al team se non è scritto","Il framework rende il metodo un default riusabile"]}
+    </script>
+  </div>
+
+  <!-- ============ 18 · BMAD: COS'È ============ -->
+  <div class="slide" data-slide="18">
+    <div class="glow-blob glow-blue" style="top:30%;left:-10%;"></div>
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1" data-edit-key="s18-e0">Strumento 1</p>
+      <h2 class="cb-heading anim-2" data-edit-key="s18-e1">BMAD — il processo agile <span class="highlight-blue">dato in mano agli agenti</span></h2>
+      <p class="cb-body anim-3" data-edit-key="s18-e2">BMAD prende i ruoli che già conosciamo — analista, product manager, architetto, scrum master, sviluppatore, QA — e li assegna ad <span class="cb-accent">agenti distinti, ognuno con il proprio compito e i propri artefatti</span>.</p>
+      <p class="cb-body anim-4" data-edit-key="s18-e3">Il risultato non è "più AI". È una catena in cui ogni passaggio produce un documento che il passaggio dopo può leggere senza di te.</p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"BMAD: il processo agile in mano agli agenti","script":"BMAD parte da un'idea semplice: i ruoli di un team agile sono già una divisione del lavoro che funziona. Analista, product manager, architetto, scrum master, sviluppatore, QA. Assegnamoli ad agenti distinti, ognuno con il proprio compito e i propri artefatti, e otteniamo una catena dove ogni passaggio produce input per il successivo.","notes":["Ruoli agili mappati su agenti distinti","Ogni agente ha compito e artefatti propri","La catena passa documenti, non conversazioni","Il valore è la separazione dei compiti, non la quantità di AI"]}
+    </script>
+  </div>
+
+  <!-- ============ 19 · BMAD: GLI AGENTI ============ -->
+  <div class="slide" data-slide="19">
+    <h2 class="anim-1" data-edit-key="s19-e0">Chi fa <span class="highlight-purple">cosa</span></h2>
+    <p class="subtitle anim-2" style="font-size:15px;" data-edit-key="s19-e1">Clicca una card per espanderla</p>
+    <div class="use-case-grid anim-3">
+      <div class="card-v2 glow-orange bounce-1" onclick="this.classList.toggle('expanded')">
+        <div class="card-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.9-3.9"/></svg></div>
+        <div class="card-title" data-edit-key="s19-e2">Analista &amp; PM</div>
+        <div class="card-desc" data-edit-key="s19-e3">Trasformano un'idea vaga in requisiti espliciti.</div>
+        <div class="card-expand"><div class="card-expand-inner" data-edit-key="s19-e4">Producono il documento di prodotto: obiettivi, utenti, ambito, cosa è fuori ambito. È qui che si eliminano le ambiguità che altrimenti l'agente riempirebbe a caso.</div></div>
+        <div class="expand-hint"><svg class="ic" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="card-v2 glow-blue bounce-2" onclick="this.classList.toggle('expanded')">
+        <div class="card-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/></svg></div>
+        <div class="card-title" data-edit-key="s19-e5">Architetto</div>
+        <div class="card-desc" data-edit-key="s19-e6">Fissa vincoli tecnici e struttura prima del codice.</div>
+        <div class="card-expand"><div class="card-expand-inner" data-edit-key="s19-e7">Stack, confini dei moduli, pattern ammessi, decisioni con motivazione. Diventa il documento che ogni storia successiva cita — così le scelte restano coerenti nel tempo.</div></div>
+        <div class="expand-hint"><svg class="ic" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="card-v2 glow-purple bounce-3" onclick="this.classList.toggle('expanded')">
+        <div class="card-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg></div>
+        <div class="card-title" data-edit-key="s19-e8">Scrum Master</div>
+        <div class="card-desc" data-edit-key="s19-e9">Spezza i documenti in storie auto-contenute.</div>
+        <div class="card-expand"><div class="card-expand-inner" data-edit-key="s19-e10">È il ruolo chiave: taglia il piano in unità che stanno in una sessione e in una review, e inserisce in ogni storia il contesto che serve — senza costringere a rileggere tutto il repo.</div></div>
+        <div class="expand-hint"><svg class="ic" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+      <div class="card-v2 glow-green bounce-4" onclick="this.classList.toggle('expanded')">
+        <div class="card-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></div>
+        <div class="card-title" data-edit-key="s19-e11">Sviluppatore &amp; QA</div>
+        <div class="card-desc" data-edit-key="s19-e12">Implementano una storia per volta e la verificano.</div>
+        <div class="card-expand"><div class="card-expand-inner" data-edit-key="s19-e13">Il dev lavora su una sola storia con contesto ristretto. Il QA rilegge con occhi diversi contro i criteri di accettazione: chi scrive non è chi valida.</div></div>
+        <div class="expand-hint"><svg class="ic" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"BMAD: chi fa cosa","script":"Quattro blocchi. Analista e product manager tolgono l'ambiguità dai requisiti. L'architetto fissa i vincoli prima che si scriva codice. Lo scrum master — e per me è il ruolo più sottovalutato — spezza tutto in storie auto-contenute. Sviluppatore e QA implementano e validano, ma separati: chi scrive non è chi valida.","notes":["Analista e PM: requisiti espliciti, ambito e non-ambito","Architetto: vincoli, pattern e decisioni motivate","Scrum Master: storie auto-contenute della dimensione giusta","Dev e QA separati: chi scrive non valida"]}
+    </script>
+  </div>
+
+  <!-- ============ 20 · BMAD: IL CICLO ============ -->
+  <div class="slide" data-slide="20">
+    <p class="slide-tag anim-1" data-edit-key="s20-e0">Il flusso</p>
+    <h2 class="anim-2" data-edit-key="s20-e1">Dal documento alla <span class="highlight-green">pull request</span></h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s20-e2">Ogni freccia è un passaggio di consegne fatto di file, non di conversazione.</p>
+    <div class="arch-flow anim-3">
+      <div class="arch-box box-blue bounce-1">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/></svg></div>
+        <div class="arch-label text-blue" data-edit-key="s20-e3">Pianificazione</div>
+        <div class="arch-role" data-edit-key="s20-e4">prodotto + architettura</div>
+        <div class="arch-detail" data-edit-key="s20-e5">prd.md · architecture.md</div>
+      </div>
+      <div class="arch-arrow anim-3">
+        <span>frammenta</span>
+        <div class="arrow-line"></div>
+      </div>
+      <div class="arch-box box-yellow bounce-2">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"/><path d="m3 12 1.5 1.5L7 11"/><path d="m3 19 1.5 1.5L7 18"/><path d="M11 5h10"/><path d="M11 12h10"/><path d="M11 19h10"/></svg></div>
+        <div class="arch-label text-yellow" data-edit-key="s20-e6">Storie</div>
+        <div class="arch-role" data-edit-key="s20-e7">unità auto-contenute</div>
+        <div class="arch-detail" data-edit-key="s20-e8">docs/stories/*.md</div>
+      </div>
+      <div class="arch-arrow anim-3">
+        <span>implementa</span>
+        <div class="arrow-line"></div>
+      </div>
+      <div class="arch-box box-green bounce-3">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25a3.18 3.18 0 0 1-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/></svg></div>
+        <div class="arch-label text-green" data-edit-key="s20-e9">Dev + QA</div>
+        <div class="arch-role" data-edit-key="s20-e10">una storia per volta</div>
+        <div class="arch-detail" data-edit-key="s20-e11">codice · test · review</div>
+      </div>
+    </div>
+    <p class="subtitle anim-4 mt-24" style="font-size:14px;" data-edit-key="s20-e12">La fase di pianificazione si fa una volta per iniziativa. Il ciclo a destra gira decine di volte.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"BMAD: dal documento alla pull request","script":"Il flusso ha due tempi diversi. A sinistra la pianificazione, che si fa una volta per iniziativa e produce due documenti. Al centro la frammentazione in storie. A destra il ciclo che gira decine di volte: una storia, implementazione, verifica, chiusura. E ogni passaggio di consegne è un file, non una conversazione da ricostruire.","notes":["Pianificazione una volta per iniziativa","Frammentazione in storie auto-contenute","Ciclo dev e QA ripetuto per ogni storia","I passaggi di consegne sono file versionati"]}
+    </script>
+  </div>
+
+  <!-- ============ 21 · ESEMPIO DI STORIA ============ -->
+  <div class="slide" data-slide="21">
+    <p class="slide-tag anim-1" data-edit-key="s21-e0">L'artefatto che conta</p>
+    <h2 class="anim-2" data-edit-key="s21-e1">Una storia <span class="highlight-yellow">auto-contenuta</span></h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s21-e2">Tutto il necessario in un file. L'agente non deve indovinare nulla.</p>
+    <div class="code-window anim-3">
+      <div class="code-titlebar">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-filename">docs/stories/4.2-export-csv.md</span>
+      </div>
+      <div class="code-body"><span class="ln">1</span><span class="kw"># Storia 4.2 — Export CSV del report mensile</span>
+<span class="ln">2</span><span class="prop">## Contesto</span>
+<span class="ln">3</span>Modulo <span class="str">src/reports/</span> · vincolo da <span class="str">ADR-014</span> (formato numerico)
+<span class="ln">4</span><span class="prop">## Criteri di accettazione</span>
+<span class="ln">5</span>- separatore <span class="str">";"</span>, encoding UTF-8 con BOM
+<span class="ln">6</span>- importi a 2 decimali, virgola come separatore decimale
+<span class="ln">7</span>- errore <span class="str">422</span> se il periodo richiesto supera 12 mesi
+<span class="ln">8</span><span class="prop">## Note tecniche</span>
+<span class="ln">9</span>Riusare <span class="fn">ReportQueryService</span>, non duplicare la query
+<span class="ln">10</span><span class="prop">## Definition of Done</span> <span class="comment">— test unit + integrazione, changelog</span>
+</div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Una storia auto-contenuta","script":"Guardate cosa c'è dentro: dove sta il codice, quale decisione architetturale vincola il formato, criteri di accettazione verificabili uno per uno, un vincolo esplicito di riuso, e la definizione di fatto. Un agente che legge questo file non deve indovinare niente. E, cosa non secondaria, nemmeno una persona nuova nel team.","notes":["Contesto: modulo e decisione architetturale di riferimento","Criteri di accettazione verificabili singolarmente","Vincoli di riuso espliciti contro la duplicazione","Definition of Done che include test e changelog","Leggibile allo stesso modo da agente e da collega"]}
+    </script>
+  </div>
+
+  <!-- ============ 22 · PERCHÉ FUNZIONA ============ -->
+  <div class="slide" data-slide="22">
+    <div class="glow-blob glow-green" style="top:20%;left:50%;"></div>
+    <div class="cb-wrap">
+      <p class="slide-tag anim-1" data-edit-key="s22-e0">Il meccanismo</p>
+      <h2 class="cb-heading anim-2" data-edit-key="s22-e1">Contesto <span class="highlight-red">stretto</span>, non contesto <span class="highlight-green">grande</span></h2>
+      <div class="cb-pair">
+        <div class="cb-card problem bounce-1">
+          <div class="cb-card-label problem-label">⚠ Senza storie</div>
+          <p class="cb-card-text" data-edit-key="s22-e2">"Implementa l'export" con l'intero repository davanti. L'agente pesca file a caso, reinventa una query che esiste già, e a metà lavoro ha perso di vista il requisito iniziale.</p>
+        </div>
+        <div class="cb-card fix accent-green bounce-2">
+          <div class="cb-card-label fix-label">✓ Con le storie</div>
+          <p class="cb-card-text" data-edit-key="s22-e3">Un obiettivo, i file rilevanti, i vincoli che contano. Meno rumore significa meno deriva: il modello resta sul punto perché il punto è l'unica cosa che ha davanti.</p>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Contesto stretto, non contesto grande","script":"C'è un equivoco diffuso: più contesto uguale risultati migliori. Nella mia esperienza è il contrario. Con l'intero repository davanti l'agente pesca file a caso e perde il requisito per strada. Con una storia stretta resta sul punto, perché il punto è l'unica cosa che ha davanti.","notes":["Più contesto non significa risultati migliori","Contesto largo produce deriva e duplicazione","La storia limita l'ambito a obiettivo, file e vincoli","Meno rumore significa meno deriva"]}
+    </script>
+  </div>
+
+  <!-- ============ 23 · GRAPHIFY: IL PROBLEMA ============ -->
+  <div class="slide" data-slide="23">
+    <div class="glow-blob glow-purple" style="top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1" data-edit-key="s23-e0">Strumento 2</p>
+      <blockquote class="cb-keyquote anim-2" data-edit-key="s23-e1">Il codice dice <em>cosa</em> fa.<br>Non dice <em>perché</em>, né <em>dove guardare</em>.</blockquote>
+      <p class="cb-detail anim-3" data-edit-key="s23-e2">Su un repository grande la ricerca testuale non basta: trova occorrenze, non relazioni. L'agente non sa che quel campo esiste per un vincolo fiscale, né che toccare quel servizio rompe tre chiamanti. <span class="cb-accent">Ricostruire questa conoscenza a ogni sessione è il costo nascosto dello sviluppo agentico.</span></p>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Graphify: il problema del contesto nei repo grandi","script":"Su un progetto piccolo l'agente legge quello che serve e va bene così. Su un monolite da anni di storia, la ricerca testuale trova occorrenze ma non relazioni. Non sa che quel campo esiste per un vincolo fiscale, né che toccare quel servizio rompe tre chiamanti. E questa conoscenza va ricostruita a ogni sessione: è il costo nascosto.","notes":["La ricerca testuale trova occorrenze, non relazioni","Le motivazioni delle scelte non sono nel codice","L'impatto di una modifica non è visibile localmente","Ricostruire il contesto a ogni sessione è il costo nascosto"]}
+    </script>
+  </div>
+
+  <!-- ============ 24 · GRAPHIFY: L'IDEA ============ -->
+  <div class="slide" data-slide="24">
+    <p class="slide-tag anim-1" data-edit-key="s24-e0">Da llm-wiki al grafo</p>
+    <h2 class="anim-2" data-edit-key="s24-e1">Documentazione scritta <span class="highlight-purple">per una macchina</span></h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s24-e2">L'idea di Karpathy: una wiki del progetto pensata per essere letta da un LLM. Graphify la rende navigabile.</p>
+    <div class="arch-flow anim-3">
+      <div class="arch-box box-blue bounce-1">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="m10 13-2 2 2 2"/><path d="m14 13 2 2-2 2"/></svg></div>
+        <div class="arch-label text-blue" data-edit-key="s24-e3">Codice</div>
+        <div class="arch-role" data-edit-key="s24-e4">la verità, ma illeggibile in blocco</div>
+        <div class="arch-detail" data-edit-key="s24-e5">migliaia di file</div>
+      </div>
+      <div class="arch-arrow anim-3">
+        <span>sintetizza</span>
+        <div class="arrow-line"></div>
+      </div>
+      <div class="arch-box box-yellow bounce-2">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></div>
+        <div class="arch-label text-yellow" data-edit-key="s24-e6">Wiki per LLM</div>
+        <div class="arch-role" data-edit-key="s24-e7">concetti, non righe</div>
+        <div class="arch-detail" data-edit-key="s24-e8">sempre rigenerabile</div>
+      </div>
+      <div class="arch-arrow anim-3">
+        <span>collega</span>
+        <div class="arrow-line"></div>
+      </div>
+      <div class="arch-box box-green bounce-3">
+        <div class="arch-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg></div>
+        <div class="arch-label text-green" data-edit-key="s24-e9">Grafo</div>
+        <div class="arch-role" data-edit-key="s24-e10">relazioni attraversabili</div>
+        <div class="arch-detail" data-edit-key="s24-e11">nodi + archi</div>
+      </div>
+    </div>
+    <p class="subtitle anim-4 mt-24" style="font-size:14px;" data-edit-key="s24-e12">L'agente non legge tutto: entra da un nodo e segue solo gli archi che gli servono.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Graphify: da llm-wiki al grafo","script":"Il punto di partenza è l'idea di llm-wiki di Karpathy: una documentazione del progetto scritta per essere letta da un modello, rigenerabile dal codice così non invecchia. Graphify aggiunge il pezzo che manca: le relazioni. I concetti diventano nodi, i legami diventano archi, e l'agente entra da un punto e segue solo gli archi che gli servono invece di rileggere il mondo.","notes":["llm-wiki: documentazione generata per la lettura da parte di un LLM","Rigenerabile dal codice, quindi non invecchia","Graphify aggiunge le relazioni fra i concetti","L'agente attraversa il grafo invece di rileggere il repository"]}
+    </script>
+  </div>
+
+  <!-- ============ 25 · GRAPHIFY: COSA CAMBIA ============ -->
+  <div class="slide" data-slide="25">
+    <p class="slide-tag anim-1" data-edit-key="s25-e0">In pratica</p>
+    <h2 class="anim-2" data-edit-key="s25-e1">Cosa cambia sul <span class="highlight-blue">lavoro di tutti i giorni</span></h2>
+    <div class="table-wrap anim-3">
+      <table>
+        <thead>
+          <tr>
+            <th data-edit-key="s25-e2">Domanda tipica</th>
+            <th data-edit-key="s25-e3">Senza grafo</th>
+            <th data-edit-key="s25-e4">Con il grafo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-highlight" data-edit-key="s25-e5">Dove tocco per questa modifica?</td>
+            <td class="cell-muted" data-edit-key="s25-e6">ricerca testuale e intuito</td>
+            <td data-edit-key="s25-e7">i nodi collegati al concetto</td>
+          </tr>
+          <tr>
+            <td class="cell-highlight" data-edit-key="s25-e8">Cosa rompo se cambio questo?</td>
+            <td class="cell-muted" data-edit-key="s25-e9">lo scopri in CI, o in produzione</td>
+            <td data-edit-key="s25-e10">archi entranti, prima di scrivere</td>
+          </tr>
+          <tr>
+            <td class="cell-highlight" data-edit-key="s25-e11">Perché è fatto così?</td>
+            <td class="cell-muted" data-edit-key="s25-e12">git blame e memoria dei colleghi</td>
+            <td data-edit-key="s25-e13">decisione collegata al modulo</td>
+          </tr>
+          <tr>
+            <td class="cell-highlight" data-edit-key="s25-e14">Da dove parte un nuovo arrivato?</td>
+            <td class="cell-muted" data-edit-key="s25-e15">due settimane di affiancamento</td>
+            <td data-edit-key="s25-e16">lo stesso grafo che usa l'agente</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="subtitle anim-4 mt-16" style="font-size:14px;" data-edit-key="s25-e17">Nota: il beneficio è per il team quanto per l'agente. La stessa mappa serve a entrambi.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Graphify: cosa cambia in pratica","script":"Quattro domande che ci facciamo ogni giorno. Dove tocco, cosa rompo, perché è fatto così, da dove parte chi arriva nuovo. Senza grafo la risposta è ricerca testuale, CI, git blame e affiancamento. Con il grafo sono attraversamenti. E la stessa mappa che serve all'agente serve alla persona appena arrivata.","notes":["Dove intervenire: nodi collegati invece di ricerca testuale","Impatto: archi entranti noti prima di scrivere","Motivazioni: decisioni collegate ai moduli","Onboarding: la stessa mappa vale per le persone"]}
+    </script>
+  </div>
+
+  <!-- ============ 26 · QUALITÀ ============ -->
+  <div class="slide" data-slide="26">
+    <h2 class="anim-1" data-edit-key="s26-e0">E la <span class="highlight-green">qualità</span> del codice?</h2>
+    <p class="subtitle anim-2" style="font-size:14px;" data-edit-key="s26-e1">Clicca le card per girarle</p>
+    <div class="auth-compare anim-3">
+      <div class="auth-flip-wrap slide-l">
+        <div class="auth-flip" onclick="this.classList.toggle('flipped')">
+          <div class="auth-front bad">
+            <div class="auth-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></div>
+            <div class="auth-name" data-edit-key="s26-e2">Agente senza processo</div>
+            <div class="auth-status"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg></div>
+            <div class="auth-desc" data-edit-key="s26-e3">velocità · debito</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="auth-back">
+            <div class="auth-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></svg></div>
+            <div class="auth-name" data-edit-key="s26-e4">Cosa succede</div>
+            <div class="flip-detail" style="font-size:13px;color:var(--text-muted);margin-top:8px;" data-edit-key="s26-e5">Diff enormi, pattern incoerenti tra una sessione e l'altra, test scritti per passare invece che per rompere, duplicazioni di logica già esistente.<br><strong style="color:var(--accent-red);">Più codice, più manutenzione.</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="auth-vs">vs</div>
+      <div class="auth-flip-wrap slide-r">
+        <div class="auth-flip" onclick="this.classList.toggle('flipped')">
+          <div class="auth-front good">
+            <div class="auth-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+            <div class="auth-name" data-edit-key="s26-e6">Agente dentro il processo</div>
+            <div class="auth-status"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg></div>
+            <div class="auth-desc" data-edit-key="s26-e7">velocità · coerenza</div>
+            <div class="flip-hint">clicca</div>
+          </div>
+          <div class="auth-back">
+            <div class="auth-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+            <div class="auth-name" data-edit-key="s26-e8">Cosa cambia</div>
+            <div class="flip-detail" style="font-size:13px;color:var(--text-muted);margin-top:8px;" data-edit-key="s26-e9">Diff piccoli e leggibili, convenzioni applicate sempre, test scritti contro criteri espliciti, riuso perché le dipendenze sono note.<br><strong style="color:var(--accent-green);">Il costo marginale della qualità crolla.</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Qualità: con e senza processo","script":"La domanda che mi fanno sempre. La mia risposta è che l'agente amplifica quello che trova. Senza processo amplifica il disordine: diff enormi, pattern incoerenti, test scritti per passare. Dentro un processo amplifica la disciplina, e succede una cosa interessante: le pratiche che rimandavamo perché costose — test, documentazione, changelog — diventano quasi gratuite.","notes":["L'agente amplifica il contesto che trova, nel bene e nel male","Senza processo: diff enormi, incoerenza, test compiacenti","Con processo: diff piccoli, convenzioni costanti, riuso","Il costo marginale di test e documentazione si abbassa molto"]}
+    </script>
+  </div>
+
+  <!-- ============ 27 · TRAPPOLE ============ -->
+  <div class="slide" data-slide="27">
+    <p class="slide-tag anim-1" data-edit-key="s27-e0">Imparate dai miei errori</p>
+    <h2 class="anim-2" data-edit-key="s27-e1">Le cinque <span class="highlight-red">trappole</span></h2>
+    <div class="status-timeline">
+      <div class="status-item stag-1"><div class="status-dot red"></div><div class="status-text" data-edit-key="s27-e2"><strong>Fiducia da diff plausibile</strong> — sembra giusto, quindi non lo leggo davvero</div></div>
+      <div class="status-item stag-2"><div class="status-dot orange"></div><div class="status-text" data-edit-key="s27-e3"><strong>La fetta troppo grande</strong> — "fammi tutta la feature" e poi nessuno rivede 800 righe</div></div>
+      <div class="status-item stag-3"><div class="status-dot yellow"></div><div class="status-text" data-edit-key="s27-e4"><strong>Contesto sporco</strong> — documenti vecchi che contraddicono il codice: l'agente crede ai documenti</div></div>
+      <div class="status-item stag-4"><div class="status-dot orange"></div><div class="status-text" data-edit-key="s27-e5"><strong>Over-engineering silenzioso</strong> — astrazioni e configurabilità che nessuno ha chiesto</div></div>
+      <div class="status-item stag-5"><div class="status-dot red"></div><div class="status-text" data-edit-key="s27-e6"><strong>Il processo come teatro</strong> — documenti prodotti per rito, che nessuno legge né aggiorna</div></div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title":"Le cinque trappole","script":"Queste le ho pagate tutte. La prima è la più insidiosa: il codice sembra giusto e quindi la review diventa una formalità. La terza è quella che sorprende: un documento obsoleto è peggio di nessun documento, perché l'agente crede al documento più che al codice. E l'ultima è il rischio di ogni framework: produrre artefatti per rito, non per usarli.","notes":["Il diff plausibile abbassa la soglia di attenzione","Fette troppo grandi rendono la review impossibile","Documentazione obsoleta è peggio di nessuna documentazione","Astrazioni non richieste emergono se non le vieti","Il processo diventa teatro se gli artefatti non si usano"]}
+    </script>
+  </div>
+
+  <!-- ============ 28 · COSA MISURARE ============ -->
+  <div class="slide" data-slide="28">
+    <p class="slide-tag anim-1" data-edit-key="s28-e0">Restare onesti</p>
+    <h2 class="anim-2" data-edit-key="s28-e1">Cosa misuro <span class="highlight-orange">davvero</span></h2>
+    <div class="stats-row">
+      <div class="stat-card pop-1">
+        <div class="stat-number blue" data-edit-key="s28-e2">—</div>
+        <div class="stat-label" data-edit-key="s28-e3">Tempo alla prima review</div>
+        <div class="stat-desc" data-edit-key="s28-e4">da "inizio a lavorarci" a "il diff è leggibile da un collega"</div>
+      </div>
+      <div class="stat-card pop-2">
+        <div class="stat-number green" data-edit-key="s28-e5">—</div>
+        <div class="stat-label" data-edit-key="s28-e6">Rilavorazione dopo merge</div>
+        <div class="stat-desc" data-edit-key="s28-e7">quante modifiche tornano indietro entro due settimane</div>
+      </div>
+      <div class="stat-card pop-3">
+        <div class="stat-number orange" data-edit-key="s28-e8">—</div>
+        <div class="stat-label" data-edit-key="s28-e9">Dimensione media del diff</div>
+        <div class="stat-desc" data-edit-key="s28-e10">l'indicatore più onesto sulla disciplina del processo</div>
+      </div>
+    </div>
+    <p class="subtitle anim-4 mt-24" style="font-size:15px;" data-edit-key="s28-e11">Sostituisci i trattini con i tuoi numeri. Righe di codice generate e "percentuale scritta dall'AI" non misurano nulla di utile.</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Cosa misurare","script":"Tre indicatori che uso. Tempo alla prima review leggibile, rilavorazione dopo il merge, e dimensione media del diff — che è l'indicatore più onesto sulla disciplina del processo. Quello che non misuro sono le righe generate o la percentuale di codice scritta dall'AI: sono numeri che fanno una bella slide e non dicono niente.","notes":["Tempo dall'inizio alla prima review leggibile","Rilavorazione entro due settimane dal merge","Dimensione media del diff come indicatore di disciplina","Righe generate e percentuale AI non misurano valore"]}
+    </script>
+  </div>
+
+  <!-- ============ 29 · CHIUSURA ============ -->
+  <div class="slide" data-slide="29">
+    <div class="glow-blob glow-blue" style="top:30%;left:30%;"></div>
+    <div class="glow-blob glow-green" style="bottom:20%;right:20%;"></div>
+    <h2 class="anim-1" style="font-size:clamp(28px,3.5vw,44px);" data-edit-key="s29-e0">Se vi resta <span class="gradient-text">una cosa sola</span></h2>
+    <p class="subtitle anim-2 mt-16" data-edit-key="s29-e1">L'agente non sostituisce il processo. Lo rende conveniente.</p>
+    <div class="cta-box anim-3">
+      <p style="font-size:16px;font-weight:600;color:var(--text-muted);" data-edit-key="s29-e2">Da provare lunedì mattina</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;font-size:14px;text-align:left;">
+        <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--accent-blue);" data-edit-key="s29-e3">●</span><span data-edit-key="s29-e4">Scrivi il file di convenzioni del tuo repo — venti righe bastano</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--accent-green);" data-edit-key="s29-e5">●</span><span data-edit-key="s29-e6">Chiedi un piano prima del codice, e correggi il piano</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--accent-purple);" data-edit-key="s29-e7">●</span><span data-edit-key="s29-e8">Prova BMAD su una feature vera, non su un progetto giocattolo</span></div>
+        <div style="display:flex;gap:8px;align-items:center;"><span style="color:var(--accent-orange);" data-edit-key="s29-e9">●</span><span data-edit-key="s29-e10">Fai fare la review a un agente diverso da quello che ha scritto</span></div>
+      </div>
+    </div>
+    <div class="rainbow-line anim-4 mt-24"></div>
+    <p class="subtitle anim-5" style="font-size:13px;margin-top:8px;" data-edit-key="s29-e11">Grazie — domande? · [contatti / link alle slide]</p>
+    <script type="application/json" class="slide-notes">
+    {"title":"Chiusura","script":"Se vi resta una cosa sola, che sia questa: l'agente non sostituisce il processo, lo rende conveniente. Le pratiche che rimandavamo perché costavano tempo — scrivere spec, test, documentare le decisioni — adesso costano poco e rendono molto. Quattro cose concrete da provare lunedì. Grazie, e sono qui per le domande.","notes":["L'agente rende conveniente il processo, non lo sostituisce","Partire dal file di convenzioni del repository","Chiedere e correggere il piano prima del codice","Provare BMAD su una feature reale","Separare chi scrive da chi fa la review"]}
+    </script>
+  </div>
+
+</div>
+
+<script>
+/* ===========================================
+   RUNTIME — particelle, navigazione, note relatore
+   =========================================== */
+
+// Particelle di sfondo
+const pc = document.getElementById('particles');
+for (let i = 0; i < 35; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random()*100+'%';
+  p.style.animationDuration = (8+Math.random()*14)+'s';
+  p.style.animationDelay = Math.random()*10+'s';
+  p.style.width = p.style.height = (1+Math.random()*2)+'px';
+  pc.appendChild(p);
+}
+
+// Navigazione
+const slides = document.querySelectorAll('.slide');
+const progress = document.getElementById('progress');
+const counter = document.getElementById('counter');
+const slideNav = document.getElementById('slideNav');
+let current = 0;
+const total = slides.length;
+
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'slide-nav-dot' + (i===0?' active':'');
+  dot.addEventListener('click', () => goTo(i));
+  slideNav.appendChild(dot);
+});
+
+function updateUI() {
+  progress.style.width = ((current+1)/total*100)+'%';
+  counter.textContent = `${current+1} / ${total}`;
+  document.querySelectorAll('.slide-nav-dot').forEach((d,i) => d.classList.toggle('active', i===current));
+}
+
+function goTo(index) {
+  if (index<0 || index>=total || index===current) return;
+  current = index;
+  slides.forEach((s,i) => s.classList.toggle('active', i===current));
+  updateUI();
+  showSpeakerNotes(current);
+}
+
+function next() { goTo(current+1); }
+function prev() { goTo(current-1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key==='ArrowRight'||e.key===' '||e.key==='PageDown') { e.preventDefault(); next(); }
+  if (e.key==='ArrowLeft'||e.key==='PageUp') { e.preventDefault(); prev(); }
+  if (e.key==='Home') { e.preventDefault(); goTo(0); }
+  if (e.key==='End') { e.preventDefault(); goTo(total-1); }
+});
+
+let touchStart = 0;
+document.addEventListener('touchstart', (e) => { touchStart=e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const diff = touchStart - e.changedTouches[0].clientX;
+  if (Math.abs(diff)>50) { diff>0 ? next() : prev(); }
+});
+
+let wheelCD = false;
+document.addEventListener('wheel', (e) => {
+  if (wheelCD) return; wheelCD = true;
+  setTimeout(() => wheelCD=false, 600);
+  if (e.deltaY>0||e.deltaX>0) next(); else prev();
+}, {passive:true});
+
+updateUI();
+
+/* ===========================================
+   NOTE PER IL RELATORE (console)
+   Apri DevTools (F12), stacca la finestra:
+   le note compaiono a ogni cambio slide.
+   =========================================== */
+
+function showSpeakerNotes(index) {
+  const slide = slides[index];
+  const notesEl = slide.querySelector('script.slide-notes');
+  console.clear();
+  if (notesEl) {
+    try {
+      const n = JSON.parse(notesEl.textContent);
+      const title = n.title || 'Slide ' + (index + 1);
+      const script = n.script || '';
+      const notes = n.notes || [];
+      var parts = ['\n%c📋 Slide ' + (index+1) + '/' + total + ': ' + title + '\n'];
+      var styles = ['font-size:16px;font-weight:bold;color:#2563eb;'];
+      if (script) {
+        parts.push('\n%c' + script + '\n');
+        styles.push('font-size:14px;color:#d97706;line-height:1.6;');
+      }
+      if (notes.length) {
+        notes.forEach(function(note) {
+          parts.push('\n  %c•%c ' + note);
+          styles.push('color:#16a34a;font-size:14px;');
+          styles.push('color:#16a34a;font-size:14px;');
+        });
+        parts.push('\n');
+      }
+      console.log.apply(console, [parts.join('')].concat(styles));
+    } catch(e) {}
+  } else {
+    console.log('%c📋 Slide ' + (index+1) + '/' + total + '\n\n%cNessuna nota per questa slide.',
+      'font-size:16px;font-weight:bold;color:#2563eb;', 'font-size:12px;color:#9ca3af;');
+  }
+}
+
+setTimeout(function() { showSpeakerNotes(0); }, 500);
+
+/* ===========================================
+   MODALITÀ EDITING
+   E oppure hover in alto a sinistra → attiva.
+   Le modifiche si salvano in localStorage.
+   Ctrl+S → esporta un file HTML con il testo aggiornato.
+   =========================================== */
+
+var EDITABLE_SELECTOR = [
+  'h1', 'h2', '.subtitle', '.slide-tag',
+  '.cb-heading', '.cb-body', '.cb-detail', '.cb-keyquote', '.cb-number', '.cb-card-text',
+  '.card-title', '.card-desc', '.card-expand-inner',
+  '.flip-title', '.flip-subtitle', '.flip-detail',
+  '.stat-number', '.stat-label', '.stat-desc',
+  '.status-text', '.arch-label', '.arch-role', '.arch-detail',
+  '.vs-label-top', '.vs-name', '.vs-desc', '.vs-badge',
+  '.auth-name', '.auth-desc',
+  '.agenda-num', '.agenda-title', '.agenda-desc',
+  '.loop-label', '.loop-role', '.loop-detail', '.loop-step', '.loop-center-main',
+  '.table-wrap th', '.table-wrap td',
+  '.cta-box p', '.cta-box span'
+].join(', ');
+
+var editor = {
+  isActive: false,
+  // v2: le chiavi dipendono dalla posizione della slide; cambiata dopo
+  // l'inserimento della sezione di prefazione, per non applicare
+  // vecchie modifiche agli elementi sbagliati.
+  storageKey: 'sviluppo-agentico-edits-v2',
+  fields: [],
+
+  // Assegna una chiave stabile a ogni elemento modificabile e ripristina il salvataggio
+  init: function() {
+    var self = this;
+    slides.forEach(function(slide, si) {
+      slide.querySelectorAll(EDITABLE_SELECTOR).forEach(function(el, ei) {
+        el.setAttribute('data-edit-key', 's' + si + '-e' + ei);
+        self.fields.push(el);
+      });
+    });
+    var saved = this.load();
+    Object.keys(saved).forEach(function(key) {
+      var el = document.querySelector('[data-edit-key="' + key + '"]');
+      if (el) el.innerHTML = saved[key];
+    });
+  },
+
+  load: function() {
+    try { return JSON.parse(localStorage.getItem(this.storageKey) || '{}'); }
+    catch (e) { return {}; }
+  },
+
+  save: function() {
+    var data = {};
+    this.fields.forEach(function(el) {
+      data[el.getAttribute('data-edit-key')] = el.innerHTML;
+    });
+    try { localStorage.setItem(this.storageKey, JSON.stringify(data)); } catch (e) {}
+  },
+
+  toggleEditMode: function() {
+    this.isActive = !this.isActive;
+    document.body.classList.toggle('editing', this.isActive);
+    var btn = document.getElementById('editToggle');
+    btn.classList.toggle('active', this.isActive);
+    this.fields.forEach(function(el) {
+      if (editor.isActive) el.setAttribute('contenteditable', 'true');
+      else el.removeAttribute('contenteditable');
+    });
+    if (this.isActive) {
+      this.banner('Modifica attiva &mdash; clicca un testo. <strong>Ctrl+S</strong> esporta, <strong>E</strong> esce.');
+    } else {
+      this.save();
+      this.banner('Modifiche salvate nel browser.');
+    }
+  },
+
+  banner: function(html) {
+    var b = document.getElementById('editBanner');
+    b.innerHTML = html;
+    b.classList.add('show');
+    clearTimeout(this._bannerTimer);
+    this._bannerTimer = setTimeout(function() { b.classList.remove('show'); }, 4000);
+  },
+
+  // Esporta una copia pulita del file, con il testo modificato incluso
+  exportFile: function() {
+    this.save();
+    var clone = document.documentElement.cloneNode(true);
+    clone.querySelectorAll('[contenteditable]').forEach(function(el) { el.removeAttribute('contenteditable'); });
+    clone.querySelectorAll('.particle').forEach(function(el) { el.remove(); });
+    var body = clone.querySelector('body');
+    if (body) body.classList.remove('editing');
+    clone.querySelectorAll('.slide').forEach(function(s, i) { s.classList.toggle('active', i === 0); });
+    var blob = new Blob(['<!DOCTYPE html>\n' + clone.outerHTML], { type: 'text/html' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sviluppo-agentico.html';
+    a.click();
+    setTimeout(function() { URL.revokeObjectURL(a.href); }, 1000);
+    this.banner('File esportato. Sostituisci l&rsquo;originale per rendere le modifiche definitive.');
+  }
+};
+
+editor.init();
+
+// Il pulsante di modifica compare passando in alto a sinistra (con 400ms di tolleranza)
+var hotzone = document.querySelector('.edit-hotzone');
+var editToggle = document.getElementById('editToggle');
+var hideTimeout = null;
+
+hotzone.addEventListener('mouseenter', function() {
+  clearTimeout(hideTimeout);
+  editToggle.classList.add('show');
+});
+hotzone.addEventListener('mouseleave', function() {
+  hideTimeout = setTimeout(function() {
+    if (!editor.isActive) editToggle.classList.remove('show');
+  }, 400);
+});
+editToggle.addEventListener('mouseenter', function() { clearTimeout(hideTimeout); });
+editToggle.addEventListener('mouseleave', function() {
+  hideTimeout = setTimeout(function() {
+    if (!editor.isActive) editToggle.classList.remove('show');
+  }, 400);
+});
+editToggle.addEventListener('click', function() { editor.toggleEditMode(); });
+hotzone.addEventListener('click', function() { editor.toggleEditMode(); });
+
+// In fase di cattura: mentre si scrive, i tasti non devono navigare fra le slide
+document.addEventListener('keydown', function(e) {
+  if ((e.key === 's' || e.key === 'S') && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    editor.exportFile();
+    return;
+  }
+  if (e.target && e.target.isContentEditable) {
+    if (e.key === 'Escape') { e.target.blur(); editor.toggleEditMode(); }
+    e.stopImmediatePropagation();
+    return;
+  }
+  if ((e.key === 'e' || e.key === 'E') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    editor.toggleEditMode();
+  }
+}, true);
+
+// Rotella e click non devono interferire con la modifica
+document.addEventListener('wheel', function(e) {
+  if (editor.isActive) e.stopImmediatePropagation();
+}, true);
+
+document.addEventListener('click', function(e) {
+  if (editor.isActive && e.target && e.target.isContentEditable) e.stopPropagation();
+}, true);
+
+// Salvataggio automatico mentre si digita
+document.addEventListener('input', function(e) {
+  if (editor.isActive && e.target && e.target.isContentEditable) {
+    clearTimeout(editor._saveTimer);
+    editor._saveTimer = setTimeout(function() { editor.save(); }, 600);
+  }
+});
+</script>
+
+
+</body></html>
