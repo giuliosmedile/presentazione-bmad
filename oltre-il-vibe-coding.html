@@ -1178,6 +1178,81 @@ body.editing [contenteditable="true"]:focus {
   .big-figure .bf-value { font-size: clamp(40px, 7vw, 80px); }
   .big-figure .bf-label { font-size: clamp(11px, 1.1vw, 15px); }
 }
+
+/* Identikit di un agente: ritratto e carta d'identità si dividono la slide.
+   I campi sono quelli del customize.toml: identità, stile, principi, menu. */
+.idkit {
+  display: flex; align-items: stretch; gap: clamp(12px, 1.8vw, 24px);
+  width: 100%; max-width: 1120px; margin-top: clamp(10px, 2vh, 22px); text-align: left;
+}
+.idkit-photo {
+  flex: 1; border-radius: var(--radius-lg); overflow: hidden;
+  border: 1px solid var(--color-divider); box-shadow: var(--shadow-lg);
+  background: var(--color-surface); display: flex;
+}
+.idkit-photo img { width: 100%; height: 100%; object-fit: cover; max-height: min(46vh, 380px); }
+.idkit-card {
+  flex: 1.15; background: var(--color-surface); border: 1px solid var(--color-divider);
+  border-top: 3px solid var(--color-accent-2); border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm); padding: clamp(12px, 1.6vw, 20px);
+  display: flex; flex-direction: column; gap: clamp(6px, 0.9vh, 11px);
+}
+.ik-head {
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--color-divider); padding-bottom: clamp(5px, 0.8vh, 9px);
+}
+.ik-icon { font-size: clamp(15px, 1.5vw, 22px); line-height: 1; }
+.ik-name { font-weight: 800; font-size: clamp(15px, 1.5vw, 21px); }
+.ik-role {
+  font-size: clamp(9px, 0.85vw, 12px); letter-spacing: 0.08em; text-transform: uppercase;
+  font-weight: 700; color: var(--color-accent-2-700);
+}
+.ik-label {
+  display: block; font-size: clamp(8px, 0.8vw, 10px); letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 700; color: var(--color-accent-2-700);
+}
+.ik-val { font-size: clamp(11px, 1.02vw, 14px); line-height: 1.4; margin-top: 2px; }
+.ik-principles {
+  list-style: none; margin: 3px 0 0; padding: 0;
+  font-size: clamp(10px, 0.98vw, 13px); line-height: 1.38;
+}
+.ik-principles li { padding-left: 13px; position: relative; }
+.ik-principles li::before {
+  content: ""; position: absolute; left: 3px; top: 0.55em;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--color-accent-2);
+}
+.ik-chips {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  border-top: 1px solid var(--color-divider); padding-top: clamp(5px, 0.8vh, 9px); margin-top: auto;
+}
+.ik-chip {
+  border: 1px solid var(--color-accent-2-300); border-radius: 999px;
+  padding: 1px 8px; font-size: clamp(8px, 0.78vw, 10px);
+  color: var(--color-accent-2-700); white-space: nowrap;
+}
+.tc-head { display: flex; align-items: baseline; gap: 7px; }
+.tc-emoji { font-size: clamp(13px, 1.25vw, 18px); line-height: 1; }
+.tc-role {
+  font-size: clamp(9px, 0.85vw, 11px); letter-spacing: 0.07em; text-transform: uppercase;
+  font-weight: 700; color: var(--color-accent-2-700); margin-top: 2px;
+}
+.agent-group .slide-image { max-height: min(38vh, 300px); }
+/* La catena di consegne: chi produce, e cosa passa al successivo. */
+.chain {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+  gap: clamp(4px, 0.7vw, 10px); margin-top: clamp(10px, 1.8vh, 20px); max-width: 1040px;
+}
+.chain-step {
+  display: flex; flex-direction: column; align-items: center;
+  background: var(--color-surface); border: 1px solid var(--color-divider);
+  border-top: 3px solid var(--color-accent-2); border-radius: var(--radius-card);
+  padding: clamp(6px, 0.9vw, 11px) clamp(8px, 1.1vw, 14px); box-shadow: var(--shadow-sm);
+}
+.cs-who { font-weight: 700; font-size: clamp(11px, 1vw, 14px); }
+.cs-art { font-size: clamp(9px, 0.85vw, 12px); color: var(--color-accent-700); margin-top: 2px; }
+.chain-arrow { display: flex; color: var(--color-accent-2-600); }
+.chain-arrow .ic { width: clamp(14px, 1.4vw, 20px); height: clamp(14px, 1.4vw, 20px); }
+@media (max-width: 700px) { .idkit { flex-direction: column; } }
 </style>
 </head>
 <body class="">
@@ -1607,155 +1682,267 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 16 · GLI AGENTI BMAD ---- -->
 
   <div class="slide" data-slide="16" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s16-e0">Panoramica</p>
-    <h2 class="anim-2" data-edit-key="s16-e1">I <span class="highlight-blue">ruoli</span> del framework</h2>
+    <p class="slide-tag anim-1" data-edit-key="s16-e0">La squadra</p>
+    <h2 class="anim-2" data-edit-key="s16-e1">Sei ruoli del <span class="highlight-blue">framework</span></h2>
     <div class="tri-grid anim-3" style="max-width:1060px;">
       <div class="tri-card bounce-1" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.9-3.9"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e2">Input</div>
-        <div class="tc-desc" data-edit-key="s16-e3">Richiesta grezza</div>
+        <div class="tc-head"><span class="tc-emoji">📊</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e2">Mary</span></div>
+        <div class="tc-role">Business Analyst · Analisi</div>
+        <div class="tc-desc" data-edit-key="s16-e3">Ricerca, brainstorming, product brief.</div>
       </div>
       <div class="tri-card bounce-1" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1"></rect><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e4">[Da dove arriva: ticket, conversazione, una riga su Slack.]</div>
-        <div class="tc-desc" data-edit-key="s16-e5">Agente</div>
+        <div class="tc-head"><span class="tc-emoji">📚</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e4">Paige</span></div>
+        <div class="tc-role">Technical Writer · Analisi</div>
+        <div class="tc-desc" data-edit-key="s16-e5">Documenta il progetto per gli umani e per gli agenti.</div>
       </div>
       <div class="tri-card bounce-2" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path><path d="M10 6h4"></path><path d="M10 10h4"></path><path d="M10 14h4"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e6">[Nome del ruolo]</div>
-        <div class="tc-desc" data-edit-key="s16-e7">[Cosa fa in concreto, in due righe. Quali domande pone, cosa cerca nel repo.]</div>
+        <div class="tc-head"><span class="tc-emoji">📋</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e6">John</span></div>
+        <div class="tc-role">Product Manager · Pianificazione</div>
+        <div class="tc-desc" data-edit-key="s16-e7">PRD, epiche, story.</div>
       </div>
       <div class="tri-card bounce-2" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e8">Output</div>
-        <div class="tc-desc" data-edit-key="s16-e9">[Artefatto prodotto]</div>
+        <div class="tc-head"><span class="tc-emoji">🎨</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e8">Sally</span></div>
+        <div class="tc-role">UX Designer · Pianificazione</div>
+        <div class="tc-desc" data-edit-key="s16-e9">Specifiche UX che informano architettura e codice.</div>
       </div>
       <div class="tri-card bounce-3" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e10">[Che file esce, cosa contiene, quanto è lungo.]</div>
-        <div class="tc-desc" data-edit-key="s16-e11">Qui intervieni tu</div>
+        <div class="tc-head"><span class="tc-emoji">🏗️</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e10">Winston</span></div>
+        <div class="tc-role">System Architect · Solutioning</div>
+        <div class="tc-desc" data-edit-key="s16-e11">Le decisioni tecniche che tengono in riga l'implementazione.</div>
       </div>
       <div class="tri-card bounce-3" style="padding:clamp(12px,1.6vw,20px);">
-        <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
-        <div class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e12">[Cosa controlli sempre a questo passaggio, e quanto ci metti.]</div>
-        <div class="tc-desc" data-edit-key="s16-e13">Rilegge contro i criteri, con occhi diversi.</div>
+        <div class="tc-head"><span class="tc-emoji">💻</span><span class="tc-title" style="font-size:clamp(15px,1.4vw,20px);" data-edit-key="s16-e12">Amelia</span></div>
+        <div class="tc-role">Senior Software Engineer · Implementazione</div>
+        <div class="tc-desc" data-edit-key="s16-e13">Story approvate, test-first.</div>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s16-e14">Nelle prossime tre slide approfondisco solo quelli che uso davvero.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s16-e14">Ognuno ha un file che ne definisce identità, stile e principi. Nelle prossime cinque slide li apro uno per uno.</p>
     <script type="application/json" class="slide-notes">
-    {"title":"Gli agenti BMAD","script":"Questa è la mappa completa dei ruoli, una riga a testa. Non ve li spiego tutti: serve solo che abbiate la visione d'insieme. Nelle prossime tre slide entro nel dettaglio dei tre su cui passo davvero il mio tempo.","notes":["Visione d'insieme, una riga per ruolo","Non spiegarli tutti: la panoramica basta","Anticipare quali tre saranno approfonditi","Adattare la griglia ai ruoli che usi davvero"]}
+    {"title": "Gli agenti BMAD", "script": "Sei ruoli, una riga a testa. Non è una piattaforma con sei chatbot: è una squadra con sei mansioni, e ognuno ha un file che dice chi è, come parla e a cosa tiene. Nelle prossime cinque slide ne apro uno per volta — Paige, la technical writer, ve la lascio in questa griglia perché il suo lavoro lo riprendiamo nel capitolo sulla memoria.", "notes": ["Sei ruoli, non cinque: c'è anche Paige", "Ogni agente ha un file di definizione, non un prompt improvvisato", "Le fasi (analisi, pianificazione, solutioning, implementazione) sono BMAD", "Paige rimanda al capitolo 04 sulla conoscenza scritta"]}
     </script>
   </div>
 
-  <!-- ---- 17 · DEEP DIVE, AGENTE A MONTE ---- -->
+  <!-- ---- 17 · IDENTIKIT · MARY · BUSINESS ANALYST ---- -->
 
   <div class="slide" data-slide="17" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s17-e0">Deep dive — 1 di 3</p>
-    <h2 class="anim-2" data-edit-key="s17-e1">[Agente a monte] — <span class="highlight-blue">definire il problema</span></h2>
-    <div class="dd-flow anim-3">
-      <div class="dd-col bounce-1">
-        <span class="dd-label" data-edit-key="s17-e2">Input</span>
-        <div class="dd-name" data-edit-key="s17-e3">[Artefatto precedente]</div>
-        <p class="dd-body" data-edit-key="s17-e4">[Cosa eredita dal ruolo a monte.]</p>
+    <p class="slide-tag anim-1" data-edit-key="s17-e0">Identikit — 1 di 5 · Fase 1 · Analisi</p>
+    <h2 class="anim-2" data-edit-key="s17-e1">Mary — <span class="highlight-blue">Business Analyst</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/analyst_mary.jpg" alt="Ritratto illustrato di Mary, Business Analyst: impermeabile da detective, lente d'ingrandimento, megafono con la scritta user voice.">
       </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col agent bounce-2">
-        <span class="dd-label" data-edit-key="s17-e5">Agente</span>
-        <div class="dd-name" data-edit-key="s17-e6">[Nome del ruolo]</div>
-        <p class="dd-body" data-edit-key="s17-e7">[Cosa fa. Qui sta il grosso del lavoro: descrivilo con un esempio concreto.]</p>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">📊</span>
+          <span class="ik-name">Mary</span>
+          <span class="ik-role">Business Analyst</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Identità</span>
+          <p class="ik-val" data-edit-key="s17-e2">Il rigore strategico di <strong>Michael Porter</strong> e la disciplina del Principio della Piramide di <strong>Barbara Minto</strong>.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Come parla</span>
+          <p class="ik-val" data-edit-key="s17-e3">L'eccitazione di chi cerca un tesoro quando emerge un pattern, la struttura di un memo McKinsey quando lo scrive.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s17-e4"><li>Ogni scoperta poggia su prove verificabili.</li><li>I requisiti si enunciano con precisione assoluta.</li><li>Ogni voce degli stakeholder è rappresentata.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">brainstorming</span><span class="ik-chip">ricerca di mercato</span><span class="ik-chip">dominio</span><span class="ik-chip">fattibilità tecnica</span><span class="ik-chip">product brief</span><span class="ik-chip">PRFAQ</span><span class="ik-chip">documenta progetto</span></div>
       </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col bounce-3">
-        <span class="dd-label" data-edit-key="s17-e8">Output</span>
-        <div class="dd-name" data-edit-key="s17-e9">[Artefatto prodotto]</div>
-        <p class="dd-body" data-edit-key="s17-e10">[Il file o il codice che esce.]</p>
-      </div>
-    </div>
-    <div class="human-check anim-4">
-      <span class="hc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m16 11 2 2 4-4"></path></svg></span>
-      <span class="hc-label" data-edit-key="s17-e11">Controllo sempre</span>
-      <span class="hc-text" data-edit-key="s17-e12">[Cosa hai imparato a verificare sempre] — e cosa invece hai imparato a lasciar correre.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title":"Deep dive, agente a monte","script":"I prossimi tre approfondimenti hanno tutti la stessa struttura: cosa riceve in input, cosa produce in output, e dove intervengo io. Partiamo dal ruolo più a monte, quello che trasforma una richiesta grezza in qualcosa su cui si può lavorare.","notes":["Struttura fissa ripetuta per i tre deep dive: input, agente, output, checkpoint","Sostituire con il ruolo più a monte che usi davvero","Uno screenshot di un artefatto reale vale più di ogni descrizione","Dire quanto tempo richiede il controllo umano"]}
+    {"title": "Identikit — Mary, Business Analyst", "script": "Mary. Il rigore strategico di Michael Porter e la disciplina del Principio della Piramide di Barbara Minto. L'eccitazione di chi cerca un tesoro quando emerge un pattern, la struttura di un memo McKinsey quando lo scrive. I suoi principi: Ogni scoperta poggia su prove verificabili. I requisiti si enunciano con precisione assoluta. Ogni voce degli stakeholder è rappresentata. Non sono aggettivi che ho scelto io: stanno scritti nel file che definisce l'agente, e sono quelli che ne guidano il comportamento a ogni risposta.", "notes": ["I campi vengono dal customize.toml dell'agente, non sono inventati", "I nomi citati nell'identità sono il gancio: Porter, Fowler, Kent Beck", "Leggere ad alta voce un principio solo, il più caratterizzante", "Massimo un minuto: sono cinque slide di fila"]}
     </script>
   </div>
 
-  <!-- ---- 18 · DEEP DIVE, AGENTE CENTRALE ---- -->
+  <!-- ---- 18 · IDENTIKIT · JOHN · PRODUCT MANAGER ---- -->
 
   <div class="slide" data-slide="18" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s18-e0">Deep dive — 2 di 3</p>
-    <h2 class="anim-2" data-edit-key="s18-e1">[Agente centrale] — <span class="highlight-blue">dove passo più tempo</span></h2>
-    <div class="dd-flow anim-3">
-      <div class="dd-col bounce-1">
-        <span class="dd-label" data-edit-key="s18-e2">Input</span>
-        <div class="dd-name" data-edit-key="s18-e3">[Codice + criteri]</div>
-        <p class="dd-body" data-edit-key="s18-e4">[Cosa riceve da verificare.]</p>
+    <p class="slide-tag anim-1" data-edit-key="s18-e0">Identikit — 2 di 5 · Fase 2 · Pianificazione</p>
+    <h2 class="anim-2" data-edit-key="s18-e1">John — <span class="highlight-blue">Product Manager</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/pm_john.jpg" alt="Ritratto illustrato di John, Product Manager: cappello da capitano, timone con bussola, un PRD srotolato, blocchi Epic e User Story.">
       </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col agent bounce-2">
-        <span class="dd-label" data-edit-key="s18-e5">Agente</span>
-        <div class="dd-name" data-edit-key="s18-e6">[Nome del ruolo]</div>
-        <p class="dd-body" data-edit-key="s18-e7">[Come rilegge, contro cosa, con quale prompt di partenza.]</p>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">📋</span>
+          <span class="ik-name">John</span>
+          <span class="ik-role">Product Manager</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Identità</span>
+          <p class="ik-val" data-edit-key="s18-e2">Ragiona come <strong>Marty Cagan</strong> e <strong>Teresa Torres</strong>. Scrive con la disciplina del six-pager di <strong>Bezos</strong>.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Come parla</span>
+          <p class="ik-val" data-edit-key="s18-e3">Il «perché?» insistente di un detective. Diretto, tagliente sui dati, taglia il superfluo e va a quello che conta.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s18-e4"><li>I PRD nascono dalle interviste agli utenti, non dal riempire un template.</li><li>Rilascia la cosa più piccola che valida l'ipotesi.</li><li>Prima il valore per l'utente; la fattibilità tecnica è un vincolo.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">crea PRD</span><span class="ik-chip">valida PRD</span><span class="ik-chip">modifica PRD</span><span class="ik-chip">epiche e story</span><span class="ik-chip">readiness</span><span class="ik-chip">correggi rotta</span></div>
       </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col bounce-3">
-        <span class="dd-label" data-edit-key="s18-e8">Output</span>
-        <div class="dd-name" data-edit-key="s18-e9">[Esito]</div>
-        <p class="dd-body" data-edit-key="s18-e10">[E dove rientra: è l’input del giro successivo.]</p>
-      </div>
-    </div>
-    <div class="human-check anim-4">
-      <span class="hc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m16 11 2 2 4-4"></path></svg></span>
-      <span class="hc-label" data-edit-key="s18-e11">Decisione finale</span>
-      <span class="hc-text" data-edit-key="s18-e12">[Cosa decidi tu che l’agente non può decidere: merge, rilascio, deroga.]</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title":"Deep dive, agente centrale","script":"Stessa struttura, sul ruolo dove passo più tempo. Qui vi dico anche due cose che nessun README vi darà: cosa ho imparato a controllare sempre, e cosa ho imparato a lasciar correre. Il secondo elenco è più importante del primo, perché controllare tutto significa tornare a fare il lavoro a mano.","notes":["Stesso template della slide precedente","Il dettaglio operativo giustifica l'ora del pubblico","Cosa controllare sempre e cosa lasciar correre","Se hai un esempio di output sbagliato intercettato al checkpoint, va qui"]}
+    {"title": "Identikit — John, Product Manager", "script": "John. Ragiona come Marty Cagan e Teresa Torres. Scrive con la disciplina del six-pager di Bezos. Il «perché?» insistente di un detective. Diretto, tagliente sui dati, taglia il superfluo e va a quello che conta. I suoi principi: I PRD nascono dalle interviste agli utenti, non dal riempire un template. Rilascia la cosa più piccola che valida l'ipotesi. Prima il valore per l'utente; la fattibilità tecnica è un vincolo. Non sono aggettivi che ho scelto io: stanno scritti nel file che definisce l'agente, e sono quelli che ne guidano il comportamento a ogni risposta.", "notes": ["I campi vengono dal customize.toml dell'agente, non sono inventati", "I nomi citati nell'identità sono il gancio: Porter, Fowler, Kent Beck", "Leggere ad alta voce un principio solo, il più caratterizzante", "Massimo un minuto: sono cinque slide di fila"]}
     </script>
   </div>
 
-  <!-- ---- 19 · DEEP DIVE, AGENTE A VALLE ---- -->
+  <!-- ---- 19 · IDENTIKIT · SALLY · UX DESIGNER ---- -->
 
   <div class="slide" data-slide="19" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s19-e0">Deep dive — 3 di 3</p>
-    <h2 class="anim-2" data-edit-key="s19-e1">[Agente a valle] — <span class="highlight-green">chiudere il ciclo</span></h2>
-    <div class="dd-flow anim-3">
-      <div class="dd-col bounce-1">
-        <span class="dd-label" data-edit-key="s19-e2">Capacità riutilizzabili che più ruoli possono invocare. Si scrivono una volta, valgono per tutto il team.</span>
-        <div class="dd-name" data-edit-key="s19-e3">[Ricerca nel codebase]</div>
-        <p class="dd-body" data-edit-key="s19-e4"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></p>
+    <p class="slide-tag anim-1" data-edit-key="s19-e0">Identikit — 3 di 5 · Fase 2 · Pianificazione</p>
+    <h2 class="anim-2" data-edit-key="s19-e1">Sally — <span class="highlight-purple">UX Designer</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/ux_sally.jpg" alt="Ritratto illustrato di Sally, UX Designer: basco da artista, wireframe sospesi, ventaglio Pantone, nuvola user experience.">
       </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col agent bounce-2">
-        <span class="dd-label" data-edit-key="s19-e5"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
-        <div class="dd-name" data-edit-key="s19-e6"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></div>
-        <p class="dd-body" data-edit-key="s19-e7">·</p>
-      </div>
-      <div class="dd-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-      <div class="dd-col bounce-3">
-        <span class="dd-label" data-edit-key="s19-e8">[Convenzioni del team]</span>
-        <div class="dd-name" data-edit-key="s19-e9">·</div>
-        <p class="dd-body" data-edit-key="s19-e10"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></p>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">🎨</span>
+          <span class="ik-name">Sally</span>
+          <span class="ik-role">UX Designer</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Identità</span>
+          <p class="ik-val" data-edit-key="s19-e2">Radicata nel design centrato sull'uomo di <strong>Don Norman</strong> e nella disciplina delle persona di <strong>Alan Cooper</strong>.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Come parla</span>
+          <p class="ik-val" data-edit-key="s19-e3">Dipinge con le parole. Racconta storie d'uso che ti fanno <em>sentire</em> il problema. Avvocato empatico dell'utente.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s19-e4"><li>Ogni decisione serve un bisogno reale dell'utente.</li><li>Parti semplice, evolvi attraverso il feedback.</li><li>Informata dai dati, ma sempre creativa.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">progetta la UX</span></div>
       </div>
     </div>
-    <div class="human-check anim-4">
-      <span class="hc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m16 11 2 2 4-4"></path></svg></span>
-      <span class="hc-label" data-edit-key="s19-e11"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
-      <span class="hc-text" data-edit-key="s19-e12"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
-    </div>
-    <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s19-e13">[Generazione dei test]</p>
     <script type="application/json" class="slide-notes">
-    {"title":"Deep dive, agente a valle","script":"Ultimo ruolo, quello che chiude. La cosa da notare è che il suo output non finisce in un cassetto: rientra come input del giro successivo. Ed è proprio il ciclo che stiamo per guardare.","notes":["Stesso template dei due precedenti","Chi scrive non è chi valida","L'output rientra nel ciclo: prepara la slide del loop","La decisione di merge o rilascio resta umana"]}
+    {"title": "Identikit — Sally, UX Designer", "script": "Sally. Radicata nel design centrato sull'uomo di Don Norman e nella disciplina delle persona di Alan Cooper. Dipinge con le parole. Racconta storie d'uso che ti fanno sentire il problema. Avvocato empatico dell'utente. I suoi principi: Ogni decisione serve un bisogno reale dell'utente. Parti semplice, evolvi attraverso il feedback. Informata dai dati, ma sempre creativa. Non sono aggettivi che ho scelto io: stanno scritti nel file che definisce l'agente, e sono quelli che ne guidano il comportamento a ogni risposta.", "notes": ["I campi vengono dal customize.toml dell'agente, non sono inventati", "I nomi citati nell'identità sono il gancio: Porter, Fowler, Kent Beck", "Leggere ad alta voce un principio solo, il più caratterizzante", "Massimo un minuto: sono cinque slide di fila"]}
     </script>
   </div>
 
-  <!-- ---- 20 · LE SKILL BMAD ---- -->
+  <!-- ---- 20 · IDENTIKIT · WINSTON · SYSTEM ARCHITECT ---- -->
 
   <div class="slide" data-slide="20" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s20-e0">Skill</p>
-    <h2 class="anim-2" data-edit-key="s20-e1">L’agente è il <span class="highlight-blue">chi</span>. La skill è il <span class="highlight-green">come</span>.</h2>
-    <p class="subtitle anim-2" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s20-e2">BMAD</p>
+    <p class="slide-tag anim-1" data-edit-key="s20-e0">Identikit — 4 di 5 · Fase 3 · Solutioning</p>
+    <h2 class="anim-2" data-edit-key="s20-e1">Winston — <span class="highlight-green">System Architect</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/architect_winston.jpg" alt="Ritratto illustrato di Winston, System Architect: casco da cantiere, blueprint srotolato, torre di moduli e microservizi in equilibrio.">
+      </div>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">🏗️</span>
+          <span class="ik-name">Winston</span>
+          <span class="ik-role">System Architect</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Identità</span>
+          <p class="ik-val" data-edit-key="s20-e2">Il pragmatismo di <strong>Martin Fowler</strong> e il realismo su scala cloud di <strong>Werner Vogels</strong>.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Come parla</span>
+          <p class="ik-val" data-edit-key="s20-e3">Calmo e pragmatico. Bilancia «cosa potrebbe essere» con «cosa dovrebbe essere». Risponde con trade-off, non con verdetti.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s20-e4"><li>Regola del tre prima di astrarre.</li><li>Tecnologia noiosa, per la stabilità.</li><li>La produttività degli sviluppatori è architettura.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">documenta l'architettura</span><span class="ik-chip">readiness</span></div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Identikit — Winston, System Architect", "script": "Winston. Il pragmatismo di Martin Fowler e il realismo su scala cloud di Werner Vogels. Calmo e pragmatico. Bilancia «cosa potrebbe essere» con «cosa dovrebbe essere». Risponde con trade-off, non con verdetti. I suoi principi: Regola del tre prima di astrarre. Tecnologia noiosa, per la stabilità. La produttività degli sviluppatori è architettura. Non sono aggettivi che ho scelto io: stanno scritti nel file che definisce l'agente, e sono quelli che ne guidano il comportamento a ogni risposta.", "notes": ["I campi vengono dal customize.toml dell'agente, non sono inventati", "I nomi citati nell'identità sono il gancio: Porter, Fowler, Kent Beck", "Leggere ad alta voce un principio solo, il più caratterizzante", "Massimo un minuto: sono cinque slide di fila"]}
+    </script>
+  </div>
+
+  <!-- ---- 21 · IDENTIKIT · AMELIA · SENIOR SOFTWARE ENGINEER ---- -->
+
+  <div class="slide" data-slide="21" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s21-e0">Identikit — 5 di 5 · Fase 4 · Implementazione</p>
+    <h2 class="anim-2" data-edit-key="s21-e1">Amelia — <span class="highlight-green">Senior Software Engineer</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/developer_amelia.jpg" alt="Ritratto illustrato di Amelia, Senior Software Engineer: felpa col cappuccio, cuffie, monitor pieni di codice, retino per catturare i bug.">
+      </div>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">💻</span>
+          <span class="ik-name">Amelia</span>
+          <span class="ik-role">Senior Software Engineer</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Identità</span>
+          <p class="ik-val" data-edit-key="s21-e2">Disciplinata nel TDD di <strong>Kent Beck</strong> e nella precisione del <strong>Pragmatic Programmer</strong>.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Come parla</span>
+          <p class="ik-val" data-edit-key="s21-e3">Ultra-sintetica. Parla per path di file e ID di criteri di accettazione: ogni affermazione è citabile. Zero fronzoli.</p>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s21-e4"><li>Nessun task è completo senza test che passano.</li><li>Red, green, refactor — in quest'ordine.</li><li>I task si eseguono nella sequenza in cui sono scritti.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">implementa story</span><span class="ik-chip">quick dev</span><span class="ik-chip">test E2E</span><span class="ik-chip">code review</span><span class="ik-chip">sprint plan</span><span class="ik-chip">prepara story</span><span class="ik-chip">retrospettiva</span></div>
+      </div>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Identikit — Amelia, Senior Software Engineer", "script": "Amelia. Disciplinata nel TDD di Kent Beck e nella precisione del Pragmatic Programmer. Ultra-sintetica. Parla per path di file e ID di criteri di accettazione: ogni affermazione è citabile. Zero fronzoli. I suoi principi: Nessun task è completo senza test che passano. Red, green, refactor — in quest'ordine. I task si eseguono nella sequenza in cui sono scritti. Non sono aggettivi che ho scelto io: stanno scritti nel file che definisce l'agente, e sono quelli che ne guidano il comportamento a ogni risposta.", "notes": ["I campi vengono dal customize.toml dell'agente, non sono inventati", "I nomi citati nell'identità sono il gancio: Porter, Fowler, Kent Beck", "Leggere ad alta voce un principio solo, il più caratterizzante", "Massimo un minuto: sono cinque slide di fila"]}
+    </script>
+  </div>
+
+  <!-- ---- 22 · GLI AGENTI AL LAVORO INSIEME ---- -->
+
+  <div class="slide" data-slide="22" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s22-e0">Tutti insieme</p>
+    <h2 class="anim-2" data-edit-key="s22-e1">Non cinque assistenti. Una <span class="highlight-green">catena di consegne</span>.</h2>
+    <div class="image-frame anim-3 agent-group">
+      <img src="assets/all_bmad_personas.jpg" alt="I cinque agenti BMAD nella stessa stanza: Mary con la lente, John col timone e il PRD, Sally coi wireframe, Winston col blueprint, Amelia ai monitor." class="slide-image">
+    </div>
+    <div class="chain anim-4">
+        <div class="chain-step bounce-1">
+          <span class="cs-who">Mary</span>
+          <span class="cs-art">product brief</span>
+        </div>
+        <div class="chain-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+        <div class="chain-step bounce-2">
+          <span class="cs-who">John</span>
+          <span class="cs-art">PRD + story</span>
+        </div>
+        <div class="chain-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+        <div class="chain-step bounce-3">
+          <span class="cs-who">Sally</span>
+          <span class="cs-art">spec UX</span>
+        </div>
+        <div class="chain-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+        <div class="chain-step bounce-3">
+          <span class="cs-who">Winston</span>
+          <span class="cs-art">architettura</span>
+        </div>
+        <div class="chain-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+        <div class="chain-step bounce-3">
+          <span class="cs-who">Amelia</span>
+          <span class="cs-art">codice + test</span>
+        </div>
+    </div>
+    <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s22-e2">Quello che si passano è un <strong>documento</strong>, non una conversazione. Per questo potete entrare in mezzo, correggere, e ripartire da lì.</p>
+    <script type="application/json" class="slide-notes">
+    {"title": "Gli agenti al lavoro insieme", "script": "Messi in fila, non sono cinque assistenti a cui chiedete cinque cose. Sono una catena, e quello che si passano non è una conversazione: è un documento. Mary passa il brief a John, John il PRD a Sally, Sally la spec a Winston, Winston l'architettura ad Amelia. Nessuno dei cinque tiene in testa tutto il contesto, e non serve: il contesto sta negli artefatti. È per questo che potete interrompere in mezzo, correggere un documento e ripartire da lì invece di ricominciare da capo.", "notes": ["Quello che si passano è un documento, non una conversazione", "Nessun agente tiene tutto il contesto: lo tengono gli artefatti", "Si può interrompere e ripartire da un artefatto corretto", "Chiude il blocco sugli agenti e apre quello sulle skill"]}
+    </script>
+  </div>
+
+  <!-- ---- 23 · LE SKILL BMAD ---- -->
+
+  <div class="slide" data-slide="23" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s23-e0">Skill</p>
+    <h2 class="anim-2" data-edit-key="s23-e1">L’agente è il <span class="highlight-blue">chi</span>. La skill è il <span class="highlight-green">come</span>.</h2>
+    <p class="subtitle anim-2" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s23-e2">BMAD</p>
     <div class="matrix anim-3">
       <table>
         <thead>
@@ -1769,40 +1956,40 @@ body.editing [contenteditable="true"]:focus {
         </thead>
         <tbody>
           <tr>
-            <td data-edit-key="s20-e3">Pianifica</td>
-            <td data-edit-key="s20-e4">requisiti · architettura</td>
-            <td data-edit-key="s20-e5">Frammenta</td>
-            <td data-edit-key="s20-e6">storie auto-contenute</td>
-            <td data-edit-key="s20-e7">Implementa</td>
+            <td data-edit-key="s23-e3">Pianifica</td>
+            <td data-edit-key="s23-e4">requisiti · architettura</td>
+            <td data-edit-key="s23-e5">Frammenta</td>
+            <td data-edit-key="s23-e6">storie auto-contenute</td>
+            <td data-edit-key="s23-e7">Implementa</td>
           </tr>
           <tr>
-            <td data-edit-key="s20-e8">una storia per volta</td>
-            <td data-edit-key="s20-e9">Verifica</td>
-            <td data-edit-key="s20-e10">test · review · QA</td>
-            <td data-edit-key="s20-e11">L’umano non è stato tolto dal processo. <strong>È stato spostato</strong>: dalla scrittura di ogni riga alle decisioni che contano.</td>
-            <td data-edit-key="s20-e12"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
+            <td data-edit-key="s23-e8">una storia per volta</td>
+            <td data-edit-key="s23-e9">Verifica</td>
+            <td data-edit-key="s23-e10">test · review · QA</td>
+            <td data-edit-key="s23-e11">L’umano non è stato tolto dal processo. <strong>È stato spostato</strong>: dalla scrittura di ogni riga alle decisioni che contano.</td>
+            <td data-edit-key="s23-e12"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
           </tr>
           <tr>
-            <td data-edit-key="s20-e13">[Generazione dei test]</td>
-            <td data-edit-key="s20-e14">·</td>
-            <td data-edit-key="s20-e15">·</td>
-            <td data-edit-key="s20-e16"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
-            <td data-edit-key="s20-e17"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
+            <td data-edit-key="s23-e13">[Generazione dei test]</td>
+            <td data-edit-key="s23-e14">·</td>
+            <td data-edit-key="s23-e15">·</td>
+            <td data-edit-key="s23-e16"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
+            <td data-edit-key="s23-e17"><span class="on"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></span></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s20-e18">Sostituisci righe e colonne con le skill che usi davvero: la matrice si legge in tre secondi.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s23-e18">Sostituisci righe e colonne con le skill che usi davvero: la matrice si legge in tre secondi.</p>
     <script type="application/json" class="slide-notes">
     {"title":"Le skill BMAD","script":"Distinzione semplice ma che a voce richiede un minuto: l'agente è il chi, la skill è il come. Sono capacità riutilizzabili che più ruoli possono invocare. Le scrivete una volta e valgono per tutto il team. La matrice qui sotto si legge in tre secondi: nelle righe le skill, nelle colonne i ruoli, e le intersezioni dicono chi usa cosa.","notes":["Agente = chi, skill = come","Capacità riutilizzabili invocabili da più ruoli","Si scrivono una volta e valgono per il team","Sostituire con le skill realmente in uso"]}
     </script>
   </div>
 
-  <!-- ---- 21 · IL LOOP DI SVILUPPO BMAD ---- -->
+  <!-- ---- 24 · IL LOOP DI SVILUPPO BMAD ---- -->
 
-  <div class="slide" data-slide="21" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s21-e0">La slide centrale</p>
-    <h2 class="anim-2" data-edit-key="s21-e1">Il loop di sviluppo, con i <span class="highlight-blue">checkpoint umani</span></h2>
+  <div class="slide" data-slide="24" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s24-e0">La slide centrale</p>
+    <h2 class="anim-2" data-edit-key="s24-e1">Il loop di sviluppo, con i <span class="highlight-blue">checkpoint umani</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -1815,36 +2002,36 @@ body.editing [contenteditable="true"]:focus {
       <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
         <div class="loop-center anim-4">
           <div class="loop-center-top">loop</div>
-          <div class="loop-center-main" data-edit-key="s21-e2">Un task troppo pulito non convince nessuno: scegline uno che si è sporcato per strada.</div>
+          <div class="loop-center-main" data-edit-key="s24-e2">Un task troppo pulito non convince nessuno: scegline uno che si è sporcato per strada.</div>
         </div>
       </div>
 
       <div class="loop-pos" style="left:50%;top:15%;">
         <div class="loop-node node-green bounce-1">
           <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div>
-          <div class="loop-label" data-edit-key="s21-e3">Pianifica</div>
-          <div class="loop-detail" data-edit-key="s21-e4">requisiti · architettura</div>
+          <div class="loop-label" data-edit-key="s24-e3">Pianifica</div>
+          <div class="loop-detail" data-edit-key="s24-e4">requisiti · architettura</div>
         </div>
       </div>
       <div class="loop-pos" style="left:85%;top:50%;">
         <div class="loop-node node-green bounce-2">
           <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div>
-          <div class="loop-label" data-edit-key="s21-e5">Frammenta</div>
-          <div class="loop-detail" data-edit-key="s21-e6">storie auto-contenute</div>
+          <div class="loop-label" data-edit-key="s24-e5">Frammenta</div>
+          <div class="loop-detail" data-edit-key="s24-e6">storie auto-contenute</div>
         </div>
       </div>
       <div class="loop-pos" style="left:50%;top:85%;">
         <div class="loop-node node-green bounce-3">
           <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div>
-          <div class="loop-label" data-edit-key="s21-e7">Implementa</div>
-          <div class="loop-detail" data-edit-key="s21-e8">una storia per volta</div>
+          <div class="loop-label" data-edit-key="s24-e7">Implementa</div>
+          <div class="loop-detail" data-edit-key="s24-e8">una storia per volta</div>
         </div>
       </div>
       <div class="loop-pos" style="left:15%;top:50%;">
         <div class="loop-node node-green bounce-4">
           <div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
-          <div class="loop-label" data-edit-key="s21-e9">Verifica</div>
-          <div class="loop-detail" data-edit-key="s21-e10">test · review · QA</div>
+          <div class="loop-label" data-edit-key="s24-e9">Verifica</div>
+          <div class="loop-detail" data-edit-key="s24-e10">test · review · QA</div>
         </div>
       </div>
 
@@ -1853,17 +2040,17 @@ body.editing [contenteditable="true"]:focus {
       <div class="loop-check c3" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c4" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
     </div>
-    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s21-e11">L’umano non è stato tolto dal processo. <strong>È stato spostato</strong>: dalla scrittura di ogni riga alle decisioni che contano.</p>
+    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s24-e11">L’umano non è stato tolto dal processo. <strong>È stato spostato</strong>: dalla scrittura di ogni riga alle decisioni che contano.</p>
     <script type="application/json" class="slide-notes">
     {"title":"Il loop di sviluppo BMAD","script":"Eccolo. Quattro stadi che girano in cerchio: si pianifica, si frammenta in storie, si implementa una storia per volta, si verifica. E fra uno stadio e l'altro, i quattro pallini in terracotta: i checkpoint umani. Il messaggio di questa slide è uno solo, ed è il messaggio di tutto il talk: l'umano non è stato tolto dal processo, è stato spostato. Dalla scrittura di ogni riga alle quattro decisioni che contano davvero.","notes":["Quattro stadi: pianifica, frammenta, implementa, verifica","I quattro checkpoint umani sono in terracotta, come in tutto il talk","L'umano è spostato, non rimosso","Se puoi, costruiscila in build progressive: prima il ciclo, poi i checkpoint","È la slide da fare bene se ne curi una sola"]}
     </script>
   </div>
 
-  <!-- ---- 22 · WALKTHROUGH, IL CASO ---- -->
+  <!-- ---- 25 · WALKTHROUGH, IL CASO ---- -->
 
-  <div class="slide" data-slide="22" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s22-e0">Walkthrough — 1 di 3</p>
-    <h2 class="anim-2" data-edit-key="s22-e1">Un task <span class="highlight-blue">vero</span>, dall’inizio</h2>
+  <div class="slide" data-slide="25" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s25-e0">Walkthrough — 1 di 3</p>
+    <h2 class="anim-2" data-edit-key="s25-e1">Un task <span class="highlight-blue">vero</span>, dall’inizio</h2>
     <div class="code-window anim-3">
       <div class="code-titlebar">
         <div class="code-dot red"></div>
@@ -1880,115 +2067,115 @@ body.editing [contenteditable="true"]:focus {
 <span class="comment"># reale abbastanza da avere complicazioni</span>
 </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s22-e2"><strong>Pianifica</strong> — [cosa ha prodotto l’agente] · <span style="color:var(--color-accent-700);">io ho corretto: [cosa]</span></p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s25-e2"><strong>Pianifica</strong> — [cosa ha prodotto l’agente] · <span style="color:var(--color-accent-700);">io ho corretto: [cosa]</span></p>
     <script type="application/json" class="slide-notes">
     {"title":"Walkthrough, il caso","script":"Passiamo al concreto. Questo è un task vero, e ve lo mostro come è arrivato: grezzo, non ripulito per la presentazione. L'ho scelto abbastanza piccolo da stare in tre slide, ma abbastanza reale da avere delle complicazioni, perché un esempio troppo pulito non convince nessuno di voi.","notes":["Mostrare la richiesta originale, non riscritta","Il task deve essere piccolo ma con complicazioni reali","La credibilità sta nei dettagli imperfetti","Screenshot reale meglio del testo ricomposto"]}
     </script>
   </div>
 
-  <!-- ---- 23 · WALKTHROUGH, IL LOOP IN AZIONE ---- -->
+  <!-- ---- 26 · WALKTHROUGH, IL LOOP IN AZIONE ---- -->
 
-  <div class="slide" data-slide="23" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s23-e0">Walkthrough — 2 di 3</p>
-    <h2 class="anim-2" data-edit-key="s23-e1">Il loop <span class="highlight-blue">in azione</span></h2>
+  <div class="slide" data-slide="26" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s26-e0">Walkthrough — 2 di 3</p>
+    <h2 class="anim-2" data-edit-key="s26-e1">Il loop <span class="highlight-blue">in azione</span></h2>
     <div class="status-timeline anim-3" style="max-width:900px;">
-      <div class="status-item stag-1"><div class="status-dot green"></div><div class="status-text" data-edit-key="s23-e2">__</div></div>
-      <div class="status-item stag-2"><div class="status-dot green"></div><div class="status-text" data-edit-key="s23-e3">Tempo totale</div></div>
-      <div class="status-item stag-3"><div class="status-dot yellow"></div><div class="status-text" data-edit-key="s23-e4">dalla richiesta alla pull request aperta</div></div>
-      <div class="status-item stag-4"><div class="status-dot orange"></div><div class="status-text" data-edit-key="s23-e5">__</div></div>
-      <div class="status-item stag-5"><div class="status-dot green"></div><div class="status-text" data-edit-key="s23-e6">Interventi miei</div></div>
+      <div class="status-item stag-1"><div class="status-dot green"></div><div class="status-text" data-edit-key="s26-e2">__</div></div>
+      <div class="status-item stag-2"><div class="status-dot green"></div><div class="status-text" data-edit-key="s26-e3">Tempo totale</div></div>
+      <div class="status-item stag-3"><div class="status-dot yellow"></div><div class="status-text" data-edit-key="s26-e4">dalla richiesta alla pull request aperta</div></div>
+      <div class="status-item stag-4"><div class="status-dot orange"></div><div class="status-text" data-edit-key="s26-e5">__</div></div>
+      <div class="status-item stag-5"><div class="status-dot green"></div><div class="status-text" data-edit-key="s26-e6">Interventi miei</div></div>
     </div>
     <div class="placeholder anim-4">
       <div class="ph-tag">demo dal vivo — piano B</div>
-      <p class="ph-text" data-edit-key="s23-e7">quante volte sono rientrato nel ciclo</p>
+      <p class="ph-text" data-edit-key="s26-e7">quante volte sono rientrato nel ciclo</p>
     </div>
     <script type="application/json" class="slide-notes">
     {"title":"Walkthrough, il loop in azione","script":"Questa è la parte che vale il vostro tempo, perché non la trovate nella documentazione. Per ogni stadio vi mostro due cose: cosa ha prodotto l'agente, e cosa ho corretto io. Le correzioni sono la parte interessante, perché sono i punti in cui il processo ha funzionato: qualcosa stava andando storto e c'era un posto dove accorgersene.","notes":["Per ogni stadio: output dell'agente e correzione umana","Le correzioni intercettate sono più convincenti dei successi","Demo dal vivo se possibile, screenshot come piano B","Ingrandire i frammenti importanti"]}
     </script>
   </div>
 
-  <!-- ---- 24 · WALKTHROUGH, IL RISULTATO ---- -->
+  <!-- ---- 27 · WALKTHROUGH, IL RISULTATO ---- -->
 
-  <div class="slide" data-slide="24" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s24-e0">Walkthrough — 3 di 3</p>
-    <h2 class="anim-2" data-edit-key="s24-e1">Cosa è uscito, e <span class="highlight-orange">quanto è costato</span></h2>
+  <div class="slide" data-slide="27" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s27-e0">Walkthrough — 3 di 3</p>
+    <h2 class="anim-2" data-edit-key="s27-e1">Cosa è uscito, e <span class="highlight-orange">quanto è costato</span></h2>
     <div class="stats-row anim-3">
       <div class="stat-card pop-1">
-        <div class="stat-number blue" data-edit-key="s24-e2">Asse</div>
-        <div class="stat-label" data-edit-key="s24-e3">Vibe coding</div>
-        <div class="stat-desc" data-edit-key="s24-e4">BMAD</div>
+        <div class="stat-number blue" data-edit-key="s27-e2">Asse</div>
+        <div class="stat-label" data-edit-key="s27-e3">Vibe coding</div>
+        <div class="stat-desc" data-edit-key="s27-e4">BMAD</div>
       </div>
       <div class="stat-card pop-2">
-        <div class="stat-number green" data-edit-key="s24-e5">Velocità sul prototipo</div>
-        <div class="stat-label" data-edit-key="s24-e6">vince — imbattibile</div>
-        <div class="stat-desc" data-edit-key="s24-e7">più lento: c’è un processo da percorrere</div>
+        <div class="stat-number green" data-edit-key="s27-e5">Velocità sul prototipo</div>
+        <div class="stat-label" data-edit-key="s27-e6">vince — imbattibile</div>
+        <div class="stat-desc" data-edit-key="s27-e7">più lento: c’è un processo da percorrere</div>
       </div>
       <div class="stat-card pop-3">
-        <div class="stat-number orange" data-edit-key="s24-e8">Comprensione di ciò che esce</div>
-        <div class="stat-label" data-edit-key="s24-e9">nulla per costruzione</div>
-        <div class="stat-desc" data-edit-key="s24-e10">alta: passi dagli artefatti</div>
+        <div class="stat-number orange" data-edit-key="s27-e8">Comprensione di ciò che esce</div>
+        <div class="stat-label" data-edit-key="s27-e9">nulla per costruzione</div>
+        <div class="stat-desc" data-edit-key="s27-e10">alta: passi dagli artefatti</div>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" data-edit-key="s24-e11">Tracciabilità</p>
+    <p class="subtitle anim-4 mt-16" data-edit-key="s27-e11">Tracciabilità</p>
     <script type="application/json" class="slide-notes">
     {"title":"Walkthrough, il risultato","script":"Il risultato, con i numeri. Tempo, quante volte sono rientrato nel ciclo, e la terza colonna che è quella che conta: quanto di questo risultato saprei spiegarvi adesso, a memoria, senza riaprire il codice. Questa è la misura del debito cognitivo che non ho contratto, ed è il motivo per cui il processo vale la sua rigidità. Dico anche cosa non ha funzionato, perché un talk che ammette un limite viene creduto anche sul resto.","notes":["Sostituire i trattini con i numeri reali del tuo caso","La terza metrica ricollega al debito cognitivo","Dire esplicitamente cosa non ha funzionato","L'onestà su un limite rende credibile tutto il resto"]}
     </script>
   </div>
 
-  <!-- ---- 25 · BMAD VS VIBE CODING ---- -->
+  <!-- ---- 28 · BMAD VS VIBE CODING ---- -->
 
-  <div class="slide" data-slide="25" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s25-e0">Confronto diretto</p>
-    <h2 class="anim-2" data-edit-key="s25-e1">Punto per <span class="highlight-blue">punto</span></h2>
+  <div class="slide" data-slide="28" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s28-e0">Confronto diretto</p>
+    <h2 class="anim-2" data-edit-key="s28-e1">Punto per <span class="highlight-blue">punto</span></h2>
     <div class="table-wrap anim-3">
       <table>
         <thead>
           <tr>
-            <th data-edit-key="s25-e2">nessun contesto<br>di progetto</th>
-            <th data-edit-key="s25-e3">Pianifica</th>
-            <th data-edit-key="s25-e4">da zero, ogni volta</th>
+            <th data-edit-key="s28-e2">nessun contesto<br>di progetto</th>
+            <th data-edit-key="s28-e3">Pianifica</th>
+            <th data-edit-key="s28-e4">da zero, ogni volta</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="cell-highlight" data-edit-key="s25-e5">Frammenta</td>
-            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s25-e6">da zero, ogni volta</td>
-            <td class="cell-muted" data-edit-key="s25-e7">Implementa</td>
+            <td class="cell-highlight" data-edit-key="s28-e5">Frammenta</td>
+            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s28-e6">da zero, ogni volta</td>
+            <td class="cell-muted" data-edit-key="s28-e7">Implementa</td>
           </tr>
           <tr>
-            <td class="cell-highlight" data-edit-key="s25-e8">da zero, ogni volta</td>
-            <td class="cell-muted" data-edit-key="s25-e9">Verifica</td>
-            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s25-e10">da zero, ogni volta</td>
+            <td class="cell-highlight" data-edit-key="s28-e8">da zero, ogni volta</td>
+            <td class="cell-muted" data-edit-key="s28-e9">Verifica</td>
+            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s28-e10">da zero, ogni volta</td>
           </tr>
           <tr>
-            <td class="cell-highlight" data-edit-key="s25-e11">Convenzioni del team, decisioni passate, il perché di quella scelta strana di due anni fa: <strong>niente di tutto questo sopravvive al giro precedente.</strong></td>
-            <td class="cell-muted" data-edit-key="s25-e12">la cronologia di una chat</td>
-            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s25-e13">documenti versionati</td>
+            <td class="cell-highlight" data-edit-key="s28-e11">Convenzioni del team, decisioni passate, il perché di quella scelta strana di due anni fa: <strong>niente di tutto questo sopravvive al giro precedente.</strong></td>
+            <td class="cell-muted" data-edit-key="s28-e12">la cronologia di una chat</td>
+            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s28-e13">documenti versionati</td>
           </tr>
           <tr>
-            <td class="cell-highlight" data-edit-key="s25-e14">Accountability</td>
-            <td class="cell-muted" data-edit-key="s25-e15">chi firma non ha letto</td>
-            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s25-e16">checkpoint con un nome sopra</td>
+            <td class="cell-highlight" data-edit-key="s28-e14">Accountability</td>
+            <td class="cell-muted" data-edit-key="s28-e15">chi firma non ha letto</td>
+            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s28-e16">checkpoint con un nome sopra</td>
           </tr>
           <tr>
-            <td class="cell-highlight" data-edit-key="s25-e17">Costo in token</td>
-            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s25-e18">basso</td>
-            <td class="cell-muted" data-edit-key="s25-e19">più alto: più passaggi, più contesto</td>
+            <td class="cell-highlight" data-edit-key="s28-e17">Costo in token</td>
+            <td style="color:var(--color-accent-2-800);font-weight:700;" data-edit-key="s28-e18">basso</td>
+            <td class="cell-muted" data-edit-key="s28-e19">più alto: più passaggi, più contesto</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s25-e20">Due righe su cinque le vince il vibe coding. Se ve le nascondessi, non avreste motivo di credermi sulle altre tre.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s28-e20">Due righe su cinque le vince il vibe coding. Se ve le nascondessi, non avreste motivo di credermi sulle altre tre.</p>
     <script type="application/json" class="slide-notes">
     {"title":"BMAD vs vibe coding","script":"Confronto onesto, sugli assi che contano qui dentro. E notate che due righe su cinque le vince il vibe coding: è più veloce sul prototipo e costa meno in token. Non ve lo nascondo, perché se ve lo nascondessi non avreste motivo di credermi sulle altre tre righe. La scelta non è morale, è contestuale: dipende da cosa state costruendo e da quanto a lungo dovrà vivere.","notes":["Assi: velocità, comprensione, tracciabilità, accountability, costo","Ammettere dove il vibe coding vince","Non colorare tutta la colonna BMAD di verde","La scelta dipende dal contesto e dalla vita attesa del codice"]}
     </script>
   </div>
 
-  <!-- ---- 26 · IL LIMITE CHE RESTA ---- -->
+  <!-- ---- 29 · IL LIMITE CHE RESTA ---- -->
 
-  <div class="slide" data-slide="26" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s26-e0">Il limite che resta</p>
-    <h2 class="anim-2" data-edit-key="s26-e1">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
+  <div class="slide" data-slide="29" data-chapter="4">
+    <p class="slide-tag anim-1" data-edit-key="s29-e0">Il limite che resta</p>
+    <h2 class="anim-2" data-edit-key="s29-e1">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -2000,38 +2187,38 @@ body.editing [contenteditable="true"]:focus {
       <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
         <div class="loop-hole anim-4">
           <span class="lh-mark">?</span>
-          <span class="lh-text" data-edit-key="s26-e2">File di contesto</span>
+          <span class="lh-text" data-edit-key="s29-e2">File di contesto</span>
         </div>
       </div>
-      <div class="loop-pos" style="left:50%;top:15%;"><div class="loop-node node-green bounce-1"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div><div class="loop-label" data-edit-key="s26-e3">Cresce, si contraddice, non entra nella finestra. E nessuno lo rilegge tutto.</div><div class="loop-detail" data-edit-key="s26-e4">Memoria a grafo</div></div></div>
-      <div class="loop-pos" style="left:85%;top:50%;"><div class="loop-node node-green bounce-2"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div><div class="loop-label" data-edit-key="s26-e5">Entità e <strong>relazioni</strong>. L’agente non carica tutto: raggiunge il pezzo che gli serve.</div><div class="loop-detail" data-edit-key="s26-e6">Chi qui dentro lavora con i database ha già capito la differenza: è una scansione completa contro un indice.</div></div></div>
-      <div class="loop-pos" style="left:50%;top:85%;"><div class="loop-node node-green bounce-3"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div><div class="loop-label" data-edit-key="s26-e7">Implementa</div><div class="loop-detail" data-edit-key="s26-e8">da zero, ogni volta</div></div></div>
-      <div class="loop-pos" style="left:15%;top:50%;"><div class="loop-node node-green bounce-4"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="loop-label" data-edit-key="s26-e9">Verifica</div><div class="loop-detail" data-edit-key="s26-e10">da zero, ogni volta</div></div></div>
+      <div class="loop-pos" style="left:50%;top:15%;"><div class="loop-node node-green bounce-1"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div><div class="loop-label" data-edit-key="s29-e3">Cresce, si contraddice, non entra nella finestra. E nessuno lo rilegge tutto.</div><div class="loop-detail" data-edit-key="s29-e4">Memoria a grafo</div></div></div>
+      <div class="loop-pos" style="left:85%;top:50%;"><div class="loop-node node-green bounce-2"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div><div class="loop-label" data-edit-key="s29-e5">Entità e <strong>relazioni</strong>. L’agente non carica tutto: raggiunge il pezzo che gli serve.</div><div class="loop-detail" data-edit-key="s29-e6">Chi qui dentro lavora con i database ha già capito la differenza: è una scansione completa contro un indice.</div></div></div>
+      <div class="loop-pos" style="left:50%;top:85%;"><div class="loop-node node-green bounce-3"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div><div class="loop-label" data-edit-key="s29-e7">Implementa</div><div class="loop-detail" data-edit-key="s29-e8">da zero, ogni volta</div></div></div>
+      <div class="loop-pos" style="left:15%;top:50%;"><div class="loop-node node-green bounce-4"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="loop-label" data-edit-key="s29-e9">Verifica</div><div class="loop-detail" data-edit-key="s29-e10">da zero, ogni volta</div></div></div>
           <div class="loop-check c1" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c2" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c3" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c4" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
     </div>
-    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s26-e11">Convenzioni del team, decisioni passate, il perché di quella scelta strana di due anni fa: <strong>niente di tutto questo sopravvive al giro precedente.</strong></p>
+    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s29-e11">Convenzioni del team, decisioni passate, il perché di quella scelta strana di due anni fa: <strong>niente di tutto questo sopravvive al giro precedente.</strong></p>
     <script type="application/json" class="slide-notes">
     {"title":"Il limite che resta","script":"Stesso diagramma di prima, con un buco al centro. Perché anche con tutta la struttura di BMAD, gli agenti ripartono ogni volta da zero sul contesto: le convenzioni del team, le decisioni architetturali passate, il perché di quella scelta strana fatta due anni fa. E un buon processo applicato a un contesto assente produce comunque risultati sbagliati: solo in modo più ordinato.","notes":["Riprende il diagramma della slide del loop, con un vuoto al centro","Il contesto di progetto non sopravvive fra un giro e l'altro","Processo corretto su contesto assente produce errori ordinati","Riusare un'immagine già vista rende percepibile la progressione"]}
     </script>
   </div>
 
-  <!-- ---- 27 · MEMORIA A GRAFO, L'IDEA ---- -->
+  <!-- ---- 30 · MEMORIA A GRAFO, L'IDEA ---- -->
 
-  <div class="slide" data-slide="27" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s27-e0">L’idea</p>
-    <h2 class="anim-2" data-edit-key="s27-e1">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
+  <div class="slide" data-slide="30" data-chapter="4">
+    <p class="slide-tag anim-1" data-edit-key="s30-e0">L’idea</p>
+    <h2 class="anim-2" data-edit-key="s30-e1">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
     <div class="duo anim-3">
       <div class="duo-panel calm slide-l">
-        <div class="duo-label" data-edit-key="s27-e2">Graphify</div>
+        <div class="duo-label" data-edit-key="s30-e2">Graphify</div>
         <div class="wall-text">## Convenzioni
 Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il client HTTP direttamente dai controller. I nomi dei file in kebab-case. Eccezione: i moduli legacy sotto src/legacy usano camelCase, non toccarli. Le migrazioni vanno numerate progressivamente. ADR-014 impone la virgola decimale nei report. Vedi anche ADR-021 che parzialmente supera ADR-014 per i tracciati esteri. Il servizio ordini NON deve importare da fatturazione: usare l evento. Aggiornato il 3/2024 da... nota: la regola sopra non vale piu dopo il refactor di giugno, ma la lasciamo per riferimento storico. I test di integrazione girano solo in CI. Per i test locali usare i mock in test/fixtures tranne per il modulo pagamenti dove servono i contratti reali...</div>
-        <p class="duo-note" data-edit-key="s27-e3">[Cosa fa in una riga. Come si integra nel tuo loop. Cosa ti ha dato che il file di contesto non dava.]</p>
+        <p class="duo-note" data-edit-key="s30-e3">[Cosa fa in una riga. Come si integra nel tuo loop. Cosa ti ha dato che il file di contesto non dava.]</p>
       </div>
       <div class="duo-panel accent slide-r">
-        <div class="duo-label" data-edit-key="s27-e4">maturità: [stato]</div>
+        <div class="duo-label" data-edit-key="s30-e4">maturità: [stato]</div>
         <svg class="graph-mini" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet">
           <g class="gm-edge">
             <path d="M150 100 L70 50"></path><path d="M150 100 L240 55"></path><path d="M150 100 L80 160"></path>
@@ -2048,55 +2235,55 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
           <text x="80" y="164">test</text>
           <text x="235" y="159">eventi</text>
         </svg>
-        <p class="duo-note" data-edit-key="s27-e5">llm-wiki</p>
+        <p class="duo-note" data-edit-key="s30-e5">llm-wiki</p>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s27-e6">Documentazione del progetto generata per essere letta da un modello, rigenerabile dal codice così non invecchia.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s30-e6">Documentazione del progetto generata per essere letta da un modello, rigenerabile dal codice così non invecchia.</p>
     <script type="application/json" class="slide-notes">
     {"title":"Memoria a grafo, l'idea","script":"Come si trasferisce il contesto a un agente? La risposta più ovvia è un file di convenzioni. E funziona, finché è corto. Poi cresce, inizia a contraddirsi, e non entra più nella finestra di contesto. Un grafo invece ha entità e relazioni, ed è navigabile: l'agente non carica tutto, raggiunge il pezzo che gli serve seguendo gli archi. Per chi qui dentro lavora con i database la differenza è immediata: è una scansione completa contro un indice.","notes":["Il file di contesto cresce, si contraddice, non entra nella finestra","Il grafo ha entità e relazioni ed è navigabile","L'agente raggiunge il pezzo che serve invece di caricare tutto","Analogia con scansione completa contro indice","Il colore dei nodi è lo stesso usato per gli agenti dall'inizio"]}
     </script>
   </div>
 
-  <!-- ---- 28 · GLI STRUMENTI ---- -->
+  <!-- ---- 31 · GLI STRUMENTI ---- -->
 
-  <div class="slide" data-slide="28" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s28-e0">Strumenti</p>
-    <h2 class="anim-2" data-edit-key="s28-e1">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
+  <div class="slide" data-slide="31" data-chapter="4">
+    <p class="slide-tag anim-1" data-edit-key="s31-e0">Strumenti</p>
+    <h2 class="anim-2" data-edit-key="s31-e1">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
     <div class="tri-grid anim-3">
       <div class="tri-card bounce-1">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4"></path><path d="m15.4 6.5-6.8 4"></path></svg></div>
-        <div class="tc-title" data-edit-key="s28-e2">memoria<br>a grafo</div>
-        <div class="tc-desc" data-edit-key="s28-e3">Pianifica</div>
-        <div class="tc-foot" data-edit-key="s28-e4">legge vincoli e ADR</div>
+        <div class="tc-title" data-edit-key="s31-e2">memoria<br>a grafo</div>
+        <div class="tc-desc" data-edit-key="s31-e3">Pianifica</div>
+        <div class="tc-foot" data-edit-key="s31-e4">legge vincoli e ADR</div>
       </div>
       <div class="tri-card bounce-2">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg></div>
-        <div class="tc-title" data-edit-key="s28-e5">Frammenta</div>
-        <div class="tc-desc" data-edit-key="s28-e6">legge le dipendenze</div>
-        <div class="tc-foot" data-edit-key="s28-e7">Implementa</div>
+        <div class="tc-title" data-edit-key="s31-e5">Frammenta</div>
+        <div class="tc-desc" data-edit-key="s31-e6">legge le dipendenze</div>
+        <div class="tc-foot" data-edit-key="s31-e7">Implementa</div>
       </div>
       <div class="tri-card bounce-3">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect></svg></div>
-        <div class="tc-title" data-edit-key="s28-e8">legge le convenzioni</div>
-        <div class="tc-desc" data-edit-key="s28-e9">Verifica</div>
-        <div class="tc-foot" data-edit-key="s28-e10">scrive cosa ha imparato</div>
+        <div class="tc-title" data-edit-key="s31-e8">legge le convenzioni</div>
+        <div class="tc-desc" data-edit-key="s31-e9">Verifica</div>
+        <div class="tc-foot" data-edit-key="s31-e10">scrive cosa ha imparato</div>
       </div>
     </div>
     <div class="human-check anim-4">
       <span class="hc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m12 2 2.6 6.6L21 10l-5 4.5 1.4 6.5L12 17.7 6.6 21 8 14.5 3 10l6.4-1.4z"></path></svg></span>
-      <span class="hc-label" data-edit-key="s28-e11">Tre stadi leggono, uno scrive. <strong>Il grafo si alimenta dal lavoro che stai già facendo</strong> — se sembrasse un secondo lavoro di documentazione, in azienda non lo adotterebbe nessuno.</span>
-      <span class="hc-text" data-edit-key="s28-e12">Partirei da <strong>[X]</strong>, perché [motivo in mezza riga].</span>
+      <span class="hc-label" data-edit-key="s31-e11">Tre stadi leggono, uno scrive. <strong>Il grafo si alimenta dal lavoro che stai già facendo</strong> — se sembrasse un secondo lavoro di documentazione, in azienda non lo adotterebbe nessuno.</span>
+      <span class="hc-text" data-edit-key="s31-e12">Partirei da <strong>[X]</strong>, perché [motivo in mezza riga].</span>
     </div>
     <script type="application/json" class="slide-notes">
     {"title":"Gli strumenti","script":"Tre opzioni, con gli stessi campi per tutte e tre così le confrontate a colpo d'occhio. Una precisazione onesta prima che li proviate: sono strumenti giovani, e la maturità è quella che vedete indicata. Se dovessi iniziare oggi partirei da uno in particolare, e vi dico anche perché.","notes":["Stessi campi per ogni strumento: cosa fa, come si integra, maturità","Dire chiaramente che sono progetti giovani","Chiudere con una raccomandazione esplicita","La frase se iniziassi oggi è quella che la gente annota"]}
     </script>
   </div>
 
-  <!-- ---- 29 · INTEGRAZIONE NEL LOOP ---- -->
+  <!-- ---- 32 · INTEGRAZIONE NEL LOOP ---- -->
 
-  <div class="slide" data-slide="29" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s29-e0">Integrazione</p>
-    <h2 class="anim-2" data-edit-key="s29-e1">Il buco, <span class="highlight-green">riempito</span></h2>
+  <div class="slide" data-slide="32" data-chapter="4">
+    <p class="slide-tag anim-1" data-edit-key="s32-e0">Integrazione</p>
+    <h2 class="anim-2" data-edit-key="s32-e1">Il buco, <span class="highlight-green">riempito</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -2108,76 +2295,77 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
       <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
         <div class="loop-fill anim-4">
           <span class="lf-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4"></path><path d="m15.4 6.5-6.8 4"></path></svg></span>
-          <span class="lf-text" data-edit-key="s29-e2">Il problema non è l’AI. È <em>l’assenza di processo</em>.</span>
+          <span class="lf-text" data-edit-key="s32-e2">Il problema non è l’AI. È <em>l’assenza di processo</em>.</span>
         </div>
       </div>
-      <div class="loop-pos" style="left:50%;top:15%;"><div class="loop-node node-green bounce-1"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div><div class="loop-label" data-edit-key="s29-e3">Il debito cognitivo è <em>invisibile</em> finché non serve. Poi è tardi.</div><div class="loop-detail" data-edit-key="s29-e4">Struttura e contesto sono <em>due problemi distinti</em>. Servono entrambi.</div></div></div>
-      <div class="loop-pos" style="left:85%;top:50%;"><div class="loop-node node-green bounce-2"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div><div class="loop-label" data-edit-key="s29-e5">Si può partire in piccolo: <em>un checkpoint</em> è già meglio di zero.</div><div class="loop-detail" data-edit-key="s29-e6">legge le dipendenze</div></div></div>
-      <div class="loop-pos" style="left:50%;top:85%;"><div class="loop-node node-green bounce-3"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div><div class="loop-label" data-edit-key="s29-e7">Implementa</div><div class="loop-detail" data-edit-key="s29-e8">legge le convenzioni</div></div></div>
-      <div class="loop-pos" style="left:15%;top:50%;"><div class="loop-node node-green bounce-4"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="loop-label" data-edit-key="s29-e9">Verifica</div><div class="loop-detail" data-edit-key="s29-e10">scrive cosa ha imparato</div></div></div>
+      <div class="loop-pos" style="left:50%;top:15%;"><div class="loop-node node-green bounce-1"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div><div class="loop-label" data-edit-key="s32-e3">Il debito cognitivo è <em>invisibile</em> finché non serve. Poi è tardi.</div><div class="loop-detail" data-edit-key="s32-e4">Struttura e contesto sono <em>due problemi distinti</em>. Servono entrambi.</div></div></div>
+      <div class="loop-pos" style="left:85%;top:50%;"><div class="loop-node node-green bounce-2"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div><div class="loop-label" data-edit-key="s32-e5">Si può partire in piccolo: <em>un checkpoint</em> è già meglio di zero.</div><div class="loop-detail" data-edit-key="s32-e6">legge le dipendenze</div></div></div>
+      <div class="loop-pos" style="left:50%;top:85%;"><div class="loop-node node-green bounce-3"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div><div class="loop-label" data-edit-key="s32-e7">Implementa</div><div class="loop-detail" data-edit-key="s32-e8">legge le convenzioni</div></div></div>
+      <div class="loop-pos" style="left:15%;top:50%;"><div class="loop-node node-green bounce-4"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="loop-label" data-edit-key="s32-e9">Verifica</div><div class="loop-detail" data-edit-key="s32-e10">scrive cosa ha imparato</div></div></div>
           <div class="loop-check c1" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c2" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c3" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
       <div class="loop-check c4" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
     </div>
-    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s29-e11">Tre stadi leggono, uno scrive. <strong>Il grafo si alimenta dal lavoro che stai già facendo</strong> — se sembrasse un secondo lavoro di documentazione, in azienda non lo adotterebbe nessuno.</p>
+    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s32-e11">Tre stadi leggono, uno scrive. <strong>Il grafo si alimenta dal lavoro che stai già facendo</strong> — se sembrasse un secondo lavoro di documentazione, in azienda non lo adotterebbe nessuno.</p>
     <script type="application/json" class="slide-notes">
     {"title":"Integrazione nel loop","script":"Stesso diagramma, buco riempito. E la parte pratica: chi legge e chi scrive. Tre stadi leggono dal grafo, uno solo ci scrive dentro, alla fine del giro, quando ha imparato qualcosa. Questo è il punto che rende la cosa sostenibile: il grafo si alimenta dal lavoro che state già facendo. Se sembrasse un secondo lavoro di documentazione, in azienda non lo adotterebbe nessuno, e avrebbero ragione.","notes":["Chi legge dal grafo e chi ci scrive","L'aggiornamento avviene a fine giro, non come attività separata","Il grafo si alimenta dal lavoro già in corso","Chiude visivamente l'argomentazione riprendendo il diagramma noto"]}
     </script>
   </div>
 
-  <!-- ---- 30 · RICAPITOLANDO ---- -->
+  <!-- ---- 33 · RICAPITOLANDO ---- -->
 
-  <div class="slide" data-slide="30" data-chapter="5">
+  <div class="slide" data-slide="33" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:20%;right:5%;"></div>
-    <p class="slide-tag anim-1" data-edit-key="s30-e0">Da portare a casa</p>
-    <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;" data-edit-key="s30-e1">Quattro cose</h2>
+    <p class="slide-tag anim-1" data-edit-key="s33-e0">Da portare a casa</p>
+    <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;" data-edit-key="s33-e1">Quattro cose</h2>
     <div class="takeaways anim-3">
-      <div class="takeaway"><span class="tw-num">01</span><span class="tw-text" data-edit-key="s30-e2">●</span></div>
-      <div class="takeaway"><span class="tw-num">02</span><span class="tw-text" data-edit-key="s30-e3">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
-      <div class="takeaway"><span class="tw-num">03</span><span class="tw-text" data-edit-key="s30-e4">●</span></div>
-      <div class="takeaway"><span class="tw-num">04</span><span class="tw-text" data-edit-key="s30-e5">Documentazione BMAD: [link]</span></div>
+      <div class="takeaway"><span class="tw-num">01</span><span class="tw-text" data-edit-key="s33-e2">●</span></div>
+      <div class="takeaway"><span class="tw-num">02</span><span class="tw-text" data-edit-key="s33-e3">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
+      <div class="takeaway"><span class="tw-num">03</span><span class="tw-text" data-edit-key="s33-e4">●</span></div>
+      <div class="takeaway"><span class="tw-num">04</span><span class="tw-text" data-edit-key="s33-e5">Documentazione BMAD: [link]</span></div>
     </div>
     <script type="application/json" class="slide-notes">
     {"title":"Ricapitolando","script":"Quattro cose. Il problema non è l'AI, è l'assenza di processo. Il debito cognitivo è invisibile finché non serve, e quando serve è tardi. Struttura e contesto sono due problemi distinti e servono entrambi: BMAD risolve il primo, la memoria a grafo il secondo. E soprattutto: si può partire in piccolo. Un checkpoint umano messo nel punto giusto è già molto meglio di zero.","notes":["Il problema è l'assenza di processo, non lo strumento","Il debito cognitivo è invisibile fino al momento sbagliato","Struttura e contesto: due problemi distinti, entrambi necessari","Si può iniziare in piccolo","Lasciare questa slide proiettata durante il Q&A"]}
     </script>
   </div>
 
-  <!-- ---- 31 · RISORSE E PROSSIMI PASSI ---- -->
+  <!-- ---- 34 · RISORSE E PROSSIMI PASSI ---- -->
 
-  <div class="slide" data-slide="31" data-chapter="5">
+  <div class="slide" data-slide="34" data-chapter="5">
     <div class="glow-blob glow-green" style="bottom:15%;left:15%;"></div>
-    <h2 class="anim-1" data-edit-key="s31-e0">Il primo passo, piccolo</h2>
+    <h2 class="anim-1" data-edit-key="s34-e0">Il primo passo, piccolo</h2>
     <div class="cta-box anim-3">
-      <p style="font-size:clamp(13px,1.3vw,17px);font-weight:700;color:var(--color-neutral-700);" data-edit-key="s31-e1">[nome] · [contatto interno] · [link alle slide]</p>
+      <p style="font-size:clamp(13px,1.3vw,17px);font-weight:700;color:var(--color-neutral-700);" data-edit-key="s34-e1">[nome] · [contatto interno] · [link alle slide]</p>
       <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px;font-size:clamp(12px,1.2vw,16px);text-align:left;">
-        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s31-e2">●</span><span data-edit-key="s31-e3">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
-        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-2-700);" data-edit-key="s31-e4">●</span><span data-edit-key="s31-e5">Documentazione BMAD: [link]</span></div>
-        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-600);" data-edit-key="s31-e6">●</span><span data-edit-key="s31-e7">Graphify e llm-wiki: [link]</span></div>
-        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s31-e8">●</span><span data-edit-key="s31-e9">Queste slide e gli esempi: [link]</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s34-e2">●</span><span data-edit-key="s34-e3">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-2-700);" data-edit-key="s34-e4">●</span><span data-edit-key="s34-e5">Documentazione BMAD: [link]</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-600);" data-edit-key="s34-e6">●</span><span data-edit-key="s34-e7">Graphify e llm-wiki: [link]</span></div>
+        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s34-e8">●</span><span data-edit-key="s34-e9">Queste slide e gli esempi: [link]</span></div>
       </div>
     </div>
     <div class="placeholder anim-4" style="max-width:520px;">
       <div class="ph-tag">QR code</div>
-      <p class="ph-text" data-edit-key="s31-e10">Nessuno trascrive un URL da una slide. Metti un QR e il tuo contatto interno: se sei disponibile a fare da riferimento per chi vuole provare, <strong>dillo qui</strong>.</p>
+      <p class="ph-text" data-edit-key="s34-e10">Nessuno trascrive un URL da una slide. Metti un QR e il tuo contatto interno: se sei disponibile a fare da riferimento per chi vuole provare, <strong>dillo qui</strong>.</p>
     </div>
     <script type="application/json" class="slide-notes">
     {"title":"Risorse e prossimi passi","script":"Se volete provare, non partite dal framework intero. Prendete un task della prossima sprint e metteteci un solo checkpoint umano nel punto in cui oggi accettate senza guardare. Quello è già l'ottanta per cento del beneficio. I link li trovate qui, e io sono a disposizione internamente per chi vuole provarci.","notes":["Il primo passo deve essere piccolo e concreto","Link a documentazione BMAD e agli strumenti di memoria","QR code: nessuno trascrive un URL","Offrire disponibilità come riferimento interno"]}
     </script>
   </div>
 
-  <!-- ---- 32 · DOMANDE ---- -->
+  <!-- ---- 35 · DOMANDE ---- -->
 
-  <div class="slide" data-slide="32" data-chapter="5">
+  <div class="slide" data-slide="35" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:30%;left:30%;"></div>
     <div class="glow-blob glow-green" style="bottom:20%;right:20%;"></div>
-    <h1 class="anim-2" data-edit-key="s32-e0">Domande</h1>
+    <h1 class="anim-2" data-edit-key="s35-e0">Domande</h1>
     <div class="rainbow-line anim-3"></div>
-    <p class="subtitle anim-4" data-edit-key="s32-e1">[nome] · [contatto interno] · [link alle slide]</p>
+    <p class="subtitle anim-4" data-edit-key="s35-e1">[nome] · [contatto interno] · [link alle slide]</p>
     <script type="application/json" class="slide-notes">
     {"title":"Domande","script":"Grazie. Sono qui per le domande.","notes":["Tenere proiettata la slide del riepilogo o quella del loop, non questa vuota","Tre domande che arriveranno di sicuro: quanto costa in token, come si gestisce la sicurezza e il codice che esce dall'azienda, quanto tempo serve per impararlo","Avere le risposte pronte cambia la percezione di tutto il talk","Sulla sicurezza: sapere in anticipo la policy aziendale e citarla"]}
     </script>
   </div>
+
 
 
 </div>
