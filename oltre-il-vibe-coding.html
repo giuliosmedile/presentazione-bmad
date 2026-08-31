@@ -1293,6 +1293,16 @@ body.editing [contenteditable="true"]:focus {
   font-family: var(--font-mono); font-size: clamp(9px, 0.85vw, 12px);
   color: var(--color-accent-700); margin-top: auto; padding-top: 7px;
 }
+
+.ik-does {
+  list-style: none; margin: 3px 0 0; padding: 0;
+  font-size: clamp(10px, 1vw, 13.5px); line-height: 1.4;
+}
+.ik-does li { padding-left: 13px; position: relative; }
+.ik-does li::before {
+  content: ""; position: absolute; left: 3px; top: 0.56em;
+  width: 4px; height: 4px; border-radius: 50%; background: var(--color-accent-2-600);
+}
 </style>
 </head>
 <body class="">
@@ -1719,137 +1729,11 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 16 · IDENTIKIT · MARY · BUSINESS ANALYST ---- -->
+  <!-- ---- 16 · IDENTIKIT · WINSTON · SYSTEM ARCHITECT ---- -->
 
   <div class="slide" data-slide="16" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s16-e0">Deep dive — 1 di 4</p>
-    <h2 class="anim-2" data-edit-key="s16-e1">Mary — business analyst</h2>
-    <div class="idkit anim-3">
-      <div class="idkit-photo bounce-1">
-        <img src="assets/analyst_mary.jpg" alt="Ritratto illustrato di Mary, Business Analyst: impermeabile da detective, lente d'ingrandimento, megafono con la scritta user voice.">
-      </div>
-      <div class="idkit-card bounce-2">
-        <div class="ik-head">
-          <span class="ik-icon">📊</span>
-          <span class="ik-name">Mary</span>
-          <span class="ik-role">Business Analyst</span>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Cosa fa</span>
-          <p class="ik-val" data-edit-key="s16-e2">Porta un'idea vaga fino a un brief difendibile: ricerca di mercato, analisi competitiva, deep dive sul dominio. Insiste finché il problema non è definito.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Identità e stile</span>
-          <p class="ik-val" data-edit-key="s16-e3">Il rigore di <strong>Michael Porter</strong>, la disciplina della Piramide di <strong>Barbara Minto</strong>. L'eccitazione di chi cerca un tesoro quando emerge un pattern, la struttura di un memo McKinsey quando lo scrive.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Principi</span>
-          <ul class="ik-principles" data-edit-key="s16-e4"><li>Ogni scoperta poggia su prove verificabili.</li><li>I requisiti si enunciano con precisione assoluta.</li><li>Ogni voce degli stakeholder è rappresentata.</li></ul>
-        </div>
-        <div class="ik-chips"><span class="ik-chip">brainstorming</span><span class="ik-chip">ricerca di mercato</span><span class="ik-chip">dominio</span><span class="ik-chip">fattibilità tecnica</span><span class="ik-chip">product brief</span><span class="ik-chip">PRFAQ</span><span class="ik-chip">documenta progetto</span></div>
-      </div>
-    </div>
-    <div class="ik-example anim-4">
-      <span class="ike-label">Esempio</span>
-      <p class="ike-say" data-edit-key="s16-e5">«Mary, i clienti chiedono un'area riservata. Non so se serva davvero, né a chi.»</p>
-      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">MR + CB</span>
-      <span class="ike-out" data-edit-key="s16-e6">product-brief.md — problema, utenti, alternative scartate</span>
-    </div>
-    <script type="application/json" class="slide-notes">
-    {"title": "Identikit — Mary, Business Analyst", "script": "Mary. Porta un'idea vaga fino a un brief difendibile: ricerca di mercato, analisi competitiva, deep dive sul dominio. Insiste finché il problema non è definito. I campi non li ho scelti io: identità, stile e principi stanno scritti nel file che definisce l'agente, ed è quello che ne guida il comportamento a ogni risposta. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro.", "notes": ["I campi vengono dal customize.toml dell'agente", "Il gancio sono i nomi nell'identità: Il rigore di Michael Porter, la disciplina della Piramide di Barbara Minto.", "Leggere ad alta voce un principio solo, il più caratterizzante", "L'esempio in fondo è la cosa che il pubblico ricorda: dillo a voce", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
-    </script>
-  </div>
-
-  <!-- ---- 17 · IDENTIKIT · JOHN · PRODUCT MANAGER ---- -->
-
-  <div class="slide" data-slide="17" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s17-e0">Deep dive — 2 di 4</p>
-    <h2 class="anim-2" data-edit-key="s17-e1">John —<span class="highlight-blue">&nbsp;product manager</span></h2>
-    <div class="idkit anim-3">
-      <div class="idkit-photo bounce-1">
-        <img src="assets/pm_john.jpg" alt="Ritratto illustrato di John, Product Manager: cappello da capitano, timone con bussola, un PRD srotolato, blocchi Epic e User Story.">
-      </div>
-      <div class="idkit-card bounce-2">
-        <div class="ik-head">
-          <span class="ik-icon">📋</span>
-          <span class="ik-name">John</span>
-          <span class="ik-role">Product Manager</span>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Cosa fa</span>
-          <p class="ik-val" data-edit-key="s17-e2">Trasforma il brief in un PRD eseguibile: requisiti, epiche, story con criteri di accettazione. E soprattutto scrive cosa <em>non</em> si fa.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Identità e stile</span>
-          <p class="ik-val" data-edit-key="s17-e3">Ragiona come <strong>Marty Cagan</strong> e <strong>Teresa Torres</strong>. Scrive col six-pager di <strong>Bezos</strong>. Il «perché?» insistente di un detective. Diretto, tagliente sui dati.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Principi</span>
-          <ul class="ik-principles" data-edit-key="s17-e4"><li>I PRD nascono dalle interviste, non dal riempire un template.</li><li>Rilascia la cosa più piccola che valida l'ipotesi.</li><li>Prima il valore per l'utente; la fattibilità è un vincolo.</li></ul>
-        </div>
-        <div class="ik-chips"><span class="ik-chip">crea PRD</span><span class="ik-chip">valida PRD</span><span class="ik-chip">modifica PRD</span><span class="ik-chip">epiche e story</span><span class="ik-chip">readiness</span><span class="ik-chip">correggi rotta</span></div>
-      </div>
-    </div>
-    <div class="ik-example anim-4">
-      <span class="ike-label">Esempio</span>
-      <p class="ike-say" data-edit-key="s17-e5">«John, dal brief tira fuori il PRD. Al primo rilascio niente SSO, decidiamo dopo.»</p>
-      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CP + CE</span>
-      <span class="ike-out" data-edit-key="s17-e6">prd.md + la lista di epiche e story</span>
-    </div>
-    <script type="application/json" class="slide-notes">
-    {"title": "Identikit — John, Product Manager", "script": "John. Trasforma il brief in un PRD eseguibile: requisiti, epiche, story con criteri di accettazione. E soprattutto scrive cosa non si fa. I campi non li ho scelti io: identità, stile e principi stanno scritti nel file che definisce l'agente, ed è quello che ne guida il comportamento a ogni risposta. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro.", "notes": ["I campi vengono dal customize.toml dell'agente", "Il gancio sono i nomi nell'identità: Ragiona come Marty Cagan e Teresa Torres. Scrive col six-pager di Bezos.", "Leggere ad alta voce un principio solo, il più caratterizzante", "L'esempio in fondo è la cosa che il pubblico ricorda: dillo a voce", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
-    </script>
-  </div>
-
-  <!-- ---- 18 · IDENTIKIT · SALLY · UX DESIGNER ---- -->
-
-  <div class="slide" data-slide="18" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s18-e0">Deep dive — 3 di 4</p>
-    <h2 class="anim-2" data-edit-key="s18-e1">Sally — <span class="highlight-green">UX Designer</span></h2>
-    <div class="idkit anim-3">
-      <div class="idkit-photo bounce-1">
-        <img src="assets/ux_sally.jpg" alt="Ritratto illustrato di Sally, UX Designer: basco da artista, wireframe sospesi, ventaglio Pantone, nuvola user experience.">
-      </div>
-      <div class="idkit-card bounce-2">
-        <div class="ik-head">
-          <span class="ik-icon">🎨</span>
-          <span class="ik-name">Sally</span>
-          <span class="ik-role">UX Designer</span>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Cosa fa</span>
-          <p class="ik-val" data-edit-key="s18-e2">Traduce i requisiti in schermate: flussi, stati vuoti, errori, accessibilità. La sua spec vincola sia l'architettura sia il codice.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Identità e stile</span>
-          <p class="ik-val" data-edit-key="s18-e3">Radicata in <strong>Don Norman</strong> e nella disciplina delle persona di <strong>Alan Cooper</strong>. Dipinge con le parole. Storie d'uso che ti fanno <em>sentire</em> il problema.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Principi</span>
-          <ul class="ik-principles" data-edit-key="s18-e4"><li>Ogni decisione serve un bisogno reale dell'utente.</li><li>Parti semplice, evolvi attraverso il feedback.</li><li>Informata dai dati, ma sempre creativa.</li></ul>
-        </div>
-        <div class="ik-chips"><span class="ik-chip">progetta la UX</span></div>
-      </div>
-    </div>
-    <div class="ik-example anim-4">
-      <span class="ike-label">Esempio</span>
-      <p class="ike-say" data-edit-key="s18-e5">«Sally, il PRD dice «l'utente recupera la password». Fammi vedere il flusso intero, errori compresi.»</p>
-      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CU</span>
-      <span class="ike-out" data-edit-key="s18-e6">spec UX — flussi, stati, componenti</span>
-    </div>
-    <script type="application/json" class="slide-notes">
-    {"title": "Identikit — Sally, UX Designer", "script": "Sally. Traduce i requisiti in schermate: flussi, stati vuoti, errori, accessibilità. La sua spec vincola sia l'architettura sia il codice. I campi non li ho scelti io: identità, stile e principi stanno scritti nel file che definisce l'agente, ed è quello che ne guida il comportamento a ogni risposta. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro.", "notes": ["I campi vengono dal customize.toml dell'agente", "Il gancio sono i nomi nell'identità: Radicata in Don Norman e nella disciplina delle persona di Alan Cooper.", "Leggere ad alta voce un principio solo, il più caratterizzante", "L'esempio in fondo è la cosa che il pubblico ricorda: dillo a voce", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
-    </script>
-  </div>
-
-  <!-- ---- 19 · IDENTIKIT · WINSTON · SYSTEM ARCHITECT ---- -->
-
-  <div class="slide" data-slide="19" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s19-e0">Deep dive — 4 di 4</p>
-    <h2 class="anim-2" data-edit-key="s19-e1">Winston - <span class="highlight-green">Software Architect</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s16-e0">Identikit — 1 di 5 · Fase 3 · Solutioning</p>
+    <h2 class="anim-2" data-edit-key="s16-e1">Winston — <span class="highlight-green">System Architect</span></h2>
     <div class="idkit anim-3">
       <div class="idkit-photo bounce-1">
         <img src="assets/architect_winston.jpg" alt="Ritratto illustrato di Winston, System Architect: casco da cantiere, blueprint srotolato, torre di moduli e microservizi in equilibrio.">
@@ -1862,36 +1746,146 @@ body.editing [contenteditable="true"]:focus {
         </div>
         <div class="ik-row">
           <span class="ik-label">Cosa fa</span>
-          <p class="ik-val" data-edit-key="s19-e2">Sceglie lo stack e disegna i confini: moduli, contratti, dati, test. Ogni decisione esce con il suo trade-off scritto accanto.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Identità e stile</span>
-          <p class="ik-val" data-edit-key="s19-e3">Il pragmatismo di <strong>Martin Fowler</strong>, il realismo cloud di <strong>Werner Vogels</strong>. Calmo e pragmatico. Risponde con trade-off, non con verdetti.</p>
+          <ul class="ik-does" data-edit-key="s16-e2"><li>Definisce struttura tecnica, stack e infrastruttura.</li><li>Progetta l'Architecture Spine: scalabilità e robustezza.</li><li>Formalizza pattern distribuiti e specifiche delle API.</li><li>Verifica che gli artefatti di piano siano pronti per il codice.</li><li>Bilancia eleganza architetturale, vincoli pratici e valore di business.</li></ul>
         </div>
         <div class="ik-row">
           <span class="ik-label">Principi</span>
-          <ul class="ik-principles" data-edit-key="s19-e4"><li>Regola del tre prima di astrarre.</li><li>Tecnologia noiosa, per la stabilità.</li><li>La produttività degli sviluppatori è architettura.</li></ul>
+          <ul class="ik-principles" data-edit-key="s16-e3"><li>Regola del tre prima di astrarre.</li><li>Tecnologia noiosa, per la stabilità.</li><li>La produttività degli sviluppatori è architettura.</li></ul>
         </div>
         <div class="ik-chips"><span class="ik-chip">documenta l'architettura</span><span class="ik-chip">readiness</span></div>
       </div>
     </div>
     <div class="ik-example anim-4">
       <span class="ike-label">Esempio</span>
-      <p class="ike-say" data-edit-key="s19-e5">«Winston, PRD e UX sono pronti. Ci serve davvero un servizio separato per le notifiche?»</p>
+      <p class="ike-say" data-edit-key="s16-e4">«Winston, PRD e UX sono pronti. Ci serve davvero un servizio separato per le notifiche?»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
       <span class="ike-codes">CA + IR</span>
-      <span class="ike-out" data-edit-key="s19-e6">decisioni tecniche, con le alternative scartate e il perché</span>
+      <span class="ike-out" data-edit-key="s16-e5">decisioni tecniche, con le alternative scartate e il perché</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Identikit — Winston, System Architect", "script": "Winston. Sceglie lo stack e disegna i confini: moduli, contratti, dati, test. Ogni decisione esce con il suo trade-off scritto accanto. I campi non li ho scelti io: identità, stile e principi stanno scritti nel file che definisce l'agente, ed è quello che ne guida il comportamento a ogni risposta. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro.", "notes": ["I campi vengono dal customize.toml dell'agente", "Il gancio sono i nomi nell'identità: Il pragmatismo di Martin Fowler, il realismo cloud di Werner Vogels.", "Leggere ad alta voce un principio solo, il più caratterizzante", "L'esempio in fondo è la cosa che il pubblico ricorda: dillo a voce", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
+    {"title": "Identikit — Winston, System Architect", "script": "Winston, system architect. Definisce struttura tecnica, stack e infrastruttura. Progetta l'Architecture Spine: scalabilità e robustezza. Formalizza pattern distribuiti e specifiche delle API. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro. Se avete un minuto in più, la cosa che colpisce è chi ha in testa: Il pragmatismo di Martin Fowler e il realismo cloud di Werner Vogels. Calmo: risponde con trade-off, non con verdetti.", "notes": ["Le cinque righe di «cosa fa» sono il cuore: leggine due, non tutte", "Da dire a voce se c'è tempo — Il pragmatismo di Martin Fowler e il realismo cloud di Werner Vogels. Calmo: risponde con trade-off, non con verdetti.", "I principi vengono dal customize.toml dell'agente, non sono inventati", "L'esempio in fondo è la cosa che il pubblico ricorda", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
+    </script>
+  </div>
+
+  <!-- ---- 17 · IDENTIKIT · JOHN · PRODUCT MANAGER ---- -->
+
+  <div class="slide" data-slide="17" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s17-e0">Identikit — 2 di 5 · Fase 2 · Pianificazione</p>
+    <h2 class="anim-2" data-edit-key="s17-e1">John — <span class="highlight-blue">Product Manager</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/pm_john.jpg" alt="Ritratto illustrato di John, Product Manager: cappello da capitano, timone con bussola, un PRD srotolato, blocchi Epic e User Story.">
+      </div>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">📋</span>
+          <span class="ik-name">John</span>
+          <span class="ik-role">Product Manager</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Cosa fa</span>
+          <ul class="ik-does" data-edit-key="s17-e2"><li>Trasforma il Product Brief in un piano operativo.</li><li>Crea, aggiorna e valida il PRD.</li><li>Scompone i requisiti in Epic e User Story.</li><li>Valuta la prontezza per l'implementazione.</li><li>Corregge la rotta a sviluppo già iniziato.</li></ul>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s17-e3"><li>I PRD nascono dalle interviste, non dal riempire un template.</li><li>Rilascia la cosa più piccola che valida l'ipotesi.</li><li>Prima il valore per l'utente; la fattibilità è un vincolo.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">crea PRD</span><span class="ik-chip">valida PRD</span><span class="ik-chip">modifica PRD</span><span class="ik-chip">epiche e story</span><span class="ik-chip">readiness</span><span class="ik-chip">correggi rotta</span></div>
+      </div>
+    </div>
+    <div class="ik-example anim-4">
+      <span class="ike-label">Esempio</span>
+      <p class="ike-say" data-edit-key="s17-e4">«John, dal brief tira fuori il PRD. Al primo rilascio niente SSO, decidiamo dopo.»</p>
+      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      <span class="ike-codes">CP + CE</span>
+      <span class="ike-out" data-edit-key="s17-e5">prd.md + la lista di epiche e story</span>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Identikit — John, Product Manager", "script": "John, product manager. Trasforma il Product Brief in un piano operativo. Crea, aggiorna e valida il PRD. Scompone i requisiti in Epic e User Story. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro. Se avete un minuto in più, la cosa che colpisce è chi ha in testa: Ragiona come Marty Cagan e Teresa Torres, scrive con la disciplina del six-pager di Bezos. Il «perché?» insistente di un detective.", "notes": ["Le cinque righe di «cosa fa» sono il cuore: leggine due, non tutte", "Da dire a voce se c'è tempo — Ragiona come Marty Cagan e Teresa Torres, scrive con la disciplina del six-pager di Bezos. Il «perché?» insistente di un detective.", "I principi vengono dal customize.toml dell'agente, non sono inventati", "L'esempio in fondo è la cosa che il pubblico ricorda", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
+    </script>
+  </div>
+
+  <!-- ---- 18 · IDENTIKIT · SALLY · UX DESIGNER ---- -->
+
+  <div class="slide" data-slide="18" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s18-e0">Identikit — 3 di 5 · Fase 2 · Pianificazione</p>
+    <h2 class="anim-2" data-edit-key="s18-e1">Sally — <span class="highlight-purple">UX Designer</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/ux_sally.jpg" alt="Ritratto illustrato di Sally, UX Designer: basco da artista, wireframe sospesi, ventaglio Pantone, nuvola user experience.">
+      </div>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">🎨</span>
+          <span class="ik-name">Sally</span>
+          <span class="ik-role">UX Designer</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Cosa fa</span>
+          <ul class="ik-does" data-edit-key="s18-e2"><li>Cura l'esperienza utente e l'interazione visiva.</li><li>Progetta flussi di navigazione, percorsi utente e wireframe.</li><li>Definisce le UI/UX Spec e i criteri di accessibilità.</li><li>Garantisce coerenza e usabilità prima della fase architetturale.</li><li>Fa da ponte fra il PRD e la realizzazione del frontend.</li></ul>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s18-e3"><li>Ogni decisione serve un bisogno reale dell'utente.</li><li>Parti semplice, evolvi attraverso il feedback.</li><li>Informata dai dati, ma sempre creativa.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">progetta la UX</span></div>
+      </div>
+    </div>
+    <div class="ik-example anim-4">
+      <span class="ike-label">Esempio</span>
+      <p class="ike-say" data-edit-key="s18-e4">«Sally, il PRD dice «l'utente recupera la password». Fammi vedere il flusso intero, errori compresi.»</p>
+      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      <span class="ike-codes">CU</span>
+      <span class="ike-out" data-edit-key="s18-e5">spec UX — flussi, stati, componenti</span>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Identikit — Sally, UX Designer", "script": "Sally, ux designer. Cura l'esperienza utente e l'interazione visiva. Progetta flussi di navigazione, percorsi utente e wireframe. Definisce le UI/UX Spec e i criteri di accessibilità. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro. Se avete un minuto in più, la cosa che colpisce è chi ha in testa: Radicata in Don Norman e nella disciplina delle persona di Alan Cooper. Dipinge con le parole: storie d'uso che ti fanno sentire il problema.", "notes": ["Le cinque righe di «cosa fa» sono il cuore: leggine due, non tutte", "Da dire a voce se c'è tempo — Radicata in Don Norman e nella disciplina delle persona di Alan Cooper. Dipinge con le parole: storie d'uso che ti fanno sentire il problema.", "I principi vengono dal customize.toml dell'agente, non sono inventati", "L'esempio in fondo è la cosa che il pubblico ricorda", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
+    </script>
+  </div>
+
+  <!-- ---- 19 · IDENTIKIT · MARY · BUSINESS ANALYST ---- -->
+
+  <div class="slide" data-slide="19" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s19-e0">Identikit — 4 di 5 · Fase 1 · Analisi</p>
+    <h2 class="anim-2" data-edit-key="s19-e1">Mary — <span class="highlight-blue">Business Analyst</span></h2>
+    <div class="idkit anim-3">
+      <div class="idkit-photo bounce-1">
+        <img src="assets/analyst_mary.jpg" alt="Ritratto illustrato di Mary, Business Analyst: impermeabile da detective, lente d'ingrandimento, megafono con la scritta user voice.">
+      </div>
+      <div class="idkit-card bounce-2">
+        <div class="ik-head">
+          <span class="ik-icon">📊</span>
+          <span class="ik-name">Mary</span>
+          <span class="ik-role">Business Analyst</span>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Cosa fa</span>
+          <ul class="ik-does" data-edit-key="s19-e2"><li>Guida l'esplorazione e la validazione dell'idea di business.</li><li>Ricerca di mercato, analisi competitiva (SWOT, Porter), teardown tecnici.</li><li>Scava con interviste «User Voice» e domande continue.</li><li>Brainstorming strutturato e challenge metodologici (PRFAQ).</li><li>Chiude col Product Brief e il contesto di progetto.</li></ul>
+        </div>
+        <div class="ik-row">
+          <span class="ik-label">Principi</span>
+          <ul class="ik-principles" data-edit-key="s19-e3"><li>Ogni scoperta poggia su prove verificabili.</li><li>I requisiti si enunciano con precisione assoluta.</li><li>Ogni voce degli stakeholder è rappresentata.</li></ul>
+        </div>
+        <div class="ik-chips"><span class="ik-chip">brainstorming</span><span class="ik-chip">ricerca di mercato</span><span class="ik-chip">dominio</span><span class="ik-chip">fattibilità tecnica</span><span class="ik-chip">product brief</span><span class="ik-chip">PRFAQ</span><span class="ik-chip">documenta progetto</span></div>
+      </div>
+    </div>
+    <div class="ik-example anim-4">
+      <span class="ike-label">Esempio</span>
+      <p class="ike-say" data-edit-key="s19-e4">«Mary, i clienti chiedono un'area riservata. Non so se serva davvero, né a chi.»</p>
+      <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
+      <span class="ike-codes">MR + CB</span>
+      <span class="ike-out" data-edit-key="s19-e5">product-brief.md — problema, utenti, alternative scartate</span>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Identikit — Mary, Business Analyst", "script": "Mary, business analyst. Guida l'esplorazione e la validazione dell'idea di business. Ricerca di mercato, analisi competitiva (SWOT, Porter), teardown tecnici. Scava con interviste «User Voice» e domande continue. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro. Se avete un minuto in più, la cosa che colpisce è chi ha in testa: Il rigore di Michael Porter e la disciplina della Piramide di Barbara Minto. Parla con l'eccitazione di chi cerca un tesoro quando emerge un pattern, e struttura le conclusioni come un memo McKinsey.", "notes": ["Le cinque righe di «cosa fa» sono il cuore: leggine due, non tutte", "Da dire a voce se c'è tempo — Il rigore di Michael Porter e la disciplina della Piramide di Barbara Minto. Parla con l'eccitazione di chi cerca un tesoro quando emerge un pattern, e struttura le conclusioni come un memo McKinsey.", "I principi vengono dal customize.toml dell'agente, non sono inventati", "L'esempio in fondo è la cosa che il pubblico ricorda", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
     </script>
   </div>
 
   <!-- ---- 20 · IDENTIKIT · AMELIA · SENIOR SOFTWARE ENGINEER ---- -->
 
   <div class="slide" data-slide="20" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s20-e0">La slide centrale</p>
-    <h2 class="anim-2" data-edit-key="s20-e1">Amelia -&nbsp;<span class="highlight-blue">SR Software Engineer</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s20-e0">Identikit — 5 di 5 · Fase 4 · Implementazione</p>
+    <h2 class="anim-2" data-edit-key="s20-e1">Amelia — <span class="highlight-green">Senior Software Engineer</span></h2>
     <div class="idkit anim-3">
       <div class="idkit-photo bounce-1">
         <img src="assets/developer_amelia.jpg" alt="Ritratto illustrato di Amelia, Senior Software Engineer: felpa col cappuccio, cuffie, monitor pieni di codice, retino per catturare i bug.">
@@ -1904,28 +1898,24 @@ body.editing [contenteditable="true"]:focus {
         </div>
         <div class="ik-row">
           <span class="ik-label">Cosa fa</span>
-          <p class="ik-val" data-edit-key="s20-e2">Prende una story approvata e la chiude: test prima, implementazione, refactor. Esegue i task nell'ordine scritto, senza improvvisare.</p>
-        </div>
-        <div class="ik-row">
-          <span class="ik-label">Identità e stile</span>
-          <p class="ik-val" data-edit-key="s20-e3">Disciplinata nel TDD di <strong>Kent Beck</strong> e nella precisione del <strong>Pragmatic Programmer</strong>. Ultra-sintetica. Parla per path di file e ID di criteri: ogni frase è citabile.</p>
+          <ul class="ik-does" data-edit-key="s20-e2"><li>Traduce architettura e specifiche in codice di produzione.</li><li>Esegue le User Story una per volta, in modo metodico.</li><li>Genera ed esegue i test automatizzati insieme al codice.</li><li>Fa code review per pulizia e manutenibilità.</li><li>Partecipa a sprint planning e retrospettive di epic.</li></ul>
         </div>
         <div class="ik-row">
           <span class="ik-label">Principi</span>
-          <ul class="ik-principles" data-edit-key="s20-e4"><li>Nessun task è completo senza test che passano.</li><li>Red, green, refactor — in quest'ordine.</li><li>I task si eseguono nella sequenza in cui sono scritti.</li></ul>
+          <ul class="ik-principles" data-edit-key="s20-e3"><li>Nessun task è completo senza test che passano.</li><li>Red, green, refactor — in quest'ordine.</li><li>I task si eseguono nella sequenza in cui sono scritti.</li></ul>
         </div>
         <div class="ik-chips"><span class="ik-chip">implementa story</span><span class="ik-chip">quick dev</span><span class="ik-chip">test E2E</span><span class="ik-chip">code review</span><span class="ik-chip">sprint plan</span><span class="ik-chip">prepara story</span><span class="ik-chip">retrospettiva</span></div>
       </div>
     </div>
     <div class="ik-example anim-4">
       <span class="ike-label">Esempio</span>
-      <p class="ike-say" data-edit-key="s20-e5">«Amelia, implementa la story 2.3.»</p>
+      <p class="ike-say" data-edit-key="s20-e4">«Amelia, implementa la story 2.3.»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
       <span class="ike-codes">CS + DS</span>
-      <span class="ike-out" data-edit-key="s20-e6">codice, test verdi, story aggiornata col File List</span>
+      <span class="ike-out" data-edit-key="s20-e5">codice, test verdi, story aggiornata col File List</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Identikit — Amelia, Senior Software Engineer", "script": "Amelia. Prende una story approvata e la chiude: test prima, implementazione, refactor. Esegue i task nell'ordine scritto, senza improvvisare. I campi non li ho scelti io: identità, stile e principi stanno scritti nel file che definisce l'agente, ed è quello che ne guida il comportamento a ogni risposta. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro.", "notes": ["I campi vengono dal customize.toml dell'agente", "Il gancio sono i nomi nell'identità: Disciplinata nel TDD di Kent Beck e nella precisione del Pragmatic Programmer.", "Leggere ad alta voce un principio solo, il più caratterizzante", "L'esempio in fondo è la cosa che il pubblico ricorda: dillo a voce", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
+    {"title": "Identikit — Amelia, Senior Software Engineer", "script": "Amelia, senior software engineer. Traduce architettura e specifiche in codice di produzione. Esegue le User Story una per volta, in modo metodico. Genera ed esegue i test automatizzati insieme al codice. In fondo l'esempio: quello che gli dico io, e quello che mi torna indietro. Se avete un minuto in più, la cosa che colpisce è chi ha in testa: Disciplinata nel TDD di Kent Beck e nella precisione del Pragmatic Programmer. Ultra-sintetica: parla per path di file e ID di criteri.", "notes": ["Le cinque righe di «cosa fa» sono il cuore: leggine due, non tutte", "Da dire a voce se c'è tempo — Disciplinata nel TDD di Kent Beck e nella precisione del Pragmatic Programmer. Ultra-sintetica: parla per path di file e ID di criteri.", "I principi vengono dal customize.toml dell'agente, non sono inventati", "L'esempio in fondo è la cosa che il pubblico ricorda", "Massimo un minuto e mezzo: sono cinque slide di fila"]}
     </script>
   </div>
 
@@ -2335,6 +2325,7 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     {"title":"Domande","script":"Grazie. Sono qui per le domande.","notes":["Tenere proiettata la slide del riepilogo o quella del loop, non questa vuota","Tre domande che arriveranno di sicuro: quanto costa in token, come si gestisce la sicurezza e il codice che esce dall'azienda, quanto tempo serve per impararlo","Avere le risposte pronte cambia la percezione di tutto il talk","Sulla sicurezza: sapere in anticipo la policy aziendale e citarla"]}
     </script>
   </div>
+
 
 
 
