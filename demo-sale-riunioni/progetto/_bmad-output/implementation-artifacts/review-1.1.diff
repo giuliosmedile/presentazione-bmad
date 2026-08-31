@@ -1,0 +1,65 @@
+Rilievi della code review sulla story 1.1, prima e dopo.
+Da mostrare in demo insieme a chat/09-amelia-code-review.md.
+
+════════════════════════════════════════════════════════════════════════
+[alta] La traduzione dell'errore era troppo larga
+════════════════════════════════════════════════════════════════════════
+
+--- a/src/main/java/it/azienda/saleriunioni/prenotazione/PrenotazioneService.java
++++ b/src/main/java/it/azienda/saleriunioni/prenotazione/PrenotazioneService.java
+@@ -74,9 +74,17 @@ public class PrenotazioneService {
+         try {
+             repository.inserisci(prenotazione);
+         } catch (DataIntegrityViolationException e) {
+-            throw new SalaGiaOccupataException(salaId, periodo);
++            // architecture.md D3: verificare QUALE vincolo è stato violato.
++            // Intercettare genericamente vuol dire che un CHECK sulla durata o
++            // una foreign key arriverebbero all'utente come "sala occupata".
++            if (violazioneDi(e, "prenotazione_no_overlap")) {
++                throw new SalaGiaOccupataException(salaId, periodo);
++            }
++            throw e;
+         }
+         return prenotazione;
+     }
+
+Perché conta: il vincolo oggi è uno solo, quindi il difetto è invisibile. Alla
+prima aggiunta di un altro vincolo l'utente vedrebbe un messaggio falso, e
+nessuno collegherebbe la cosa a questa riga.
+
+════════════════════════════════════════════════════════════════════════
+[media] Il filtro della ricerca usava il predicato sbagliato
+════════════════════════════════════════════════════════════════════════
+
+--- a/src/main/java/it/azienda/saleriunioni/disponibilita/RicercaDisponibilita.java
++++ b/src/main/java/it/azienda/saleriunioni/disponibilita/RicercaDisponibilita.java
+@@ -32,7 +32,7 @@ public class RicercaDisponibilita {
+                         FROM prenotazione p
+                         WHERE p.sala_id = s.id
+-                          AND p.stato <> 'disdetta'
++                          AND p.stato = 'attiva'
+                           AND p.periodo && tstzrange(:da, :a, '[)')
+
+Perché conta: `no_show <> 'disdetta'` è vero. Una sala liberata automaticamente
+sarebbe rimasta occupata, cioè la funzionalità centrale del progetto non avrebbe
+funzionato — e il bug sarebbe emerso nella story 1.2, facendolo cercare nel job
+invece che qui.
+
+Il codice era **corretto rispetto ai criteri di accettazione della 1.1** (che non
+prevedono prenotazioni in no_show, stato che arriva nella 1.2) e sbagliato
+rispetto al progetto. Nessun test della 1.1 lo avrebbe preso.
+
+════════════════════════════════════════════════════════════════════════
+[bassa] Timestamp con fuso locale in due test
+════════════════════════════════════════════════════════════════════════
+
+--- a/src/test/java/it/azienda/saleriunioni/prenotazione/PrenotazioneServiceTest.java
++++ b/src/test/java/it/azienda/saleriunioni/prenotazione/PrenotazioneServiceTest.java
+@@ -110,7 +110,7 @@ class PrenotazioneServiceTest {
+-        var inizio = LocalDateTime.now().plusHours(1);
++        var inizio = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+════════════════════════════════════════════════════════════════════════
+
+Dopo le correzioni: 16 test verdi (erano 14). I due nuovi coprono i rilievi
+[alta] e [media]: se qualcuno reintroduce il difetto, il test rosso lo dice.
