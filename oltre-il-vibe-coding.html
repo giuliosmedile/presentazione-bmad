@@ -1690,7 +1690,7 @@ body.editing [contenteditable="true"]:focus {
         <p class="si-out">Dev Agent Record</p>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s14-e6">Non serve ricordarsi la conversazione: basta riaprire il file. È questo che rende il processo <strong>interrompibile</strong>.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s14-e2">Non serve ricordarsi la conversazione: basta riaprire il file. È questo che rende il processo <strong>interrompibile</strong>.</p>
     <script type="application/json" class="slide-notes">
     {"title": "Come BMAD tiene memoria e decisioni", "script": "Domanda che vi state facendo: va bene, ma tutta questa roba dove finisce? Qui c'è il punto che secondo me distingue BMAD da una chat fatta bene. Primo: gli artefatti sono file nel repo, non messaggi. Si versionano, si diffano, si mettono in review — e l'architettura non scrive solo cosa avete deciso, ma anche cosa avete scartato e perché. Secondo: c'è un file di contesto di progetto che ogni agente carica quando si attiva, quindi le convenzioni non gliele ripetete ogni volta. Terzo: nella definizione di ogni agente potete inchiodare dei fatti persistenti, tipo «siamo AWS-only», e se li mettete lì non li ridite mai più. Quarto: ogni story si chiude scrivendo cosa è stato fatto davvero. Il risultato è che non dovete ricordarvi la conversazione: riaprite il file. Ed è per questo che il processo lo potete interrompere e riprendere.", "notes": ["Quattro posti dove la decisione si deposita: artefatti, contesto, fatti, story", "L'architettura registra anche le alternative scartate: è la parte che di solito si perde", "«Siamo AWS-only» scritto una volta nei persistent_facts, mai più ripetuto", "Il messaggio è: non serve ricordare la chat, si riapre il file", "NON anticipare il limite: la conoscenza presa fuori dal processo è il capitolo 04"]}
     </script>
@@ -1889,8 +1889,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 20 · GLI AGENTI AL LAVORO INSIEME ---- -->
 
   <div class="slide" data-slide="20" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s20-e0">Walkthrough — 1 di 3</p>
-    <h2 class="anim-2" data-edit-key="s20-e1">Un task <span class="highlight-blue">vero</span>, dall’inizio</h2>
+    <p class="slide-tag anim-1" data-edit-key="s20-e0">Tutti insieme</p>
+    <h2 class="anim-2" data-edit-key="s20-e1">Non cinque assistenti. Una <span class="highlight-green">catena di consegne</span>.</h2>
     <div class="image-frame anim-3 agent-group">
       <img src="assets/all_bmad_personas.jpg" alt="I cinque agenti BMAD nella stessa stanza: Mary con la lente, John col timone e il PRD, Sally coi wireframe, Winston col blueprint, Amelia ai monitor." class="slide-image">
     </div>
@@ -1929,8 +1929,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 21 · COME SI PARLA CON UN AGENTE ---- -->
 
   <div class="slide" data-slide="21" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s21-e0">Walkthrough — 2 di 3</p>
-    <h2 class="anim-2" data-edit-key="s21-e1">Il loop <span class="highlight-blue">in azione</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s21-e0">L’invocazione</p>
+    <h2 class="anim-2" data-edit-key="s21-e1">Non un prompt gigante. Una <span class="highlight-green">conversazione con un menu</span>.</h2>
     <div class="code-window anim-3">
       <div class="code-titlebar">
         <div class="code-dot red"></div>
@@ -1962,8 +1962,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 22 · DALLA RICHIESTA AGLI ARTEFATTI ---- -->
 
   <div class="slide" data-slide="22" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s22-e0">Walkthrough — 3 di 3</p>
-    <h2 class="anim-2" data-edit-key="s22-e1">Cosa è uscito, e <span class="highlight-orange">quanto è costato</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s22-e0">Dalla richiesta al piano</p>
+    <h2 class="anim-2" data-edit-key="s22-e1">La conversazione è usa e getta. I <span class="highlight-blue">documenti</span> no.</h2>
     <div class="step-flow anim-3">
       <div class="step-item bounce-1">
         <div class="si-head"><span class="si-emoji">📊</span><span class="si-who">Mary</span></div>
@@ -1995,8 +1995,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 23 · IL LOOP DI SVILUPPO ---- -->
 
   <div class="slide" data-slide="23" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s23-e0">Confronto diretto</p>
-    <h2 class="anim-2" data-edit-key="s23-e1">Punto per <span class="highlight-blue">punto</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s23-e0">Fase di implementazione</p>
+    <h2 class="anim-2" data-edit-key="s23-e1">Una story per giro. Il contesto <span class="highlight-green">non cresce</span>.</h2>
     <div class="step-flow anim-3">
       <div class="step-item bounce-1">
         <div class="si-head"><span class="si-code">CS</span><span class="si-who">Prepara la story</span></div>
@@ -2024,8 +2024,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 24 · IL LOOP DI SVILUPPO BMAD ---- -->
 
   <div class="slide" data-slide="24" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s24-e0">Il limite che resta</p>
-    <h2 class="anim-2" data-edit-key="s24-e1">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s24-e0">La slide centrale</p>
+    <h2 class="anim-2" data-edit-key="s24-e1">Il loop di sviluppo, con i <span class="highlight-blue">checkpoint umani</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -2038,7 +2038,7 @@ body.editing [contenteditable="true"]:focus {
       <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
         <div class="loop-center anim-4">
           <div class="loop-center-top">loop</div>
-          <div class="loop-center-main" data-edit-key="s24-e2">nessun contesto<br>di progetto</div>
+          
         </div>
       </div>
 
@@ -2086,8 +2086,8 @@ body.editing [contenteditable="true"]:focus {
 
   <div class="slide" data-slide="25" data-chapter="3">
     <div class="glow-blob glow-green" style="top:20%;right:8%;"></div>
-    <p class="slide-tag anim-1" data-edit-key="s25-e0">L’idea</p>
-    <h2 class="anim-2" data-edit-key="s25-e1">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
+    <p class="slide-tag anim-1" data-edit-key="s25-e0">Dal vivo</p>
+    <h2 class="anim-2" data-edit-key="s25-e1">Vediamolo <span class="highlight-green">funzionare</span>.</h2>
     <div class="placeholder anim-3" style="max-width:760px;">
       <div class="ph-tag">demo dal vivo</div>
       <p class="ph-text" data-edit-key="s25-e2">File di contesto</p>
@@ -2101,8 +2101,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 26 · IL LIMITE CHE RESTA ---- -->
 
   <div class="slide" data-slide="26" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s26-e0">Strumenti</p>
-    <h2 class="anim-2" data-edit-key="s26-e1">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s26-e0">Il limite che resta</p>
+    <h2 class="anim-2" data-edit-key="s26-e1">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -2135,8 +2135,8 @@ body.editing [contenteditable="true"]:focus {
   <!-- ---- 27 · MEMORIA A GRAFO, L'IDEA ---- -->
 
   <div class="slide" data-slide="27" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s27-e0">Integrazione</p>
-    <h2 class="anim-2" data-edit-key="s27-e1">Il buco, <span class="highlight-green">riempito</span></h2>
+    <p class="slide-tag anim-1" data-edit-key="s27-e0">L’idea</p>
+    <h2 class="anim-2" data-edit-key="s27-e1">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
     <div class="duo anim-3">
       <div class="duo-panel calm slide-l">
         <div class="duo-label" data-edit-key="s27-e2">memoria<br>a grafo</div>
@@ -2174,8 +2174,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   <!-- ---- 28 · GLI STRUMENTI ---- -->
 
   <div class="slide" data-slide="28" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s28-e0">Da portare a casa</p>
-    <h2 class="anim-2" data-edit-key="s28-e1">Quattro cose</h2>
+    <p class="slide-tag anim-1" data-edit-key="s28-e0">Strumenti</p>
+    <h2 class="anim-2" data-edit-key="s28-e1">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
     <div class="tri-grid anim-3">
       <div class="tri-card bounce-1">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4"></path><path d="m15.4 6.5-6.8 4"></path></svg></div>
@@ -2209,8 +2209,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   <!-- ---- 29 · INTEGRAZIONE NEL LOOP ---- -->
 
   <div class="slide" data-slide="29" data-chapter="4">
-    <p class="slide-tag anim-1" data-edit-key="s29-e0">Come iniziare <span class="gradient-text">domani</span></p>
-    <h2 class="anim-2" data-edit-key="s29-e1">Il primo passo, piccolo</h2>
+    <p class="slide-tag anim-1" data-edit-key="s29-e0">Integrazione</p>
+    <h2 class="anim-2" data-edit-key="s29-e1">Il buco, <span class="highlight-green">riempito</span></h2>
     <div class="loop-diagram quad anim-3">
       <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
         <circle class="loop-track" cx="200" cy="200" r="140"></circle>
@@ -2244,8 +2244,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
 
   <div class="slide" data-slide="30" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:20%;right:5%;"></div>
-    <p class="slide-tag anim-1" data-edit-key="s30-e0">Domande</p>
-    <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;" data-edit-key="s30-e1">[nome] · [contatto interno] · [link alle slide]</h2>
+    <p class="slide-tag anim-1" data-edit-key="s30-e0">Da portare a casa</p>
+    <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;" data-edit-key="s30-e1">Quattro cose</h2>
     <div class="takeaways anim-3">
       <div class="takeaway"><span class="tw-num">01</span><span class="tw-text" data-edit-key="s30-e2">●</span></div>
       <div class="takeaway"><span class="tw-num">02</span><span class="tw-text" data-edit-key="s30-e3">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
@@ -2261,7 +2261,7 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
 
   <div class="slide" data-slide="31" data-chapter="5">
     <div class="glow-blob glow-green" style="bottom:15%;left:15%;"></div>
-    <h2 class="anim-1" data-edit-key="s31-e0">Domande</h2>
+    <h2 class="anim-1" data-edit-key="s31-e0">Il primo passo, piccolo</h2>
     <div class="cta-box anim-3">
       <p style="font-size:clamp(13px,1.3vw,17px);font-weight:700;color:var(--color-neutral-700);" data-edit-key="s31-e1">[nome] · [contatto interno] · [link alle slide]</p>
       <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px;font-size:clamp(12px,1.2vw,16px);text-align:left;">
