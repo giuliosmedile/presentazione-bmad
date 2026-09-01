@@ -144,6 +144,13 @@ tradotti in italiano, non riassunti. Se aggiorni BMAD e quei file cambiano, le s
 riallineate a mano. In `_bmad/custom/` non c'erano override per-agente al momento della
 scrittura, quindi valgono i valori base.
 
+**Da verificare prima del talk**: i badge «Esempio» degli identikit e la prima slide della
+demo mostrano ora il comando reale di attivazione (`/bmad-agent-analyst` e simili). Solo
+`bmad-agent-dev` (Amelia) è confermato dalle trascrizioni in `demo-sale-riunioni/`; gli altri
+quattro (`bmad-agent-analyst`, `bmad-agent-pm`, `bmad-agent-architect`, `bmad-agent-ux-expert`)
+seguono la convenzione standard di BMAD-METHOD ma non sono stati riverificati uno per uno
+contro i `customize.toml` reali del progetto. Controllali prima di mostrarli in sala.
+
 Le cinque righe di **Cosa fa** sono invece testo tuo, non del `customize.toml`.
 
 Il campo `identity` non sta più sulla slide, ma **è finito nelle note del relatore**: Porter e
@@ -282,7 +289,9 @@ I segnaposto sono tra parentesi quadre `[così]` o in riquadri tratteggiati colo
 - **slide 5** — il dato di adozione: `__ %` e la fonte. **Verificala**: davanti a un pubblico
   tecnico un numero non citato viene contestato
 - **slide 18-22** — i cinque identikit: **niente da riempire**. Semmai da tagliare: se in
-  prova sfori, togli una o due delle cinque righe di **Cosa fa**, sono le più comprimibili
+  prova sfori, togli una o due delle cinque righe di **Cosa fa**, sono le più comprimibili.
+  **Verifica i comandi** `/bmad-agent-*` nei badge «Esempio»: solo `bmad-agent-dev` è
+  confermato dalle trascrizioni, gli altri quattro sono la convenzione standard
 - **slide 24** — l'esempio di sessione con Mary: è verosimile ma inventato. Se hai una
   sessione vera, incollala qui: due righe di trascrizione reale valgono più di un mock
 - **slide 28** — la **Demo**: il riquadro tratteggiato e la riga «cosa stai per mostrare»

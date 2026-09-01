@@ -1944,7 +1944,7 @@ body.editing [contenteditable="true"]:focus {
       <span class="ike-label">Esempio</span>
       <p class="ike-say">«Mary, i clienti chiedono un'area riservata. Non so se serva davvero, né a chi.»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">MR + CB</span>
+      <span class="ike-codes">/bmad-agent-analyst &middot; MR + CB</span>
       <span class="ike-out">product-brief.md — problema, utenti, alternative scartate</span>
     </div>
     <script type="application/json" class="slide-notes">
@@ -1981,7 +1981,7 @@ body.editing [contenteditable="true"]:focus {
       <span class="ike-label">Esempio</span>
       <p class="ike-say">«John, dal brief tira fuori il PRD. Al primo rilascio niente SSO, decidiamo dopo.»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CP + CE</span>
+      <span class="ike-codes">/bmad-agent-pm &middot; CP + CE</span>
       <span class="ike-out">prd.md + la lista di epiche e story</span>
     </div>
     <script type="application/json" class="slide-notes">
@@ -2018,7 +2018,7 @@ body.editing [contenteditable="true"]:focus {
       <span class="ike-label">Esempio</span>
       <p class="ike-say">«Winston, PRD e UX sono pronti. Ci serve davvero un servizio separato per le notifiche?»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CA + IR</span>
+      <span class="ike-codes">/bmad-agent-architect &middot; CA + IR</span>
       <span class="ike-out">decisioni tecniche, con le alternative scartate e il perché</span>
     </div>
     <script type="application/json" class="slide-notes">
@@ -2055,7 +2055,7 @@ body.editing [contenteditable="true"]:focus {
       <span class="ike-label">Esempio</span>
       <p class="ike-say">«Amelia, implementa la story 2.3.»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CS + DS</span>
+      <span class="ike-codes">/bmad-agent-dev &middot; CS + DS</span>
       <span class="ike-out">codice, test verdi, story aggiornata col File List</span>
     </div>
     <script type="application/json" class="slide-notes">
@@ -2092,7 +2092,7 @@ body.editing [contenteditable="true"]:focus {
       <span class="ike-label">Esempio</span>
       <p class="ike-say">«Sally, il PRD dice «l'utente recupera la password». Fammi vedere il flusso intero, errori compresi.»</p>
       <span class="ike-arrow"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></span>
-      <span class="ike-codes">CU</span>
+      <span class="ike-codes">/bmad-agent-ux-expert &middot; CU</span>
       <span class="ike-out">spec UX — flussi, stati, componenti</span>
     </div>
     <script type="application/json" class="slide-notes">
@@ -2328,9 +2328,11 @@ body.editing [contenteditable="true"]:focus {
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
         <span class="term-name">bmad &mdash; analyst (Mary)</span>
       </div>
-      <div class="term-body"><span class="term-user">Mary, dobbiamo fare qualcosa per le sale riunioni. Non se ne trova mai una.</span>
+      <div class="term-body"><span class="term-user">/bmad-agent-analyst</span>
 
-<span class="term-ag">&#128202; Ciao giulio. Ricorda che puoi invocare <span class="term-code">bmad-help</span> in qualunque momento.</span>
+<span class="term-ag">&#128202; Ciao giulio, sono Mary. Ricorda che puoi invocare <span class="term-code">bmad-help</span> in qualunque momento.</span>
+
+<span class="term-user">Mary, dobbiamo fare qualcosa per le sale riunioni. Non se ne trova mai una.</span>
 
 <span class="term-dim">Ecco cosa posso fare:</span>
 <span class="term-ag">  1 <span class="term-code">BP</span>  Brainstorming guidato</span>
@@ -2346,10 +2348,10 @@ body.editing [contenteditable="true"]:focus {
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">Strategia</span>
-      <span>Ogni agente si presenta con un menu numerato. Rispondi con <strong>due lettere</strong>: il contesto resta stretto e il compito &egrave; uno solo. I codici non sono inventati &mdash; stanno nel <strong>customize.toml</strong> dell&rsquo;agente, versionato nel repo.</span>
+      <span>Attivi l&rsquo;agente col comando (<strong>/bmad-agent-analyst</strong>), poi si presenta con un menu numerato. Rispondi con <strong>due lettere</strong>: il contesto resta stretto e il compito &egrave; uno solo. Comando e codici non sono inventati &mdash; stanno nel <strong>customize.toml</strong> dell&rsquo;agente, versionato nel repo.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — il menu e i codici", "script": "Prima cosa che vedete quando attivate un agente: si presenta con un menu numerato. E questa è la risposta alla domanda che mi fanno sempre, cioè come ci si parla. Non gli scrivete un tema. Rispondete con due lettere. MR vuol dire ricerca di mercato. Il vantaggio non è la comodità: è che il contesto resta stretto e il compito è uno solo, che è esattamente quello che abbiamo detto serve per non far deviare un agente.", "notes": ["Il menu arriva all'attivazione, con i codici veri del customize.toml", "Rispondere con il codice, non con un prompt libero", "Contesto stretto per costruzione: un compito per volta", "I codici sono configurazione versionata: se qualcuno in sala ha BMAD, tornano", "Il promemoria su bmad-help è parte dell'attivazione standard"]}
+    {"title": "Demo — il menu e i codici", "script": "Si parte da un comando: /bmad-agent-analyst attiva Mary. Prima cosa che vedete dopo: si presenta con un menu numerato. E questa è la risposta alla domanda che mi fanno sempre, cioè come ci si parla. Non gli scrivete un tema. Rispondete con due lettere. MR vuol dire ricerca di mercato. Il vantaggio non è la comodità: è che il contesto resta stretto e il compito è uno solo, che è esattamente quello che abbiamo detto serve per non far deviare un agente.", "notes": ["Si attiva con un comando esplicito, non un tono di voce: /bmad-agent-analyst", "Il menu arriva subito dopo, con i codici veri del customize.toml", "Rispondere con il codice, non con un prompt libero", "Contesto stretto per costruzione: un compito per volta", "I codici sono configurazione versionata: se qualcuno in sala ha BMAD, tornano", "Il promemoria su bmad-help è parte dell'attivazione standard"]}
     </script>
   </div>
 
