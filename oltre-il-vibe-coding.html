@@ -1808,23 +1808,40 @@ body.editing [contenteditable="true"]:focus {
   </div>
 
   <!-- ══════════ 03 · BMAD ══════════ -->
-  <!-- ---- 14 · GLI AGENTI BMAD SONO PERSONE ---- -->
+  <!-- ---- 14 · BMAD, LA PANORAMICA ---- -->
   <div class="slide" data-slide="14" data-chapter="3">
-    <div class="cb-wrap anim-3">
-      <p class="slide-tag anim-1" data-edit-key="s14-e0">Prima degli identikit</p>
-      <blockquote class="cb-keyquote anim-2" data-edit-key="s14-e1">Non sono tool. Sono <span class="highlight-green">persone</span> a tua disposizione.</blockquote>
-      <p class="cb-detail anim-3" data-edit-key="s14-e2">Ogni agente BMAD ha un nome, un ruolo e dei principi: non un comando da imparare a memoria. Parli con Mary come parleresti con un’analista, non con un flag da riga di comando — ed è proprio questo <span class="cb-accent">a rendere lo strumento più facile da usare</span>, non più complicato.</p>
+    <p class="slide-tag anim-1" data-edit-key="s14-e0">La panoramica</p>
+    <h2 class="anim-2" data-edit-key="s14-e1">Un agente per <span class="highlight-green">ogni fase</span>, non un prompt per tutto</h2>
+    <div class="step-flow anim-3">
+      <div class="step-item bounce-1">
+        <div class="si-head"><span class="si-emoji">📊</span><span class="si-who" data-edit-key="s14-e2">Analisi</span></div>
+        <p class="si-ask" data-edit-key="s14-e3">Ricerca, brainstorming, il brief del progetto. Si parte da domande sul problema, non da una richiesta di codice.</p>
+        <p class="si-out" data-edit-key="s14-e4">Mary · product-brief.md</p>
+      </div>
+      <div class="step-item bounce-2">
+        <div class="si-head"><span class="si-emoji">📋</span><span class="si-who" data-edit-key="s14-e5">Prodotto e UX</span></div>
+        <p class="si-ask" data-edit-key="s14-e6">Requisiti, epiche e criteri di accettazione. Accanto, i flussi e le schermate: la parte che decide come lo useranno davvero.</p>
+        <p class="si-out" data-edit-key="s14-e7">John, Sally · prd.md · epics.md · ux-spec.md</p>
+      </div>
+      <div class="step-item bounce-3">
+        <div class="si-head"><span class="si-emoji">🏗️</span><span class="si-who" data-edit-key="s14-e8">Architettura</span></div>
+        <p class="si-ask" data-edit-key="s14-e9">Le scelte tecniche con le alternative scartate e il perché. È il documento che tutti gli altri agenti rileggono a ogni giro.</p>
+        <p class="si-out" data-edit-key="s14-e10">Winston · architecture.md</p>
+      </div>
+      <div class="step-item bounce-4">
+        <div class="si-head"><span class="si-emoji">📚</span><span class="si-who" data-edit-key="s14-e11">Documentazione</span></div>
+        <p class="si-ask" data-edit-key="s14-e12">Glossario di dominio, spiegazioni, diagrammi. La parte meno tecnica, ed è quella che chiude le discussioni che tornerebbero ogni sei mesi.</p>
+        <p class="si-out" data-edit-key="s14-e13">Paige · docs/glossario-dominio.md</p>
+      </div>
+      <div class="step-item bounce-5">
+        <div class="si-head"><span class="si-emoji">💻</span><span class="si-who" data-edit-key="s14-e14">Codice e verifica</span></div>
+        <p class="si-ask" data-edit-key="s14-e15">Sprint plan, story frammentata in task, implementazione. Poi la code review, in una sessione nuova che rilegge contro l’architettura.</p>
+        <p class="si-out" data-edit-key="s14-e16">Amelia · story · Dev Agent Record</p>
+      </div>
     </div>
-    <div class="agent-lineup anim-4">
-      <div class="agent-chip bounce-1"><span class="ac-icon">📊</span><span class="ac-name">Mary</span><span class="ac-role">Business Analyst</span></div>
-      <div class="agent-chip bounce-2"><span class="ac-icon">📋</span><span class="ac-name">John</span><span class="ac-role">Product Manager</span></div>
-      <div class="agent-chip bounce-3"><span class="ac-icon">🏗️</span><span class="ac-name">Winston</span><span class="ac-role">System Architect</span></div>
-      <div class="agent-chip bounce-4"><span class="ac-icon">💻</span><span class="ac-name">Amelia</span><span class="ac-role">Senior Software Engineer</span></div>
-      <div class="agent-chip bounce-5"><span class="ac-icon">🎨</span><span class="ac-name">Sally</span><span class="ac-role">UX Designer</span></div>
-    </div>
-    <p class="agent-lineup-caption anim-5">Li conosci uno per uno nelle prossime cinque slide.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s14-e17">Ogni ruolo porta il suo <strong>menu di comandi</strong>, e copre il ciclo intero — non solo la parte in cui si scrive codice. <strong>Quasi tutto quello che ne esce sono documenti</strong>: è la metà che di solito non facciamo, ed è quella che il progetto si porta dietro per anni.</p>
     <script type="application/json" class="slide-notes">
-    {"title": "Gli agenti BMAD sono persone", "script": "Prima di entrare negli identikit, una premessa che vi cambia il modo di guardarli. Questi non sono tool nel senso in cui lo è un linter o un formattatore: sono persone a vostra disposizione. Hanno un nome, un ruolo, dei principi che li guidano. E questo non è vezzo estetico: è un'interfaccia. Parlate con Mary come parlereste con un'analista vera, non con un flag da riga di comando, e questo rende lo strumento più facile da usare, non più complicato. Nelle prossime cinque slide li conoscete uno per uno.", "notes": ["Punto di forza del modello BMAD: gli agenti come persone, non comandi", "Nome, ruolo e principi sono un'interfaccia, non un vezzo", "Parlare con un ruolo è più naturale che imparare una sintassi", "Teaser: cinque identikit in arrivo, uno per slide"]}
+    {"title": "BMAD, la panoramica", "script": "Prima di guardare i singoli, la mappa. BMAD non è un agente che fa tutto: è una squadra, e copre il ciclo intero. Si parte dall'analisi, con Mary, che vi fa domande sul problema prima ancora di parlare di soluzione. Poi il prodotto e la UX, John e Sally: requisiti, epiche, criteri di accettazione, flussi. Winston fa l'architettura, e nel documento ci mette anche le alternative che ha scartato e perché. Paige è quella che di solito nessuno mette in squadra: scrive il glossario di dominio, le spiegazioni, i diagrammi — la parte meno tecnica, che è poi quella che chiude le discussioni che altrimenti tornano ogni sei mesi. E infine Amelia, che frammenta la story, scrive il codice e poi lo rilegge in una sessione nuova. Guardate cosa esce: quasi tutto sono documenti. È esattamente la metà del lavoro che normalmente non facciamo.", "notes": ["BMAD copre il ciclo intero, non solo la scrittura di codice", "Cinque fasi, sei ruoli: Mary, John, Sally, Winston, Paige, Amelia", "Paige è l'esempio della parte non tecnica: glossario, spiegazioni, diagrammi", "I nomi dei file sono quelli veri di _bmad-output/ nella demo", "Il punto da far cadere: quasi tutti gli artefatti sono documenti", "Teaser: nelle prossime slide cinque di loro, uno per uno"]}
     </script>
   </div>
 
@@ -2868,7 +2885,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v11',
+  storageKey: 'oltre-il-vibe-coding-edits-v12',
   fields: [],
 
   init: function() {

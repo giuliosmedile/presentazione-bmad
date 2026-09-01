@@ -83,7 +83,7 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 
 | Slide | Cosa fa |
 |---|---|
-| 15 | gli agenti BMAD sono persone, non tool: nome, ruolo e principi come interfaccia — teaser dei cinque identikit |
+| 15 | la panoramica su BMAD: cinque fasi, sei ruoli, e gli artefatti veri che ne escono |
 | 16 | dove BMAD parcheggia memoria e decisioni: artefatti, contesto, fatti, story |
 | 17 | memoria condivisa col team: lavoro in parallelo su branch diversi, propagazione via commit e PR |
 | 18-22 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
@@ -101,8 +101,22 @@ Le slide su «come ci si parla con un agente» e sui quattro documenti del plann
 tolte: dicevano in astratto quello che la demo, appena dopo, mostra succedere davvero — vedi
 **Cosa è stato tolto dal capitolo 03**.
 
-La **15** apre il capitolo: gli agenti non sono tool, sono persone a disposizione, con nome
-e ruolo come interfaccia — teaser dei cinque identikit poco più avanti.
+La **15** apre il capitolo con la mappa: BMAD non è un agente che fa tutto, è una squadra
+che copre il ciclo intero. Cinque colonne — analisi, prodotto e UX, architettura,
+documentazione, codice e verifica — con l'agente e il file che ogni fase produce.
+
+I nomi dei file sono quelli veri di `demo-sale-riunioni/progetto/_bmad-output/`
+(`product-brief.md`, `prd.md`, `epics.md`, `ux-spec.md`, `architecture.md`,
+`docs/glossario-dominio.md`), quindi la slide e la demo si confermano a vicenda.
+
+La colonna di **Paige** (technical writer) è quella che porta il punto: il framework copre
+anche la parte non tecnica, e la riga di chiusura fa notare che quasi tutto quello che esce
+sono documenti. Paige **non ha un identikit** fra le 18-22: se qualcuno chiede, è il sesto
+ruolo, e la sua trascrizione sta in `demo-sale-riunioni/chat/05-paige-tech-writer.md`.
+
+La versione precedente di questa slide («non sono tool, sono persone a tua disposizione», con
+la fila dei cinque ritratti) sta nella storia git: la tesi regge ancora, ma come premessa agli
+identikit diceva meno della mappa.
 
 La **16** elenca i quattro posti dove una decisione si deposita:
 gli artefatti nel repo, `project-context.md`, i `persistent_facts` nel `customize.toml`
