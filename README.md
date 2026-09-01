@@ -7,6 +7,7 @@ software. Pubblico aziendale, misto per competenza sull'AI.
 
 ```
 oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 40 slide)
+oltre-il-vibe-coding.pdf           export statico — non versionato, si rigenera
 demo-sale-riunioni/                il materiale per la slide Demo (ha un README suo)
 assets/prompt-vibe-coding.png      lo screenshot del prompt (slide 8)
 assets/codice-senza-memoria.png    il codice con la costante misteriosa (slide 12)
@@ -219,6 +220,33 @@ Se qualcuno in sala ha BMAD installato e controlla, tornano.
 **Onestà**: il caso è ricostruito su un progetto di esempio, non è il log di una sessione
 reale. Il tag della 26 dice «caso di esempio» apposta. Se qualcuno chiede, dillo — la
 credibilità la porta la coerenza dei documenti, non fingere che sia un log.
+
+
+## Versioning
+
+Il progetto è un repo git. **Niente più file `.bak`**: la storia dei dieci backup fatti a
+mano è stata ricostruita in commit datati, quindi non è andato perso niente — ogni backup
+corrisponde byte per byte a un commit.
+
+```bash
+git log --oneline
+```
+
+```bash
+git diff HEAD~1 -- oltre-il-vibe-coding.html
+```
+
+Per tornare a una versione precedente del deck senza perdere quella attuale:
+
+```bash
+git show <commit>:oltre-il-vibe-coding.html > prova.html
+```
+
+Il `.gitignore` esclude `*.bak*` (così un backup manuale non finisce per sbaglio nel repo)
+e `*.pdf`, perché l'export pesa 16 MB ed è rigenerabile dall'HTML in un comando.
+
+Il repo è solo locale: non c'è ancora un remote. Se lo vuoi su un server interno, basta
+`git remote add origin <url>` e `git push -u origin main`.
 
 
 ## Navigazione
