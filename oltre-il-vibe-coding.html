@@ -1569,7 +1569,7 @@ body.editing [contenteditable="true"]:focus {
     <h2 class="anim-2" data-edit-key="s4-e1">Non é «il futuro». <span class="highlight-blue">È già il presente.</span></h2>
     <div class="big-figure anim-3">
       <div class="bf-value" data-edit-key="s4-e2">90%</div>
-      <p class="bf-label" data-edit-key="s4-e3">degli sviluppatori usa strumenti di AI generativa <strong>ogni settimana&nbsp;</strong>nel proprio lavoro</p>
+      <p class="bf-label" data-edit-key="s4-e3">degli sviluppatori professionisti usa strumenti di AI generativa <strong>ogni settimana&nbsp;</strong>nel proprio lavoro</p>
       <p class="bf-source" data-edit-key="s4-e4">Luglio 2026 - <i>JetBrains&nbsp;</i><em>Developer Ecosystem Survey 2026</em></p>
     </div>
     <p class="subtitle anim-4 mt-16" data-edit-key="s4-e5">Adozione altissima, processo quasi zero. <span class="highlight-orange">È questo scarto</span> il tema dell’ora che segue.</p>
@@ -2824,7 +2824,7 @@ var EDITABLE_SELECTOR = [
   '.bf-value', '.bf-label', '.bf-source',
   '.tc-title', '.tc-who', '.tc-desc', '.tc-foot',
   '.duo-label', '.duo-note',
-  '.si-text',
+  '.si-text', '.si-who', '.si-ask', '.si-out',
   '.dd-name', '.dd-body', '.dd-label',
   '.hc-text', '.hc-label',
   '.tw-text',
@@ -2839,7 +2839,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v13',
+  storageKey: 'oltre-il-vibe-coding-edits-v14',
   fields: [],
 
   init: function() {
