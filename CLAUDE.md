@@ -12,7 +12,7 @@ Presentazione «**Oltre il vibe coding**», talk aziendale in **italiano**, 60 m
 pubblico misto per competenza sull'AI. Tesi: il problema non è l'AI, è l'assenza di processo;
 BMAD dà la struttura, la memoria a grafo dà il contesto.
 
-File principale: **`oltre-il-vibe-coding.html`** — 42 slide, ~3000 righe, CSS e JS inline,
+File principale: **`oltre-il-vibe-coding.html`** — 41 slide, ~3000 righe, CSS e JS inline,
 zero dipendenze a runtime tranne i font Google. Generato in origine con lo skill
 `html-slides` (plugin 0.9.4), ma ormai è divergente: **non rigenerarlo dallo skill**,
 si modifica a mano.
@@ -36,7 +36,7 @@ Stato: 21 commit su `main`, working tree pulito, nessun remote.
 <body>
   chrome fisso (particles, branding, chapter-mark, slide-nav, progress, counter, hints)
   <svg> nascosto con i <defs> globali (marker della freccia del loop)
-  <div class="deck">  41 × <div class="slide" data-slide="N" data-chapter="C">
+  <div class="deck">  42 × <div class="slide" data-slide="N" data-chapter="C">
   <script>  runtime: navigazione, note in console, editor inline
 ```
 
@@ -133,7 +133,7 @@ decorative, 2.35, identiche al deck di riferimento.
 ### 9. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v7`), altrimenti vecchi testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v11`), altrimenti vecchi testi
 salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
 
 ---
@@ -219,8 +219,8 @@ in fondo a `:root`. I componenti vecchi li usano ancora; funzionano, non serve m
 
 ### Il diagramma del loop
 
-Compare **tre volte** con lo stesso disegno e centro diverso: completo (slide 27 del
-contatore), col buco del contesto (36), col grafo che lo riempie (39). Il richiamo funziona
+Compare **tre volte** con lo stesso disegno e centro diverso: completo (slide 25 del
+contatore), col buco del contesto (34), col grafo che lo riempie (38). Il richiamo funziona
 solo se il resto è identico: **se ne modifichi uno, modificali tutti e tre**.
 
 Geometria: cerchio r=140 in viewBox 400×400, nodi a -90°/0°/90°/180° (`left/top` 50%/15%,
@@ -245,8 +245,8 @@ ovvio dal titolo. Trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 
 - Si lavora **in italiano**, anche nei commenti del codice e nei commit
 - Niente numeri inventati: i segnaposto restano `[fra parentesi]` finché non arriva il dato
-  vero. Vale soprattutto per la percentuale di adozione (slide 5) e le metriche del
-  walkthrough
+  vero. Il dato di adozione (slide 5, 68%, JetBrains Developer Ecosystem Survey 2026) è
+  confermato — vale ancora per le metriche del walkthrough e ogni nuovo numero che entra
 - Il caso della demo è **ricostruito**, e va detto. Mai spacciarlo per una sessione reale
 - Quando un contenuto non sta in una slide, se ne fanno due invece di comprimere
 - Verifica misurando, non a occhio: le regressioni di layout qui si vedono solo coi numeri
@@ -269,7 +269,7 @@ Idee rimaste in sospeso, mai implementate:
 ## File del repo
 
 ```
-oltre-il-vibe-coding.html   il deck (42 slide)
+oltre-il-vibe-coding.html   il deck (41 slide)
 copione-demo.md             il discorso parlato della demo, slide per slide
 README.md                   struttura del talk, contenuti, da-riempire
 CLAUDE.md                   questo file
