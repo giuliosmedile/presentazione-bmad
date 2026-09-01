@@ -1303,6 +1303,15 @@ body.editing [contenteditable="true"]:focus {
   content: ""; position: absolute; left: 3px; top: 0.56em;
   width: 4px; height: 4px; border-radius: 50%; background: var(--color-accent-2-600);
 }
+
+/* Variante stretta della finestra di codice: serve per l'albero di progetto,
+   che ha righe lunghe e va tenuto sotto le card senza sfondare la slide. */
+.code-window.compact { max-width: 1040px; margin-top: clamp(8px, 1.4vh, 16px); }
+.code-window.compact .code-titlebar { padding: 8px 16px; }
+.code-window.compact .code-filename { font-size: clamp(10px, 0.95vw, 13px); }
+.code-window.compact .code-body {
+  padding: 10px 18px; font-size: clamp(9px, 0.85vw, 12.5px); line-height: 1.55;
+}
 </style>
 </head>
 <body class="">
@@ -1690,7 +1699,23 @@ body.editing [contenteditable="true"]:focus {
         <p class="si-out">Dev Agent Record</p>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s14-e2">Non serve ricordarsi la conversazione: basta riaprire il file. È questo che rende il processo <strong>interrompibile</strong>.</p>
+    <div class="code-window compact anim-4">
+      <div class="code-titlebar">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-filename">struttura del progetto</span>
+      </div>
+      <div class="code-body">BE_TRRN_API_Query_Engine/
+├── _bmad-output/
+│   ├── <span class="kw">project-context.md</span>           <span class="comment">↳ convenzioni, caricato da ogni agente</span>
+│   ├── <span class="kw">planning-artifacts/</span>          <span class="comment">↳ architecture.md, epics.md, readiness</span>
+│   └── <span class="kw">implementation-artifacts/</span>    <span class="comment">↳ 21 story, col diario di cosa è stato fatto</span>
+├── .claude/skills/
+│   └── <span class="kw">bmad-agent-*/customize.toml</span>  <span class="comment">↳ persona e persistent_facts</span>
+└── <span class="kw">docs/</span>                            <span class="comment">↳ la conoscenza di dominio del progetto</span></div>
+    </div>
+    <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s14-e6">Entra in code review come tutto il resto. Non serve ricordarsi la conversazione: basta <strong>riaprire il file</strong>.</p>
     <script type="application/json" class="slide-notes">
     {"title": "Come BMAD tiene memoria e decisioni", "script": "Domanda che vi state facendo: va bene, ma tutta questa roba dove finisce? Qui c'è il punto che secondo me distingue BMAD da una chat fatta bene. Primo: gli artefatti sono file nel repo, non messaggi. Si versionano, si diffano, si mettono in review — e l'architettura non scrive solo cosa avete deciso, ma anche cosa avete scartato e perché. Secondo: c'è un file di contesto di progetto che ogni agente carica quando si attiva, quindi le convenzioni non gliele ripetete ogni volta. Terzo: nella definizione di ogni agente potete inchiodare dei fatti persistenti, tipo «siamo AWS-only», e se li mettete lì non li ridite mai più. Quarto: ogni story si chiude scrivendo cosa è stato fatto davvero. Il risultato è che non dovete ricordarvi la conversazione: riaprite il file. Ed è per questo che il processo lo potete interrompere e riprendere.", "notes": ["Quattro posti dove la decisione si deposita: artefatti, contesto, fatti, story", "L'architettura registra anche le alternative scartate: è la parte che di solito si perde", "«Siamo AWS-only» scritto una volta nei persistent_facts, mai più ripetuto", "Il messaggio è: non serve ricordare la chat, si riapre il file", "NON anticipare il limite: la conoscenza presa fuori dal processo è il capitolo 04"]}
     </script>
