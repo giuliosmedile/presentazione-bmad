@@ -6,19 +6,19 @@ software. Pubblico aziendale, misto per competenza sull'AI.
 ## File
 
 ```
-oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 40 slide)
+oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 41 slide)
 oltre-il-vibe-coding.pdf           export statico — non versionato, si rigenera
 CLAUDE.md                          come si lavora sul deck: convenzioni e trappole
 copione-demo.md                    il discorso da dire durante la demo, slide per slide
 demo-sale-riunioni/                il materiale su cui la demo e' costruita (README suo)
 assets/prompt-vibe-coding.png      lo screenshot del prompt (slide 8)
 assets/codice-senza-memoria.png    il codice con la costante misteriosa (slide 12)
-assets/analyst_mary.jpg            ritratto di Mary, Business Analyst (slide 16)
-assets/pm_john.jpg                 ritratto di John, Product Manager (slide 17)
-assets/architect_winston.jpg       ritratto di Winston, System Architect (slide 18)
-assets/developer_amelia.jpg        ritratto di Amelia, Senior SW Engineer (slide 19)
-assets/ux_sally.jpg                ritratto di Sally, UX Designer (slide 20)
-assets/all_bmad_personas.jpg       i cinque insieme (slide 21)
+assets/analyst_mary.jpg            ritratto di Mary, Business Analyst (slide 17)
+assets/pm_john.jpg                 ritratto di John, Product Manager (slide 18)
+assets/architect_winston.jpg       ritratto di Winston, System Architect (slide 19)
+assets/developer_amelia.jpg        ritratto di Amelia, Senior SW Engineer (slide 20)
+assets/ux_sally.jpg                ritratto di Sally, UX Designer (slide 21)
+assets/all_bmad_personas.jpg       i cinque insieme (slide 22)
 sviluppo-agentico.html             versione precedente, altro taglio — puoi eliminarla
 Sviluppo Agentico (standalone).html  il deck da cui è stato preso lo stile
 ```
@@ -35,13 +35,13 @@ per te: non romperla assegnando quei colori ad altro.
 | 00 · Apertura | 1-5 | ~7 min |
 | 01 · Overview dei tool | 6-7 | ~5 min |
 | 02 · Vibe coding e debito cognitivo | 8-14 | ~12 min |
-| 03 · BMAD | 15-33 | ~22 min, di cui ~8 di demo |
-| 04 · Trasferire conoscenza agli agenti | 34-37 | ~12 min |
-| 05 · Chiusura | 38-40 | ~4 min |
+| 03 · BMAD | 15-34 | ~23 min, di cui ~8 di demo |
+| 04 · Trasferire conoscenza agli agenti | 35-38 | ~12 min |
+| 05 · Chiusura | 39-41 | ~4 min |
 
-Il capitolo 03 sta in 19 slide, di cui **otto sono la demo** (26-33). Non è più una demo dal
-vivo: sono slide, quindi il tempo è prevedibile — circa un minuto l'una. Le undici slide che
-la precedono devono stare in dodici minuti, quindi vanno tenute veloci.
+Il capitolo 03 sta in 20 slide, di cui **otto sono la demo** (27-34). Non è più una demo dal
+vivo: sono slide, quindi il tempo è prevedibile — circa un minuto l'una. Le dodici slide che
+la precedono devono stare in tredici minuti, quindi vanno tenute veloci.
 
 Il capitolo corrente compare in alto al centro, così il pubblico ha il senso di avanzamento
 senza spendere slide separatrici. Se preferisci le separatrici vere, la slide 2 (agenda) è
@@ -79,23 +79,24 @@ esistono finché qualcuno non le scrive. Qui c'è il **requisito**; il **meccani
 memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 
 
-## Il capitolo 03, slide per slide (15-26)
+## Il capitolo 03, slide per slide (15-27)
 
 | Slide | Cosa fa |
 |---|---|
 | 15 | dove BMAD parcheggia memoria e decisioni: artefatti, contesto, fatti, story |
-| 16-20 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
-| 21 | i cinque insieme, e la catena di artefatti che si passano |
-| 22 | come si parla con un agente: il menu, i codici, la persona che resta attiva |
-| 23 | la fase di planning: quattro conversazioni, quattro documenti |
-| 24 | il loop di sviluppo: una story per giro |
-| 25 | il diagramma del loop coi checkpoint umani |
-| 26 | il caso della demo: sei sale, il 41%, l'ipotesi |
-| 27-32 | **la demo**, sei momenti: menu · premessa · checkpoint · artefatti · review · perché |
-| 33 | pitfall e strategie, la slide che il pubblico fotografa |
+| 16 | memoria condivisa col team: lavoro in parallelo su branch diversi, propagazione via commit e PR |
+| 17-21 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
+| 22 | i cinque insieme, e la catena di artefatti che si passano |
+| 23 | come si parla con un agente: il menu, i codici, la persona che resta attiva |
+| 24 | la fase di planning: quattro conversazioni, quattro documenti |
+| 25 | il loop di sviluppo: una story per giro |
+| 26 | il diagramma del loop coi checkpoint umani |
+| 27 | il caso della demo: sei sale, il 41%, l'ipotesi |
+| 28-33 | **la demo**, sei momenti: menu · premessa · checkpoint · artefatti · review · perché |
+| 34 | pitfall e strategie, la slide che il pubblico fotografa |
 
-Le tre slide **22-24** rispondono alla domanda che arriva sempre («ma come ci si parla?») e
-costruiscono verso il diagramma della 25, che le riassume. La 26 chiude il capitolo dal vivo.
+Le tre slide **23-25** rispondono alla domanda che arriva sempre («ma come ci si parla?») e
+costruiscono verso il diagramma della 26, che le riassume. La 27 chiude il capitolo dal vivo.
 
 La **15** apre il capitolo elencando i quattro posti dove una decisione si deposita:
 gli artefatti nel repo, `project-context.md`, i `persistent_facts` nel `customize.toml`
@@ -109,7 +110,7 @@ Se cambi i percorsi, la colonna delle annotazioni va riallineata a mano: è padd
 dentro un blocco `white-space: pre`, calcolato su 37 caratteri di prefisso.
 
 Nota che la slide cita PRD e architettura prima che il pubblico sappia chi li scrive: se in
-prova stona, sta meglio subito dopo la **23**, che dice la stessa cosa dal lato del planning.
+prova stona, sta meglio subito dopo la **24**, che dice la stessa cosa dal lato del planning.
 
 Gli identikit hanno tutti lo stesso schema: ritratto a sinistra, carta d'identità a destra
 con **Cosa fa** (cinque righe), **Principi** e le voci di menu; sotto, una fascia
@@ -191,7 +192,7 @@ Due residui da guardare, entrambi sulla **15**:
 - il titolo l'ho scritto io. Se preferisci la tua formulazione — «BMAD non aggiunge
   intelligenza all'AI» — cambialo: è la stessa idea detta meglio
 
-## La demo (slide 26-33)
+## La demo (slide 27-34)
 
 Non è più una demo dal vivo: sono **otto slide** costruite sul materiale di
 `demo-sale-riunioni/`. Niente da far partire in sala, tempo prevedibile, e i momenti
@@ -199,20 +200,20 @@ salienti sono già selezionati.
 
 | Slide | Momento | Cosa deve arrivare |
 |---|---|---|
-| 26 | il caso | sei sale, il 41%, l'ipotesi falsificabile |
-| 27 | il menu e i codici | non scrivi un prompt, scegli una voce: `MR`, due lettere |
-| 28 | contestare la premessa | «è un'impressione o qualcuno l'ha misurata?» e il bivio |
-| 29 | il checkpoint umano | la classifica tolta, e il motivo che **va scritto** |
-| 30 | cosa resta dopo | l'albero di `_bmad-output/`: file, non chat |
-| 31 | la code review | il diff `stato <> 'disdetta'` → `stato = 'attiva'` |
-| 32 | perché il checkpoint esiste | corretto per la story, sbagliato per il progetto |
-| 33 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
+| 27 | il caso | sei sale, il 41%, l'ipotesi falsificabile |
+| 28 | il menu e i codici | non scrivi un prompt, scegli una voce: `MR`, due lettere |
+| 29 | contestare la premessa | «è un'impressione o qualcuno l'ha misurata?» e il bivio |
+| 30 | il checkpoint umano | la classifica tolta, e il motivo che **va scritto** |
+| 31 | cosa resta dopo | l'albero di `_bmad-output/`: file, non chat |
+| 32 | la code review | il diff `stato <> 'disdetta'` → `stato = 'attiva'` |
+| 33 | perché il checkpoint esiste | corretto per la story, sbagliato per il progetto |
+| 34 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
 
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
-parole vere, non appunti. Serve soprattutto per le 31-32, dove il ritmo conta.
+parole vere, non appunti. Serve soprattutto per le 32-33, dove il ritmo conta.
 
-**Se devi tagliare**: tieni 31, 32 e 33. Sono le uniche che mostrano il processo *mentre
-intercetta qualcosa*, che è la tesi del talk. Le 27-30 si raccontano a voce in un minuto.
+**Se devi tagliare**: tieni 32, 33 e 34. Sono le uniche che mostrano il processo *mentre
+intercetta qualcosa*, che è la tesi del talk. Le 28-31 si raccontano a voce in un minuto.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
 classe **`.term-hl`** per la riga su cui deve cadere l'occhio (terracotta) o `.term-hl.olive`
@@ -282,15 +283,15 @@ I segnaposto sono tra parentesi quadre `[così]` o in riquadri tratteggiati colo
   sessione vera, incollala qui: due righe di trascrizione reale valgono più di un mock
 - **slide 27** — la **Demo**: il riquadro tratteggiato e la riga «cosa stai per mostrare»
   Il materiale sta in `demo-sale-riunioni/`, con scaletta da 8 minuti e versione da 3
-- **slide 30** — Graphify e llm-wiki: cosa fanno, come si integrano, stato di maturità
-- **slide 33** — link e QR code
-- **slide 34** — nome e contatto interno
+- **slide 37** — Graphify e llm-wiki: cosa fanno, come si integrano, stato di maturità
+- **slide 40** — link e QR code
+- **slide 41** — nome e contatto interno
 
 ## La slide da curare
 
 La **26** (il loop BMAD) è quella che regge il talk. Compare tre volte con lo stesso disegno
-e centro diverso: completa (26), con il buco del contesto mancante (28), col grafo che lo
-riempie (31). Il richiamo funziona perché il resto dell'immagine è identico — se ne modifichi
+e centro diverso: completa (26), con il buco del contesto mancante (35), col grafo che lo
+riempie (38). Il richiamo funziona perché il resto dell'immagine è identico — se ne modifichi
 una, modificale tutte e tre.
 
 Se puoi, costruiscila in build progressive: prima il ciclo, poi i quattro checkpoint che si
