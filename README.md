@@ -8,6 +8,7 @@ software. Pubblico aziendale, misto per competenza sull'AI.
 ```
 oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 40 slide)
 oltre-il-vibe-coding.pdf           export statico — non versionato, si rigenera
+CLAUDE.md                          come si lavora sul deck: convenzioni e trappole
 copione-demo.md                    il discorso da dire durante la demo, slide per slide
 demo-sale-riunioni/                il materiale su cui la demo e' costruita (README suo)
 assets/prompt-vibe-coding.png      lo screenshot del prompt (slide 8)
