@@ -34,7 +34,7 @@ Stato: 21 commit su `main`, working tree pulito, nessun remote.
     modalità editing
   </style>
 <body>
-  chrome fisso (particles, branding, chapter-mark, slide-nav, progress, counter, hints)
+  chrome fisso (particles, branding, chapter-mark, progress, counter)
   <svg> nascosto con i <defs> globali (marker della freccia del loop)
   <div class="deck">  41 × <div class="slide" data-slide="N" data-chapter="C">
   <script>  runtime: navigazione, note in console, editor inline

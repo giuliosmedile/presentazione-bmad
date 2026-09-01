@@ -166,16 +166,6 @@ html, body {
   position: fixed; bottom: 20px; right: 32px; font-size: 13px;
   font-weight: 600; color: var(--color-neutral-600); z-index: 100; font-variant-numeric: tabular-nums;
 }
-.nav-hints {
-  position: fixed; bottom: 20px; left: 32px; font-size: 12px;
-  color: var(--color-neutral-600); z-index: 100;
-}
-.nav-hints kbd {
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 24px; height: 22px; padding: 0 7px;
-  background: var(--color-surface); border: 1px solid var(--color-divider);
-  border-radius: 999px; font-size: 11px; font-family: var(--font-body); margin: 0 2px;
-}
 /* ===========================================
    TIPOGRAFIA
    =========================================== */
@@ -861,7 +851,7 @@ strong { font-weight: 700; color: var(--color-text); }
   .rainbow-line { margin: 10px 0; }
   .agenda-title { font-size: clamp(13px, 1.3vw, 17px); }
   .agenda-desc { font-size: clamp(10px, 1vw, 13px); }
-  .nav-hints, .branding { display: none; }
+  .branding { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1472,13 +1462,12 @@ body.editing [contenteditable="true"]:focus {
   </marker>
 </defs></svg>
 
-<!-- Chrome: pulviscolo, marchio, capitolo, avanzamento, contatore, aiuti -->
+<!-- Chrome: pulviscolo, marchio, capitolo, avanzamento, contatore -->
 <div class="particles" id="particles"></div>
 <div class="branding"><div class="branding-icon">V</div> Oltre il vibe coding</div>
 <div class="chapter-mark" id="chapterMark"></div>
 <div class="progress-bar" id="progress"></div>
 <div class="slide-counter" id="counter"></div>
-<div class="nav-hints"><span><kbd>←</kbd><kbd>→</kbd> naviga · <kbd>E</kbd> modifica</span></div>
 
 <!-- Controlli della modalità editing -->
 <div class="edit-hotzone"></div>
