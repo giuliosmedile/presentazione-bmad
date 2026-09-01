@@ -8,7 +8,8 @@ software. Pubblico aziendale, misto per competenza sull'AI.
 ```
 oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 40 slide)
 oltre-il-vibe-coding.pdf           export statico — non versionato, si rigenera
-demo-sale-riunioni/                il materiale per la slide Demo (ha un README suo)
+copione-demo.md                    il discorso da dire durante la demo, slide per slide
+demo-sale-riunioni/                il materiale su cui la demo e' costruita (README suo)
 assets/prompt-vibe-coding.png      lo screenshot del prompt (slide 8)
 assets/codice-senza-memoria.png    il codice con la costante misteriosa (slide 12)
 assets/analyst_mary.jpg            ritratto di Mary, Business Analyst (slide 16)
@@ -205,6 +206,9 @@ salienti sono già selezionati.
 | 31 | la code review | il diff `stato <> 'disdetta'` → `stato = 'attiva'` |
 | 32 | perché il checkpoint esiste | corretto per la story, sbagliato per il progetto |
 | 33 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
+
+Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
+parole vere, non appunti. Serve soprattutto per le 31-32, dove il ritmo conta.
 
 **Se devi tagliare**: tieni 31, 32 e 33. Sono le uniche che mostrano il processo *mentre
 intercetta qualcosa*, che è la tesi del talk. Le 27-30 si raccontano a voce in un minuto.
