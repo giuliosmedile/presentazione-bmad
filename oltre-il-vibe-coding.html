@@ -1840,14 +1840,41 @@ body.editing [contenteditable="true"]:focus {
 │   └── <span class="kw">bmad-agent-*/customize.toml</span>  <span class="comment">↳ persona e persistent_facts</span>
 └── <span class="kw">docs/</span>                            <span class="comment">↳ la conoscenza di dominio del progetto</span></div>
     </div>
-    <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);">Entra in code review come tutto il resto. Non serve ricordarsi la conversazione: basta <strong>riaprire il file</strong>.</p>
+    <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);">Entra in code review come tutto il resto. Non serve ricordarsi la conversazione: basta <strong>riaprire il file</strong> — vale per te fra un mese, e per il collega che lo apre oggi.</p>
     <script type="application/json" class="slide-notes">
-    {"title": "Come BMAD tiene memoria e decisioni", "script": "Domanda che vi state facendo: va bene, ma tutta questa roba dove finisce? Qui c'è il punto che secondo me distingue BMAD da una chat fatta bene. Primo: gli artefatti sono file nel repo, non messaggi. Si versionano, si diffano, si mettono in review — e l'architettura non scrive solo cosa avete deciso, ma anche cosa avete scartato e perché. Secondo: c'è un file di contesto di progetto che ogni agente carica quando si attiva, quindi le convenzioni non gliele ripetete ogni volta. Terzo: nella definizione di ogni agente potete inchiodare dei fatti persistenti, tipo «siamo AWS-only», e se li mettete lì non li ridite mai più. Quarto: ogni story si chiude scrivendo cosa è stato fatto davvero. Il risultato è che non dovete ricordarvi la conversazione: riaprite il file. Ed è per questo che il processo lo potete interrompere e riprendere.", "notes": ["Quattro posti dove la decisione si deposita: artefatti, contesto, fatti, story", "L'architettura registra anche le alternative scartate: è la parte che di solito si perde", "«Siamo AWS-only» scritto una volta nei persistent_facts, mai più ripetuto", "Il messaggio è: non serve ricordare la chat, si riapre il file", "NON anticipare il limite: la conoscenza presa fuori dal processo è il capitolo 04"]}
+    {"title": "Come BMAD tiene memoria e decisioni", "script": "Domanda che vi state facendo: va bene, ma tutta questa roba dove finisce? Qui c'è il punto che secondo me distingue BMAD da una chat fatta bene. Primo: gli artefatti sono file nel repo, non messaggi. Si versionano, si diffano, si mettono in review — e l'architettura non scrive solo cosa avete deciso, ma anche cosa avete scartato e perché. Secondo: c'è un file di contesto di progetto che ogni agente carica quando si attiva, quindi le convenzioni non gliele ripetete ogni volta. Terzo: nella definizione di ogni agente potete inchiodare dei fatti persistenti, tipo «siamo AWS-only», e se li mettete lì non li ridite mai più. Quarto: ogni story si chiude scrivendo cosa è stato fatto davvero. Il risultato è che non dovete ricordarvi la conversazione: riaprite il file. Ed è per questo che si condivide con tutto il team, non solo con l'agente dopo: in un team grande, pregno di processi, chiunque tocchi il progetto — oggi o fra sei mesi — parte dallo stesso file, non da una sintesi a memoria di qualcun altro.", "notes": ["Quattro posti dove la decisione si deposita: artefatti, contesto, fatti, story", "L'architettura registra anche le alternative scartate: è la parte che di solito si perde", "«Siamo AWS-only» scritto una volta nei persistent_facts, mai più ripetuto", "Il messaggio è: non serve ricordare la chat, si riapre il file", "Paga la promessa della 13: memoria condivisa fra le persone del team, non solo fra sessioni", "NON anticipare il limite: la conoscenza presa fuori dal processo è il capitolo 04"]}
     </script>
   </div>
 
-  <!-- ---- 15 · IDENTIKIT — MARY, BUSINESS ANALYST ---- -->
+  <!-- ---- 15 · MEMORIA CONDIVISA, LAVORO IN PARALLELO ---- -->
   <div class="slide" data-slide="15" data-chapter="3">
+    <p class="slide-tag anim-1">Lavoro in team</p>
+    <h2 class="anim-2">In parallelo, non in coda. Quando <span class="highlight-green">committi</span>, propaghi.</h2>
+    <div class="step-flow anim-3">
+      <div class="step-item bounce-1">
+        <div class="si-head"><span class="si-emoji">🌿</span><span class="si-who">Lavoro parallelo</span></div>
+        <p class="si-ask">Persone e agenti leggono la stessa memoria versionata, ognuno dal proprio branch: nessuno aspetta che l’altro finisca per iniziare.</p>
+        <p class="si-out">git branch</p>
+      </div>
+      <div class="step-item bounce-2">
+        <div class="si-head"><span class="si-emoji">💾</span><span class="si-who">Commit</span></div>
+        <p class="si-ask">Una decisione presa smette di essere una frase detta in call: diventa un diff, leggibile e datato, sul file che l’ha causata.</p>
+        <p class="si-out">git commit</p>
+      </div>
+      <div class="step-item bounce-3">
+        <div class="si-head"><span class="si-emoji">🔀</span><span class="si-who">Pull request</span></div>
+        <p class="si-ask">È il momento in cui la decisione si propaga: chi la rivede la eredita subito, chi fa merge la ritrova nel proprio checkout senza doverla chiedere.</p>
+        <p class="si-out">git merge</p>
+      </div>
+    </div>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);">Il team non si allinea in riunione: si allinea al prossimo <strong>pull</strong>.</p>
+    <script type="application/json" class="slide-notes">
+    {"title": "Memoria condivisa, lavoro in parallelo", "script": "Un effetto che non salta subito all'occhio: se la memoria è file versionati, il lavoro smette di essere seriale. Non dovete aspettare che qualcuno finisca di scrivere l'architettura per iniziare voi: leggete la stessa fonte, ognuno dal proprio branch. E quando una decisione è presa, non resta appesa a una call che qualcuno deve riassumere: diventa un commit, e quando aprite la PR quella decisione si propaga da sola a chi la rivede e a chi fa merge. In un team piccolo questo è comodo. In un team grande, pregno di processi — dove la PR è già il modo in cui le cose si validano — è la differenza fra un processo in più e uno che si aggancia a quello che c'è già.", "notes": ["Il lavoro diventa parallelo: stessa memoria, branch diversi, nessun blocco", "Il commit rende la decisione un diff, non una frase da ricordare", "La PR è il meccanismo di propagazione: chi rivede eredita, chi fa merge riceve", "Punto forte per team grandi: si aggancia al processo di review che esiste già, non ne aggiunge uno nuovo", "Segue subito dopo la 14: stesso argomento, ora l'angolo è il lavoro fra persone, non il singolo che riapre il file"]}
+    </script>
+  </div>
+
+  <!-- ---- 16 · IDENTIKIT — MARY, BUSINESS ANALYST ---- -->
+  <div class="slide" data-slide="16" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 1 di 5</p>
     <h2 class="anim-2">Mary — <span class="highlight-blue">Business Analyst</span></h2>
     <div class="idkit anim-3">
@@ -1883,8 +1910,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 16 · IDENTIKIT — JOHN, PRODUCT MANAGER ---- -->
-  <div class="slide" data-slide="16" data-chapter="3">
+  <!-- ---- 17 · IDENTIKIT — JOHN, PRODUCT MANAGER ---- -->
+  <div class="slide" data-slide="17" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 2 di 5</p>
     <h2 class="anim-2">John — <span class="highlight-blue">Product Manager</span></h2>
     <div class="idkit anim-3">
@@ -1920,8 +1947,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 17 · IDENTIKIT — WINSTON, SYSTEM ARCHITECT ---- -->
-  <div class="slide" data-slide="17" data-chapter="3">
+  <!-- ---- 18 · IDENTIKIT — WINSTON, SYSTEM ARCHITECT ---- -->
+  <div class="slide" data-slide="18" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 3 di 5</p>
     <h2 class="anim-2">Winston — <span class="highlight-green">System Architect</span></h2>
     <div class="idkit anim-3">
@@ -1957,8 +1984,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 18 · IDENTIKIT — AMELIA, SENIOR SOFTWARE ENGINEER ---- -->
-  <div class="slide" data-slide="18" data-chapter="3">
+  <!-- ---- 19 · IDENTIKIT — AMELIA, SENIOR SOFTWARE ENGINEER ---- -->
+  <div class="slide" data-slide="19" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 4 di 5</p>
     <h2 class="anim-2">Amelia — <span class="highlight-green">Senior Software Engineer</span></h2>
     <div class="idkit anim-3">
@@ -1994,8 +2021,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 19 · IDENTIKIT — SALLY, UX DESIGNER ---- -->
-  <div class="slide" data-slide="19" data-chapter="3">
+  <!-- ---- 20 · IDENTIKIT — SALLY, UX DESIGNER ---- -->
+  <div class="slide" data-slide="20" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 5 di 5</p>
     <h2 class="anim-2">Sally — <span class="highlight-purple">UX Designer</span></h2>
     <div class="idkit anim-3">
@@ -2031,8 +2058,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 20 · GLI AGENTI AL LAVORO INSIEME ---- -->
-  <div class="slide" data-slide="20" data-chapter="3">
+  <!-- ---- 21 · GLI AGENTI AL LAVORO INSIEME ---- -->
+  <div class="slide" data-slide="21" data-chapter="3">
     <p class="slide-tag anim-1">Tutti insieme</p>
     <h2 class="anim-2">Non cinque assistenti. Una <span class="highlight-green">catena di consegne</span>.</h2>
     <div class="image-frame anim-3 agent-group">
@@ -2066,12 +2093,12 @@ body.editing [contenteditable="true"]:focus {
     </div>
     <p class="subtitle anim-5 mt-16" style="font-size:clamp(12px,1.2vw,16px);">Un task troppo pulito non convince nessuno: scegline uno che si è sporcato per strada.</p>
     <script type="application/json" class="slide-notes">
-    {"title": "Gli agenti al lavoro insieme", "script": "Messi in fila, non sono cinque assistenti a cui chiedete cinque cose. Sono una catena, e quello che si passano non è una conversazione: è un documento. Mary passa il brief a John, John il PRD a Sally, Sally la spec a Winston, Winston l'architettura ad Amelia. Nessuno dei cinque tiene in testa tutto il contesto, e non serve: il contesto sta negli artefatti. Adesso vi faccio vedere come ci si parla davvero.", "notes": ["Quello che si passano è un documento, non una conversazione", "Nessun agente tiene tutto il contesto: lo tengono gli artefatti", "Si può interrompere e ripartire da un artefatto corretto", "Chiude gli identikit e apre le tre slide sul come si lavora"]}
+    {"title": "Gli agenti al lavoro insieme", "script": "Messi in fila, non sono cinque assistenti a cui chiedete cinque cose. Sono una catena, e quello che si passano non è una conversazione: è un documento. Mary passa il brief a John, John il PRD a Sally, Sally la spec a Winston, Winston l'architettura ad Amelia. Nessuno dei cinque tiene in testa tutto il contesto, e non serve: il contesto sta negli artefatti. E lo stesso documento non lo leggono solo loro: lo legge il collega che continua il lavoro, chi lo rivede in PR, chi arriva nel progetto dopo di voi — stessa fonte di verità per agenti e persone. Adesso vi faccio vedere come ci si parla davvero.", "notes": ["Quello che si passano è un documento, non una conversazione", "Nessun agente tiene tutto il contesto: lo tengono gli artefatti", "Il documento è condiviso anche fra le persone, non solo fra agenti — è l'asse team promesso alla 13", "Si può interrompere e ripartire da un artefatto corretto", "Chiude gli identikit e apre le tre slide sul come si lavora"]}
     </script>
   </div>
 
-  <!-- ---- 21 · COME SI PARLA CON UN AGENTE ---- -->
-  <div class="slide" data-slide="21" data-chapter="3">
+  <!-- ---- 22 · COME SI PARLA CON UN AGENTE ---- -->
+  <div class="slide" data-slide="22" data-chapter="3">
     <p class="slide-tag anim-1">L’invocazione</p>
     <h2 class="anim-2">Non un prompt gigante. Una <span class="highlight-green">conversazione con un menu</span>.</h2>
     <div class="code-window anim-3">
@@ -2102,8 +2129,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 22 · DALLA RICHIESTA AGLI ARTEFATTI ---- -->
-  <div class="slide" data-slide="22" data-chapter="3">
+  <!-- ---- 23 · DALLA RICHIESTA AGLI ARTEFATTI ---- -->
+  <div class="slide" data-slide="23" data-chapter="3">
     <p class="slide-tag anim-1">Dalla richiesta al piano</p>
     <h2 class="anim-2">La conversazione è usa e getta. I <span class="highlight-blue">documenti</span> no.</h2>
     <div class="step-flow anim-3">
@@ -2134,8 +2161,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 23 · IL LOOP DI SVILUPPO ---- -->
-  <div class="slide" data-slide="23" data-chapter="3">
+  <!-- ---- 24 · IL LOOP DI SVILUPPO ---- -->
+  <div class="slide" data-slide="24" data-chapter="3">
     <p class="slide-tag anim-1">Fase di implementazione</p>
     <h2 class="anim-2">Una story per giro. Il contesto <span class="highlight-green">non cresce</span>.</h2>
     <div class="step-flow anim-3">
@@ -2162,8 +2189,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 24 · IL LOOP DI SVILUPPO BMAD ---- -->
-  <div class="slide" data-slide="24" data-chapter="3">
+  <!-- ---- 25 · IL LOOP DI SVILUPPO BMAD ---- -->
+  <div class="slide" data-slide="25" data-chapter="3">
     <p class="slide-tag anim-1">La slide centrale</p>
     <h2 class="anim-2">Il loop di sviluppo, con i <span class="highlight-blue">checkpoint umani</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2222,8 +2249,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 25 · DEMO — IL CASO ---- -->
-  <div class="slide" data-slide="25" data-chapter="3">
+  <!-- ---- 26 · DEMO — IL CASO ---- -->
+  <div class="slide" data-slide="26" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; caso di esempio</p>
     <h2 class="anim-2">Sei sale. E non se ne trova <span class="highlight-orange">mai una</span>.</h2>
     <p class="subtitle anim-2" style="font-size:clamp(12px,1.2vw,16px);">Le sale si prenotano su Outlook e nessuno disdice. Il calendario dice pieno, le sale sono vuote.</p>
@@ -2250,8 +2277,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 26 · DEMO — IL MENU E I CODICI ---- -->
-  <div class="slide" data-slide="26" data-chapter="3">
+  <!-- ---- 27 · DEMO — IL MENU E I CODICI ---- -->
+  <div class="slide" data-slide="27" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 1 di 6</p>
     <h2 class="anim-2">Non scrivi un prompt. <span class="highlight-blue">Scegli una voce.</span></h2>
     <div class="term anim-3">
@@ -2284,8 +2311,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 27 · DEMO — CONTESTARE LA PREMESSA ---- -->
-  <div class="slide" data-slide="27" data-chapter="3">
+  <!-- ---- 28 · DEMO — CONTESTARE LA PREMESSA ---- -->
+  <div class="slide" data-slide="28" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 2 di 6</p>
     <h2 class="anim-2">Prima di costruire, <span class="highlight-blue">contesta la premessa</span></h2>
     <div class="term anim-3">
@@ -2319,8 +2346,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 28 · DEMO — IL CHECKPOINT UMANO ---- -->
-  <div class="slide" data-slide="28" data-chapter="3">
+  <!-- ---- 29 · DEMO — IL CHECKPOINT UMANO ---- -->
+  <div class="slide" data-slide="29" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 3 di 6</p>
     <h2 class="anim-2">Il checkpoint umano, <span class="highlight-orange">per intero</span></h2>
     <div class="term anim-3">
@@ -2354,8 +2381,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 29 · DEMO — COSA RESTA DOPO ---- -->
-  <div class="slide" data-slide="29" data-chapter="3">
+  <!-- ---- 30 · DEMO — COSA RESTA DOPO ---- -->
+  <div class="slide" data-slide="30" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 4 di 6</p>
     <h2 class="anim-2">Cosa resta dopo: <span class="highlight-green">i file</span>, non la chat</h2>
     <div class="term anim-3">
@@ -2387,8 +2414,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 30 · DEMO — LA CODE REVIEW ---- -->
-  <div class="slide" data-slide="30" data-chapter="3">
+  <!-- ---- 31 · DEMO — LA CODE REVIEW ---- -->
+  <div class="slide" data-slide="31" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 5 di 6 &middot; il pezzo forte</p>
     <h2 class="anim-2">Il rilievo che <span class="highlight-orange">nessun test</span> avrebbe preso</h2>
     <div class="term anim-3">
@@ -2421,8 +2448,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 31 · DEMO — PERCHÉ IL CHECKPOINT ESISTE ---- -->
-  <div class="slide" data-slide="31" data-chapter="3">
+  <!-- ---- 32 · DEMO — PERCHÉ IL CHECKPOINT ESISTE ---- -->
+  <div class="slide" data-slide="32" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 6 di 6</p>
     <h2 class="anim-2">Corretto per la story. <span class="highlight-red">Sbagliato per il progetto.</span></h2>
     <div class="term anim-3">
@@ -2459,8 +2486,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 32 · DEMO — PITFALL E STRATEGIE ---- -->
-  <div class="slide" data-slide="32" data-chapter="3">
+  <!-- ---- 33 · DEMO — PITFALL E STRATEGIE ---- -->
+  <div class="slide" data-slide="33" data-chapter="3">
     <p class="slide-tag anim-1">Da portarsi a casa</p>
     <h2 class="anim-2">Pitfall e <span class="highlight-green">strategie</span></h2>
     <div class="pf-grid anim-3">
@@ -2491,8 +2518,8 @@ body.editing [contenteditable="true"]:focus {
   </div>
 
   <!-- ══════════ 04 · TRASFERIRE CONOSCENZA ══════════ -->
-  <!-- ---- 33 · IL LIMITE CHE RESTA ---- -->
-  <div class="slide" data-slide="33" data-chapter="4">
+  <!-- ---- 34 · IL LIMITE CHE RESTA ---- -->
+  <div class="slide" data-slide="34" data-chapter="4">
     <p class="slide-tag anim-1">Il limite che resta</p>
     <h2 class="anim-2">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2524,8 +2551,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 34 · MEMORIA A GRAFO, L'IDEA ---- -->
-  <div class="slide" data-slide="34" data-chapter="4">
+  <!-- ---- 35 · MEMORIA A GRAFO, L'IDEA ---- -->
+  <div class="slide" data-slide="35" data-chapter="4">
     <p class="slide-tag anim-1">L’idea</p>
     <h2 class="anim-2">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
     <div class="duo anim-3">
@@ -2562,8 +2589,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 35 · GLI STRUMENTI ---- -->
-  <div class="slide" data-slide="35" data-chapter="4">
+  <!-- ---- 36 · GLI STRUMENTI ---- -->
+  <div class="slide" data-slide="36" data-chapter="4">
     <p class="slide-tag anim-1">Strumenti</p>
     <h2 class="anim-2">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
     <div class="tri-grid anim-3">
@@ -2596,8 +2623,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 36 · INTEGRAZIONE NEL LOOP ---- -->
-  <div class="slide" data-slide="36" data-chapter="4">
+  <!-- ---- 37 · INTEGRAZIONE NEL LOOP ---- -->
+  <div class="slide" data-slide="37" data-chapter="4">
     <p class="slide-tag anim-1">Integrazione</p>
     <h2 class="anim-2">Il buco, <span class="highlight-green">riempito</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2630,24 +2657,24 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   </div>
 
   <!-- ══════════ 05 · CHIUSURA ══════════ -->
-  <!-- ---- 37 · RICAPITOLANDO ---- -->
-  <div class="slide" data-slide="37" data-chapter="5">
+  <!-- ---- 38 · RICAPITOLANDO ---- -->
+  <div class="slide" data-slide="38" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:20%;right:5%;"></div>
     <p class="slide-tag anim-1">Da portare a casa</p>
     <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;">Quattro cose</h2>
     <div class="takeaways anim-3">
-      <div class="takeaway"><span class="tw-num">01</span><span class="tw-text">●</span></div>
+      <div class="takeaway"><span class="tw-num">01</span><span class="tw-text">La memoria versionata non è solo per gli agenti: è condivisa con tutto il team</span></div>
       <div class="takeaway"><span class="tw-num">02</span><span class="tw-text">Prendi <strong>un</strong> task della prossima sprint e mettici <strong>un solo</strong> checkpoint umano</span></div>
       <div class="takeaway"><span class="tw-num">03</span><span class="tw-text">●</span></div>
       <div class="takeaway"><span class="tw-num">04</span><span class="tw-text">Documentazione BMAD: [link]</span></div>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title":"Ricapitolando","script":"Quattro cose. Il problema non è l'AI, è l'assenza di processo. Il debito cognitivo è invisibile finché non serve, e quando serve è tardi. Struttura e contesto sono due problemi distinti e servono entrambi: BMAD risolve il primo, la memoria a grafo il secondo. E soprattutto: si può partire in piccolo. Un checkpoint umano messo nel punto giusto è già molto meglio di zero.","notes":["Il problema è l'assenza di processo, non lo strumento","Il debito cognitivo è invisibile fino al momento sbagliato","Struttura e contesto: due problemi distinti, entrambi necessari","Si può iniziare in piccolo","Lasciare questa slide proiettata durante il Q&A"]}
+    {"title":"Ricapitolando","script":"Quattro cose. Il problema non è l'AI, è l'assenza di processo. Il debito cognitivo è invisibile finché non serve, e quando serve è tardi. Struttura e contesto sono due problemi distinti e servono entrambi: BMAD risolve il primo, la memoria a grafo il secondo. La stessa memoria versionata che allinea gli agenti allinea anche le persone: in un team grande, pregno di processi, è la differenza fra ricostruire ogni volta e ritrovare lo stato. E soprattutto: si può partire in piccolo. Un checkpoint umano messo nel punto giusto è già molto meglio di zero.","notes":["Il problema è l'assenza di processo, non lo strumento","Il debito cognitivo è invisibile fino al momento sbagliato","Struttura e contesto: due problemi distinti, entrambi necessari","01: la memoria condivisa è anche fra persone, non solo agenti — chiude la promessa della 13","Si può iniziare in piccolo","Lasciare questa slide proiettata durante il Q&A"]}
     </script>
   </div>
 
-  <!-- ---- 38 · RISORSE E PROSSIMI PASSI ---- -->
-  <div class="slide" data-slide="38" data-chapter="5">
+  <!-- ---- 39 · RISORSE E PROSSIMI PASSI ---- -->
+  <div class="slide" data-slide="39" data-chapter="5">
     <div class="glow-blob glow-green" style="bottom:15%;left:15%;"></div>
     <h2 class="anim-1">Il primo passo, piccolo</h2>
     <div class="cta-box anim-3">
@@ -2668,8 +2695,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 39 · DOMANDE ---- -->
-  <div class="slide" data-slide="39" data-chapter="5">
+  <!-- ---- 40 · DOMANDE ---- -->
+  <div class="slide" data-slide="40" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:30%;left:30%;"></div>
     <div class="glow-blob glow-green" style="bottom:20%;right:20%;"></div>
     <h1 class="anim-2">Domande</h1>
@@ -2845,7 +2872,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v6',
+  storageKey: 'oltre-il-vibe-coding-edits-v7',
   fields: [],
 
   init: function() {
