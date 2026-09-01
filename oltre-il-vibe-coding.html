@@ -292,6 +292,7 @@ strong { font-weight: 700; color: var(--color-text); }
 .slide.active .bounce-2 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.30s both; }
 .slide.active .bounce-3 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.42s both; }
 .slide.active .bounce-4 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.54s both; }
+.slide.active .bounce-5 { animation: bounceIn 0.65s cubic-bezier(0.34,1.4,0.64,1) 0.66s both; }
 .slide.active .slide-l { animation: slideInLeft 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
 .slide.active .slide-r { animation: slideInRight 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
 .slide.active .pop-1 { animation: countPop 0.6s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
@@ -713,6 +714,22 @@ strong { font-weight: 700; color: var(--color-text); }
 }
 .cb-detail { font-size: clamp(13px, 1.25vw, 18px); line-height: 1.6; color: var(--color-neutral-700); max-width: 680px; margin-top: clamp(6px, 1vh, 12px); }
 
+/* — Formazione agenti BMAD: teaser prima degli identikit — */
+.agent-lineup { display: flex; flex-wrap: wrap; gap: clamp(10px, 1.6vw, 20px); width: 100%; max-width: 900px; margin-top: clamp(16px, 2.6vh, 28px); }
+.agent-chip {
+  flex: 1 1 140px; text-align: center;
+  background: var(--color-surface); border: 1px solid var(--color-divider);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+  padding: clamp(12px, 1.6vw, 18px) clamp(8px, 1.2vw, 14px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.agent-chip:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--color-accent-2-300); }
+.agent-chip .ac-icon { display: block; font-size: clamp(22px, 2.8vh, 30px); margin-bottom: clamp(4px, 0.8vh, 8px); }
+.agent-chip .ac-name { display: block; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(14px, 1.4vw, 19px); color: var(--color-text); }
+.agent-chip .ac-role { display: block; font-size: clamp(10px, 0.95vw, 13px); color: var(--color-neutral-700); margin-top: 2px; }
+.agent-lineup-caption { width: 100%; font-size: clamp(11px, 1vw, 14px); color: var(--color-neutral-700); margin-top: clamp(8px, 1.2vh, 14px); font-style: italic; }
+@media (max-width: 700px) { .agent-chip { flex-basis: calc(50% - 10px); } }
+
 /* ===========================================
    GRIGLIA AGENDA (slide 4)
    =========================================== */
@@ -1094,7 +1111,7 @@ body.editing [contenteditable="true"]:focus {
 .big-figure .bf-source { font-family: var(--font-mono); font-size: clamp(10px, 0.95vw, 13px); color: var(--color-neutral-600); margin-top: clamp(8px, 1.2vh, 14px); }
 
 /* — Tre colonne con barra di autonomia crescente — */
-.tri-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 1.6vw, 22px); width: 100%; max-width: 1020px; margin-top: clamp(14px, 2.6vh, 30px); }
+.tri-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(14px, 1.8vw, 26px); width: 100%; max-width: 1180px; margin-top: clamp(14px, 2.6vh, 30px); }
 @media (max-width: 700px) { .tri-grid { grid-template-columns: 1fr; } }
 .tri-card {
   background: var(--color-surface); border: 1px solid var(--color-divider);
@@ -1107,6 +1124,14 @@ body.editing [contenteditable="true"]:focus {
 .tri-card .tc-icon .ic { stroke-width: 2.4; }
 .tri-card .tc-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(17px, 1.6vw, 24px); margin-bottom: 4px; }
 .tri-card .tc-who { font-size: clamp(11px, 1.05vw, 14px); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent-700); margin-bottom: clamp(6px, 1vh, 12px); }
+.tri-card .tc-image {
+  margin: clamp(8px, 1.2vh, 14px) 0 0; border-radius: var(--radius-md); overflow: hidden;
+  border: 1px solid var(--color-divider); box-shadow: var(--shadow-sm);
+  background: #14151a; display: flex; align-items: center; justify-content: center;
+  height: clamp(140px, 24vh, 240px);
+}
+.tri-card .tc-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.tri-card .tc-image.tc-image-cover img { object-fit: cover; object-position: top; }
 .tri-card .tc-desc { font-size: clamp(12px, 1.15vw, 16px); color: var(--color-neutral-700); line-height: 1.5; }
 .tri-card .tc-foot { font-family: var(--font-mono); font-size: clamp(10px, 0.95vw, 13px); color: var(--color-neutral-700); margin-top: clamp(8px, 1.2vh, 14px); background: var(--color-neutral-100); padding: 5px 12px; border-radius: 999px; display: inline-block; }
 
@@ -1590,22 +1615,19 @@ body.editing [contenteditable="true"]:focus {
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M7 10h.01"></path><path d="M11 10h.01"></path><path d="M15 10h.01"></path><path d="M8 14h8"></path></svg></div>
         <div class="tc-title">Autocomplete</div>
         <div class="tc-who">decidi tu</div>
-        <div class="tc-desc">Tu scrivi, il modello completa la riga. Il controllo non lascia mai le tue mani: accetti o ignori, carattere per carattere.</div>
-        <div class="tc-foot">suggerimento inline</div>
+        <div class="tc-image"><img src="assets/ai-autocomplete.png" alt="Suggerimento inline in un editor: il modello completa la riga con Tab to complete." loading="lazy"></div>
       </div>
       <div class="tri-card bounce-2">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8"></path><path d="M8 13h5"></path></svg></div>
         <div class="tc-title">Chat</div>
         <div class="tc-who">chiedi tu</div>
-        <div class="tc-desc">Poni una domanda, ottieni una proposta. Il modello non tocca niente: sei tu a portare il contesto e a incollare il risultato.</div>
-        <div class="tc-foot">tu fai da ponte</div>
+        <div class="tc-image"><img src="assets/ai-chat.png" alt="Chat con un assistente AI: si incolla uno stack trace e si chiede perché l'app non parte." loading="lazy"></div>
       </div>
       <div class="tri-card bounce-3">
         <div class="tc-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="12" rx="2"></rect><path d="M12 4v4"></path><circle cx="12" cy="3" r="1"></circle><path d="M9 13h.01"></path><path d="M15 13h.01"></path><path d="M9 17h6"></path></svg></div>
         <div class="tc-title">Agenti</div>
         <div class="tc-who">dichiari l’obiettivo</div>
-        <div class="tc-desc">Dici dove vuoi arrivare. Il modello pianifica, apre file, esegue comandi, valuta l’esito e riprova. Da solo.</div>
-        <div class="tc-foot">passi multipli</div>
+        <div class="tc-image tc-image-cover"><img src="assets/ai-agent.png" alt="Terminale di un agente AI che pianifica ed esegue passi da solo, come un recap di commit recenti." loading="lazy"></div>
       </div>
     </div>
     <div class="autonomy-bar anim-4">
@@ -1798,8 +1820,28 @@ body.editing [contenteditable="true"]:focus {
   </div>
 
   <!-- ══════════ 03 · BMAD ══════════ -->
-  <!-- ---- 14 · COME BMAD TIENE MEMORIA E DECISIONI ---- -->
+  <!-- ---- 14 · GLI AGENTI BMAD SONO PERSONE ---- -->
   <div class="slide" data-slide="14" data-chapter="3">
+    <div class="cb-wrap anim-3">
+      <p class="slide-tag anim-1">Prima degli identikit</p>
+      <blockquote class="cb-keyquote anim-2">Non sono tool. Sono <span class="highlight-green">persone</span> a tua disposizione.</blockquote>
+      <p class="cb-detail anim-3">Ogni agente BMAD ha un nome, un ruolo e dei principi: non un comando da imparare a memoria. Parli con Mary come parleresti con un’analista, non con un flag da riga di comando — ed è proprio questo <span class="cb-accent">a rendere lo strumento più facile da usare</span>, non più complicato.</p>
+    </div>
+    <div class="agent-lineup anim-4">
+      <div class="agent-chip bounce-1"><span class="ac-icon">📊</span><span class="ac-name">Mary</span><span class="ac-role">Business Analyst</span></div>
+      <div class="agent-chip bounce-2"><span class="ac-icon">📋</span><span class="ac-name">John</span><span class="ac-role">Product Manager</span></div>
+      <div class="agent-chip bounce-3"><span class="ac-icon">🏗️</span><span class="ac-name">Winston</span><span class="ac-role">System Architect</span></div>
+      <div class="agent-chip bounce-4"><span class="ac-icon">💻</span><span class="ac-name">Amelia</span><span class="ac-role">Senior Software Engineer</span></div>
+      <div class="agent-chip bounce-5"><span class="ac-icon">🎨</span><span class="ac-name">Sally</span><span class="ac-role">UX Designer</span></div>
+    </div>
+    <p class="agent-lineup-caption anim-5">Li conosci uno per uno nelle prossime cinque slide.</p>
+    <script type="application/json" class="slide-notes">
+    {"title": "Gli agenti BMAD sono persone", "script": "Prima di entrare negli identikit, una premessa che vi cambia il modo di guardarli. Questi non sono tool nel senso in cui lo è un linter o un formattatore: sono persone a vostra disposizione. Hanno un nome, un ruolo, dei principi che li guidano. E questo non è vezzo estetico: è un'interfaccia. Parlate con Mary come parlereste con un'analista vera, non con un flag da riga di comando, e questo rende lo strumento più facile da usare, non più complicato. Nelle prossime cinque slide li conoscete uno per uno.", "notes": ["Punto di forza del modello BMAD: gli agenti come persone, non comandi", "Nome, ruolo e principi sono un'interfaccia, non un vezzo", "Parlare con un ruolo è più naturale che imparare una sintassi", "Teaser: cinque identikit in arrivo, uno per slide"]}
+    </script>
+  </div>
+
+  <!-- ---- 15 · COME BMAD TIENE MEMORIA E DECISIONI ---- -->
+  <div class="slide" data-slide="15" data-chapter="3">
     <p class="slide-tag anim-1">Memoria e decisioni</p>
     <h2 class="anim-2">Le decisioni non restano in chat. Restano <span class="highlight-blue">nel repo</span>.</h2>
     <div class="step-flow anim-3">
@@ -1846,8 +1888,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 15 · MEMORIA CONDIVISA, LAVORO IN PARALLELO ---- -->
-  <div class="slide" data-slide="15" data-chapter="3">
+  <!-- ---- 16 · MEMORIA CONDIVISA, LAVORO IN PARALLELO ---- -->
+  <div class="slide" data-slide="16" data-chapter="3">
     <p class="slide-tag anim-1">Lavoro in team</p>
     <h2 class="anim-2">In parallelo, non in coda. Quando <span class="highlight-green">committi</span>, propaghi.</h2>
     <div class="step-flow anim-3">
@@ -1873,8 +1915,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 16 · IDENTIKIT — MARY, BUSINESS ANALYST ---- -->
-  <div class="slide" data-slide="16" data-chapter="3">
+  <!-- ---- 17 · IDENTIKIT — MARY, BUSINESS ANALYST ---- -->
+  <div class="slide" data-slide="17" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 1 di 5</p>
     <h2 class="anim-2">Mary — <span class="highlight-blue">Business Analyst</span></h2>
     <div class="idkit anim-3">
@@ -1910,8 +1952,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 17 · IDENTIKIT — JOHN, PRODUCT MANAGER ---- -->
-  <div class="slide" data-slide="17" data-chapter="3">
+  <!-- ---- 18 · IDENTIKIT — JOHN, PRODUCT MANAGER ---- -->
+  <div class="slide" data-slide="18" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 2 di 5</p>
     <h2 class="anim-2">John — <span class="highlight-blue">Product Manager</span></h2>
     <div class="idkit anim-3">
@@ -1947,8 +1989,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 18 · IDENTIKIT — WINSTON, SYSTEM ARCHITECT ---- -->
-  <div class="slide" data-slide="18" data-chapter="3">
+  <!-- ---- 19 · IDENTIKIT — WINSTON, SYSTEM ARCHITECT ---- -->
+  <div class="slide" data-slide="19" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 3 di 5</p>
     <h2 class="anim-2">Winston — <span class="highlight-green">System Architect</span></h2>
     <div class="idkit anim-3">
@@ -1984,8 +2026,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 19 · IDENTIKIT — AMELIA, SENIOR SOFTWARE ENGINEER ---- -->
-  <div class="slide" data-slide="19" data-chapter="3">
+  <!-- ---- 20 · IDENTIKIT — AMELIA, SENIOR SOFTWARE ENGINEER ---- -->
+  <div class="slide" data-slide="20" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 4 di 5</p>
     <h2 class="anim-2">Amelia — <span class="highlight-green">Senior Software Engineer</span></h2>
     <div class="idkit anim-3">
@@ -2021,8 +2063,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 20 · IDENTIKIT — SALLY, UX DESIGNER ---- -->
-  <div class="slide" data-slide="20" data-chapter="3">
+  <!-- ---- 21 · IDENTIKIT — SALLY, UX DESIGNER ---- -->
+  <div class="slide" data-slide="21" data-chapter="3">
     <p class="slide-tag anim-1">Identikit — 5 di 5</p>
     <h2 class="anim-2">Sally — <span class="highlight-purple">UX Designer</span></h2>
     <div class="idkit anim-3">
@@ -2058,8 +2100,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 21 · GLI AGENTI AL LAVORO INSIEME ---- -->
-  <div class="slide" data-slide="21" data-chapter="3">
+  <!-- ---- 22 · GLI AGENTI AL LAVORO INSIEME ---- -->
+  <div class="slide" data-slide="22" data-chapter="3">
     <p class="slide-tag anim-1">Tutti insieme</p>
     <h2 class="anim-2">Non cinque assistenti. Una <span class="highlight-green">catena di consegne</span>.</h2>
     <div class="image-frame anim-3 agent-group">
@@ -2097,8 +2139,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 22 · COME SI PARLA CON UN AGENTE ---- -->
-  <div class="slide" data-slide="22" data-chapter="3">
+  <!-- ---- 23 · COME SI PARLA CON UN AGENTE ---- -->
+  <div class="slide" data-slide="23" data-chapter="3">
     <p class="slide-tag anim-1">L’invocazione</p>
     <h2 class="anim-2">Non un prompt gigante. Una <span class="highlight-green">conversazione con un menu</span>.</h2>
     <div class="code-window anim-3">
@@ -2129,8 +2171,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 23 · DALLA RICHIESTA AGLI ARTEFATTI ---- -->
-  <div class="slide" data-slide="23" data-chapter="3">
+  <!-- ---- 24 · DALLA RICHIESTA AGLI ARTEFATTI ---- -->
+  <div class="slide" data-slide="24" data-chapter="3">
     <p class="slide-tag anim-1">Dalla richiesta al piano</p>
     <h2 class="anim-2">La conversazione è usa e getta. I <span class="highlight-blue">documenti</span> no.</h2>
     <div class="step-flow anim-3">
@@ -2161,8 +2203,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 24 · IL LOOP DI SVILUPPO ---- -->
-  <div class="slide" data-slide="24" data-chapter="3">
+  <!-- ---- 25 · IL LOOP DI SVILUPPO ---- -->
+  <div class="slide" data-slide="25" data-chapter="3">
     <p class="slide-tag anim-1">Fase di implementazione</p>
     <h2 class="anim-2">Una story per giro. Il contesto <span class="highlight-green">non cresce</span>.</h2>
     <div class="step-flow anim-3">
@@ -2189,8 +2231,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 25 · IL LOOP DI SVILUPPO BMAD ---- -->
-  <div class="slide" data-slide="25" data-chapter="3">
+  <!-- ---- 26 · IL LOOP DI SVILUPPO BMAD ---- -->
+  <div class="slide" data-slide="26" data-chapter="3">
     <p class="slide-tag anim-1">La slide centrale</p>
     <h2 class="anim-2">Il loop di sviluppo, con i <span class="highlight-blue">checkpoint umani</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2249,8 +2291,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 26 · DEMO — IL CASO ---- -->
-  <div class="slide" data-slide="26" data-chapter="3">
+  <!-- ---- 27 · DEMO — IL CASO ---- -->
+  <div class="slide" data-slide="27" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; caso di esempio</p>
     <h2 class="anim-2">Sei sale. E non se ne trova <span class="highlight-orange">mai una</span>.</h2>
     <p class="subtitle anim-2" style="font-size:clamp(12px,1.2vw,16px);">Le sale si prenotano su Outlook e nessuno disdice. Il calendario dice pieno, le sale sono vuote.</p>
@@ -2277,8 +2319,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 27 · DEMO — IL MENU E I CODICI ---- -->
-  <div class="slide" data-slide="27" data-chapter="3">
+  <!-- ---- 28 · DEMO — IL MENU E I CODICI ---- -->
+  <div class="slide" data-slide="28" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 1 di 6</p>
     <h2 class="anim-2">Non scrivi un prompt. <span class="highlight-blue">Scegli una voce.</span></h2>
     <div class="term anim-3">
@@ -2311,8 +2353,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 28 · DEMO — CONTESTARE LA PREMESSA ---- -->
-  <div class="slide" data-slide="28" data-chapter="3">
+  <!-- ---- 29 · DEMO — CONTESTARE LA PREMESSA ---- -->
+  <div class="slide" data-slide="29" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 2 di 6</p>
     <h2 class="anim-2">Prima di costruire, <span class="highlight-blue">contesta la premessa</span></h2>
     <div class="term anim-3">
@@ -2346,8 +2388,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 29 · DEMO — IL CHECKPOINT UMANO ---- -->
-  <div class="slide" data-slide="29" data-chapter="3">
+  <!-- ---- 30 · DEMO — IL CHECKPOINT UMANO ---- -->
+  <div class="slide" data-slide="30" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 3 di 6</p>
     <h2 class="anim-2">Il checkpoint umano, <span class="highlight-orange">per intero</span></h2>
     <div class="term anim-3">
@@ -2381,8 +2423,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 30 · DEMO — COSA RESTA DOPO ---- -->
-  <div class="slide" data-slide="30" data-chapter="3">
+  <!-- ---- 31 · DEMO — COSA RESTA DOPO ---- -->
+  <div class="slide" data-slide="31" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 4 di 6</p>
     <h2 class="anim-2">Cosa resta dopo: <span class="highlight-green">i file</span>, non la chat</h2>
     <div class="term anim-3">
@@ -2414,8 +2456,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 31 · DEMO — LA CODE REVIEW ---- -->
-  <div class="slide" data-slide="31" data-chapter="3">
+  <!-- ---- 32 · DEMO — LA CODE REVIEW ---- -->
+  <div class="slide" data-slide="32" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 5 di 6 &middot; il pezzo forte</p>
     <h2 class="anim-2">Il rilievo che <span class="highlight-orange">nessun test</span> avrebbe preso</h2>
     <div class="term anim-3">
@@ -2448,8 +2490,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 32 · DEMO — PERCHÉ IL CHECKPOINT ESISTE ---- -->
-  <div class="slide" data-slide="32" data-chapter="3">
+  <!-- ---- 33 · DEMO — PERCHÉ IL CHECKPOINT ESISTE ---- -->
+  <div class="slide" data-slide="33" data-chapter="3">
     <p class="slide-tag anim-1">Demo &mdash; 6 di 6</p>
     <h2 class="anim-2">Corretto per la story. <span class="highlight-red">Sbagliato per il progetto.</span></h2>
     <div class="term anim-3">
@@ -2486,8 +2528,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 33 · DEMO — PITFALL E STRATEGIE ---- -->
-  <div class="slide" data-slide="33" data-chapter="3">
+  <!-- ---- 34 · DEMO — PITFALL E STRATEGIE ---- -->
+  <div class="slide" data-slide="34" data-chapter="3">
     <p class="slide-tag anim-1">Da portarsi a casa</p>
     <h2 class="anim-2">Pitfall e <span class="highlight-green">strategie</span></h2>
     <div class="pf-grid anim-3">
@@ -2518,8 +2560,8 @@ body.editing [contenteditable="true"]:focus {
   </div>
 
   <!-- ══════════ 04 · TRASFERIRE CONOSCENZA ══════════ -->
-  <!-- ---- 34 · IL LIMITE CHE RESTA ---- -->
-  <div class="slide" data-slide="34" data-chapter="4">
+  <!-- ---- 35 · IL LIMITE CHE RESTA ---- -->
+  <div class="slide" data-slide="35" data-chapter="4">
     <p class="slide-tag anim-1">Il limite che resta</p>
     <h2 class="anim-2">Struttura sì. <span class="highlight-red">Conoscenza no.</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2551,8 +2593,8 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 35 · MEMORIA A GRAFO, L'IDEA ---- -->
-  <div class="slide" data-slide="35" data-chapter="4">
+  <!-- ---- 36 · MEMORIA A GRAFO, L'IDEA ---- -->
+  <div class="slide" data-slide="36" data-chapter="4">
     <p class="slide-tag anim-1">L’idea</p>
     <h2 class="anim-2">Perché il <span class="highlight-green">grafo</span> batte il contesto piatto</h2>
     <div class="duo anim-3">
@@ -2589,8 +2631,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 36 · GLI STRUMENTI ---- -->
-  <div class="slide" data-slide="36" data-chapter="4">
+  <!-- ---- 37 · GLI STRUMENTI ---- -->
+  <div class="slide" data-slide="37" data-chapter="4">
     <p class="slide-tag anim-1">Strumenti</p>
     <h2 class="anim-2">Graphify, llm-wiki e le <span class="highlight-blue">alternative</span></h2>
     <div class="tri-grid anim-3">
@@ -2623,8 +2665,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 37 · INTEGRAZIONE NEL LOOP ---- -->
-  <div class="slide" data-slide="37" data-chapter="4">
+  <!-- ---- 38 · INTEGRAZIONE NEL LOOP ---- -->
+  <div class="slide" data-slide="38" data-chapter="4">
     <p class="slide-tag anim-1">Integrazione</p>
     <h2 class="anim-2">Il buco, <span class="highlight-green">riempito</span></h2>
     <div class="loop-diagram quad anim-3">
@@ -2657,8 +2699,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   </div>
 
   <!-- ══════════ 05 · CHIUSURA ══════════ -->
-  <!-- ---- 38 · RICAPITOLANDO ---- -->
-  <div class="slide" data-slide="38" data-chapter="5">
+  <!-- ---- 39 · RICAPITOLANDO ---- -->
+  <div class="slide" data-slide="39" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:20%;right:5%;"></div>
     <p class="slide-tag anim-1">Da portare a casa</p>
     <h2 class="anim-2" style="text-align:left;align-self:flex-start;max-width:900px;">Quattro cose</h2>
@@ -2673,8 +2715,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 39 · RISORSE E PROSSIMI PASSI ---- -->
-  <div class="slide" data-slide="39" data-chapter="5">
+  <!-- ---- 40 · RISORSE E PROSSIMI PASSI ---- -->
+  <div class="slide" data-slide="40" data-chapter="5">
     <div class="glow-blob glow-green" style="bottom:15%;left:15%;"></div>
     <h2 class="anim-1">Il primo passo, piccolo</h2>
     <div class="cta-box anim-3">
@@ -2695,8 +2737,8 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     </script>
   </div>
 
-  <!-- ---- 40 · DOMANDE ---- -->
-  <div class="slide" data-slide="40" data-chapter="5">
+  <!-- ---- 41 · DOMANDE ---- -->
+  <div class="slide" data-slide="41" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:30%;left:30%;"></div>
     <div class="glow-blob glow-green" style="bottom:20%;right:20%;"></div>
     <h1 class="anim-2">Domande</h1>
@@ -2872,7 +2914,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v7',
+  storageKey: 'oltre-il-vibe-coding-edits-v9',
   fields: [],
 
   init: function() {
