@@ -1197,6 +1197,31 @@ body.editing [contenteditable="true"]:focus {
 /* Didascalia sotto una slide immagine: senza margine si incolla al bordo della foto. */
 .image-frame + .subtitle { margin-top: clamp(10px, 1.6vh, 18px); }
 
+/* — Flusso ufficiale (Full Method): passi con freccia, gruppo che si ripete a parte — */
+.fm-flow { display: flex; align-items: center; flex-wrap: wrap; gap: clamp(8px, 1.1vw, 16px); width: 100%; max-width: 1120px; margin-top: clamp(22px, 4vh, 42px); }
+.fm-box {
+  flex: none; background: var(--color-neutral-900); color: var(--color-bg);
+  border-radius: var(--radius-md); padding: clamp(10px, 1.4vw, 18px) clamp(14px, 1.8vw, 22px);
+  font-weight: 700; font-size: clamp(12px, 1.15vw, 16px); white-space: nowrap; box-shadow: var(--shadow-sm);
+}
+.fm-box.muted { background: var(--color-neutral-700); font-family: var(--font-mono); font-weight: 500; font-size: clamp(11px, 1.05vw, 14px); }
+.fm-arrow { flex: none; display: flex; align-items: center; color: var(--color-neutral-500); }
+.fm-arrow .ic { width: clamp(16px, 1.6vw, 22px); height: clamp(16px, 1.6vw, 22px); }
+.fm-loop-group {
+  position: relative; flex: none; display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.2vh, 14px);
+  border: 1.5px dashed var(--color-accent); border-radius: var(--radius-md);
+  padding: clamp(24px, 3.6vh, 34px) clamp(14px, 1.8vw, 20px) clamp(14px, 2vh, 20px);
+}
+.fm-loop-label {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%); background: var(--color-bg);
+  padding: 0 10px; font-family: var(--font-mono); font-size: clamp(9px, 0.85vw, 12px); font-weight: 700;
+  letter-spacing: 0.05em; color: var(--color-accent-700); white-space: nowrap;
+}
+.fm-loop-row { display: flex; align-items: center; gap: clamp(6px, 0.9vw, 12px); }
+.fm-loop-arc { width: 76%; height: 30px; margin-top: -8px; overflow: visible; }
+.fm-loop-arc path { fill: none; stroke: var(--color-accent-2-600); stroke-width: 2.4; stroke-linecap: round; }
+@media (max-width: 760px) { .fm-flow { flex-direction: column; align-items: stretch; } .fm-arrow { transform: rotate(90deg); } }
+
 /* — Matrice agenti per skill — */
 .matrix { width: 100%; max-width: 900px; margin-top: clamp(14px, 2.4vh, 28px); overflow: hidden; border-radius: var(--radius-card); border: 1px solid var(--color-divider); background: var(--color-surface); box-shadow: var(--shadow-sm); }
 .matrix table { width: 100%; border-collapse: collapse; font-size: clamp(11px, 1.1vw, 15px); }
@@ -1762,40 +1787,34 @@ body.editing [contenteditable="true"]:focus {
   </div>
 
   <!-- ══════════ 03 · BMAD ══════════ -->
-  <!-- ---- 13 · BMAD, LA PANORAMICA ---- -->
+  <!-- ---- 13 · IL FLUSSO UFFICIALE ---- -->
   <div class="slide" data-slide="13" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s13-e0">La panoramica</p>
-    <h2 class="anim-2" data-edit-key="s13-e1">Un agente per <span class="highlight-green">ogni fase</span>, non un prompt per tutto</h2>
-    <div class="step-flow anim-3">
-      <div class="step-item bounce-1">
-        <div class="si-head"><span class="si-emoji">📊</span><span class="si-who" data-edit-key="s13-e2">Analisi</span></div>
-        <p class="si-ask" data-edit-key="s13-e3">Ricerca, brainstorming, il brief del progetto. Si parte da domande sul problema, non da una richiesta di codice.</p>
-        <p class="si-out" data-edit-key="s13-e4">Mary · product-brief.md</p>
-      </div>
-      <div class="step-item bounce-2">
-        <div class="si-head"><span class="si-emoji">📋</span><span class="si-who" data-edit-key="s13-e5">Prodotto e UX</span></div>
-        <p class="si-ask" data-edit-key="s13-e6">Requisiti, epiche e criteri di accettazione. Accanto, i flussi e le schermate: la parte che decide come lo useranno davvero.</p>
-        <p class="si-out" data-edit-key="s13-e7">John, Sally · prd.md · epics.md · ux-spec.md</p>
-      </div>
-      <div class="step-item bounce-3">
-        <div class="si-head"><span class="si-emoji">🏗️</span><span class="si-who" data-edit-key="s13-e8">Architettura</span></div>
-        <p class="si-ask" data-edit-key="s13-e9">Le scelte tecniche con le alternative scartate e il perché. È il documento che tutti gli altri agenti rileggono a ogni giro.</p>
-        <p class="si-out" data-edit-key="s13-e10">Winston · architecture.md</p>
-      </div>
-      <div class="step-item bounce-4">
-        <div class="si-head"><span class="si-emoji">📚</span><span class="si-who" data-edit-key="s13-e11">Documentazione</span></div>
-        <p class="si-ask" data-edit-key="s13-e12">Glossario di dominio, spiegazioni, diagrammi. La parte meno tecnica, ed è quella che chiude le discussioni che tornerebbero ogni sei mesi.</p>
-        <p class="si-out" data-edit-key="s13-e13">Paige · docs/glossario-dominio.md</p>
-      </div>
-      <div class="step-item bounce-5">
-        <div class="si-head"><span class="si-emoji">💻</span><span class="si-who" data-edit-key="s13-e14">Codice e verifica</span></div>
-        <p class="si-ask" data-edit-key="s13-e15">Sprint plan, story frammentata in task, implementazione. Poi la code review, in una sessione nuova che rilegge contro l’architettura.</p>
-        <p class="si-out" data-edit-key="s13-e16">Amelia · story · Dev Agent Record</p>
+    <p class="slide-tag anim-1" data-edit-key="s13-e0">Il flusso ufficiale</p>
+    <h2 class="anim-2" data-edit-key="s13-e1">Un metodo, non un prompt: <span class="highlight-green">dal PRD alla story rivista</span></h2>
+    <div class="fm-flow anim-3">
+      <div class="fm-box" data-edit-key="s13-e2">PRD</div>
+      <div class="fm-arrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></div>
+      <div class="fm-box" data-edit-key="s13-e3">Architettura</div>
+      <div class="fm-arrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></div>
+      <div class="fm-box" data-edit-key="s13-e4">Epiche e story</div>
+      <div class="fm-arrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></div>
+      <div class="fm-loop-group">
+        <span class="fm-loop-label" data-edit-key="s13-e5">si ripete per ogni story · una persona rivede ognuna</span>
+        <div class="fm-loop-row">
+          <div class="fm-box muted" data-edit-key="s13-e6">create-story</div>
+          <div class="fm-arrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></div>
+          <div class="fm-box muted" data-edit-key="s13-e7">dev-story</div>
+          <div class="fm-arrow"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"></path></svg></div>
+          <div class="fm-box muted" data-edit-key="s13-e8">review-story</div>
+        </div>
+        <svg class="fm-loop-arc" viewBox="0 0 300 40" preserveAspectRatio="none">
+          <path d="M 270 4 Q 150 44 30 4" marker-end="url(#loopArrow)"></path>
+        </svg>
       </div>
     </div>
-    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s13-e2">Ogni ruolo porta il suo <strong>menu di comandi</strong>, e copre il ciclo intero — non solo la parte in cui si scrive codice. <strong>Quasi tutto quello che ne esce sono documenti</strong>: è la metà che di solito non facciamo, ed è quella che il progetto si porta dietro per anni.</p>
+    <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s13-e9">Ogni freccia è un <strong>artefatto scritto</strong> che passa alla fase successiva, non una conversazione che si perde. Il riquadro tratteggiato è l'unico punto che si ripete: una volta per ogni story, e si chiude sempre con una revisione umana prima di andare avanti.</p>
     <script type="application/json" class="slide-notes">
-    {"title": "BMAD, la panoramica", "script": "Prima di guardare i singoli, la mappa. BMAD non è un agente che fa tutto: è una squadra, e copre il ciclo intero. Si parte dall'analisi, con Mary, che vi fa domande sul problema prima ancora di parlare di soluzione. Poi il prodotto e la UX, John e Sally: requisiti, epiche, criteri di accettazione, flussi. Winston fa l'architettura, e nel documento ci mette anche le alternative che ha scartato e perché. Paige è quella che di solito nessuno mette in squadra: scrive il glossario di dominio, le spiegazioni, i diagrammi — la parte meno tecnica, che è poi quella che chiude le discussioni che altrimenti tornano ogni sei mesi. E infine Amelia, che frammenta la story, scrive il codice e poi lo rilegge in una sessione nuova. Guardate cosa esce: quasi tutto sono documenti. È esattamente la metà del lavoro che normalmente non facciamo.", "notes": ["BMAD copre il ciclo intero, non solo la scrittura di codice", "Cinque fasi, sei ruoli: Mary, John, Sally, Winston, Paige, Amelia", "Paige è l'esempio della parte non tecnica: glossario, spiegazioni, diagrammi", "I nomi dei file sono quelli veri di _bmad-output/ nella demo", "Il punto da far cadere: quasi tutti gli artefatti sono documenti", "Teaser: nelle prossime slide cinque di loro, uno per uno"]}
+    {"title": "Il flusso ufficiale di BMAD", "script": "Questo è il flusso principale, così com'è nella documentazione ufficiale. Si parte dal PRD, poi l'architettura, poi le epiche vengono frammentate in story. Da lì in poi si entra in un ciclo che si ripete una volta per ogni story: si crea la story, si implementa, si rivede. E la revisione, quella, è sempre una persona che la fa — non un altro passaggio automatico. Il ciclo torna indietro alla story successiva finché l'epica non è finita.", "notes": ["Questo è lo schema ufficiale della documentazione BMAD, non una mia sintesi", "PRD, architettura, epiche e story: il planning viene prima di tutto", "Il riquadro tratteggiato è l'unica parte che si ripete", "review-story chiude ogni giro con una persona, non con un altro agente", "Qui niente nomi: la squadra arriva nelle slide successive"]}
     </script>
   </div>
 
@@ -2839,7 +2858,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v14',
+  storageKey: 'oltre-il-vibe-coding-edits-v15',
   fields: [],
 
   init: function() {
