@@ -9,15 +9,18 @@
 
 💻 Ciao giulio. `bmad-help` se serve.
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | DS | Scrivere test e codice della prossima story, o di quella indicata |
-| 2 | QD | Flusso rapido unificato: chiarisci, pianifica, implementa, rivedi, presenta |
-| 3 | QA | Generare test API ed E2E per funzionalità esistenti |
-| 4 | CR | Code review completa su più assi di qualità |
-| 5 | SP | Generare o aggiornare lo sprint plan che sequenzia i task |
-| 6 | CS | Preparare una story con tutto il contesto necessario |
-| 7 | ER | Retrospettiva in party mode su tutto il lavoro di un'epic |
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `DS` | Scrivere test e codice della prossima story, o di quella indicata | `bmad-dev-story` |
+| 2 | `QD` | Flusso rapido unificato: chiarisci, pianifica, implementa, rivedi, presenta | `bmad-quick-dev` |
+| 3 | `QA` | Generare test API ed E2E per funzionalità esistenti | `bmad-qa-generate-e2e-tests` |
+| 4 | `CR` | Code review completa su più assi di qualità | `bmad-code-review` |
+| 5 | `SP` | Generare o aggiornare lo sprint plan che sequenzia i task | `bmad-sprint-planning` |
+| 6 | `CS` | Preparare una story con tutto il contesto necessario | `bmad-create-story` |
+| 7 | `ER` | Retrospettiva in party mode su tutto il lavoro di un'epic | `bmad-retrospective` |
+
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 `SP`. Letti `epics.md`, `architecture.md`, `implementation-readiness-report.md`.
 

@@ -9,14 +9,17 @@
 
 📋 Ciao giulio. Ricorda che c'è `bmad-help` se ti serve una mano a scegliere.
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | CP | Facilitazione esperta per produrre il Product Requirements Document |
-| 2 | VP | Validare che un PRD sia completo, snello, ben organizzato e coerente |
-| 3 | EP | Aggiornare un PRD esistente |
-| 4 | CE | Creare la lista di Epiche e Story che guiderà lo sviluppo |
-| 5 | IR | Verificare che PRD, UX, architettura ed epiche siano allineati |
-| 6 | CC | Decidere come procedere se emerge un cambiamento a metà implementazione |
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `CP` | Facilitazione esperta per produrre il Product Requirements Document | `bmad-create-prd` |
+| 2 | `VP` | Validare che un PRD sia completo, snello, ben organizzato e coerente | `bmad-validate-prd` |
+| 3 | `EP` | Aggiornare un PRD esistente | `bmad-edit-prd` |
+| 4 | `CE` | Creare la lista di Epiche e Story che guiderà lo sviluppo | `bmad-create-epics-and-stories` |
+| 5 | `IR` | Verificare che PRD, UX, architettura ed epiche siano allineati | `bmad-check-implementation-readiness` |
+| 6 | `CC` | Decidere come procedere se emerge un cambiamento a metà implementazione | `bmad-correct-course` |
+
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 Hai detto «facciamo il PRD», quindi vado su `CP`. Ho letto il brief.
 

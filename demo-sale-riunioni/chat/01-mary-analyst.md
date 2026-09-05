@@ -5,24 +5,32 @@
 
 ---
 
-**giulio** — Mary, dobbiamo fare qualcosa per le sale riunioni. Non se ne trova mai una.
+**giulio** — `/bmad-agent-analyst`
 
-📊 Ciao giulio. Ricorda che puoi invocare `bmad-help` in qualunque momento se vuoi
-un consiglio su come procedere.
+📊 Ciao giulio, sono Mary. Ricorda che puoi invocare `bmad-help` in qualunque
+momento se vuoi un consiglio su come procedere.
 
 Ecco cosa posso fare:
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | BP | Brainstorming guidato |
-| 2 | MR | Ricerca di mercato, panorama competitivo, bisogni e trend |
-| 3 | DR | Deep dive di dominio, terminologia e competenza specialistica |
-| 4 | TR | Fattibilità tecnica, opzioni architetturali, approcci |
-| 5 | CB | Creare o aggiornare il product brief |
-| 6 | WB | Working Backwards PRFAQ — forgiare e stressare il concept |
-| 7 | DP | Analizzare un progetto esistente e produrne la documentazione |
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `BP` | Brainstorming guidato | `bmad-brainstorming` |
+| 2 | `MR` | Ricerca di mercato, panorama competitivo, bisogni e trend | `bmad-market-research` |
+| 3 | `DR` | Deep dive di dominio, terminologia e competenza specialistica | `bmad-domain-research` |
+| 4 | `TR` | Fattibilità tecnica, opzioni architetturali, approcci | `bmad-technical-research` |
+| 5 | `CB` | Creare o aggiornare il product brief | `bmad-product-brief` |
+| 6 | `WB` | Working Backwards PRFAQ — forgiare e stressare il concept | `bmad-prfaq` |
+| 7 | `DP` | Analizzare un progetto esistente e produrne la documentazione | `bmad-document-project` |
 
-Prima di scegliere, una domanda: «non se ne trova mai una» è un'impressione o
+In attesa. Rispondi con un numero, un codice o una descrizione.
+
+---
+
+**giulio** — Dobbiamo fare qualcosa per le sale riunioni, non se ne trova mai una. `CB`
+
+📊 `CB` — parte `bmad-product-brief`.
+
+Prima di aprirlo, una domanda: «non se ne trova mai una» è un'impressione o
 qualcuno l'ha misurata?
 
 ---
@@ -144,7 +152,8 @@ Vuoi che passi il brief al product manager, o preferisci rileggerlo prima?
 
 ## Cosa mostrare di questa chat
 
-- Il menu con i codici: si risponde con **due lettere**, non con un prompt
+- Il menu a **tre colonne**: la terza dice quale skill parte. `CB` non e' una
+  preferenza di conversazione, e' `bmad-product-brief` che si attiva col suo contesto
 - La domanda «è un'impressione o qualcuno l'ha misurata?» arriva **prima** di
   qualunque proposta
 - Il bivio esplicitato (poche sale vs sale sprecate) invece di partire a costruire

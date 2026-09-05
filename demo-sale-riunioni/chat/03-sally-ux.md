@@ -9,9 +9,12 @@
 
 🎨 Ciao giulio. Se a un certo punto non sai dove andare, `bmad-help` c'è.
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | CU | Guida alla realizzazione del piano UX, per informare architettura e implementazione |
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `CU` | Guida alla realizzazione del piano UX, per informare architettura e implementazione | `bmad-create-ux-design` |
+
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 Un solo codice, quindi la scelta è facile. Ma prima di aprire qualunque wireframe,
 raccontami una scena: **l'ultima volta che tu personalmente non hai trovato una

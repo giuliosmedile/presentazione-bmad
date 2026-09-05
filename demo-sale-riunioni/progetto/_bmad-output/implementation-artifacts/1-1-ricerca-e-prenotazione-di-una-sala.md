@@ -51,16 +51,21 @@ so that non debba girare per i piani sperando di trovare posto.
 
 ### Review Findings
 
-Dalla code review (`CR`) del 2026-08-29, tutte chiuse:
+_Code review avversariale (Blind Hunter + Edge Case Hunter + Acceptance Auditor),
+2026-08-29, modalità `full`. Verdetto Acceptance Auditor: **spec soddisfatta**
+(AC1–AC5, tutti i checkbox Task). Triage: 1 `decision-needed`, 2 `patch`,
+1 `defer`, 3 scartati come rumore._
 
-- **[alta]** La violazione di vincolo era intercettata come
-  `DataIntegrityViolationException` generica: qualunque altro vincolo violato
-  sarebbe stato riportato all'utente come «sala occupata». Corretto verificando il
-  nome del vincolo `prenotazione_no_overlap`.
-- **[media]** `RicercaDisponibilita` filtrava sulle prenotazioni con `stato != 'disdetta'`
-  invece che `stato = 'attiva'`: le prenotazioni `no_show` sarebbero rimaste a
-  occupare la sala, cioè esattamente il bug che il progetto esiste per evitare.
-- **[bassa]** Timestamp salvati con fuso locale in due test. Portati a UTC.
+- [x] [Review][Decision] APPLICATO (2026-08-29) — AC1 non determina l'ordine a parità di capienza: `ORDER BY s.capienza ASC` non è stabile fra due chiamate identiche, l'utente che ricarica vede le sale scambiate. Il criterio di spareggio è una scelta di prodotto, non patchabile senza decisione. **Risoluzione decisa (2026-08-29, Giulio): spareggio sul nome della sala.** Scartata l'alternativa «piano dell'utente prima»: serve il piano nel profilo, fronte non aperto in questa epic. [RicercaDisponibilita.java:41]
+- [x] [Review][Patch] APPLICATO (2026-08-29) — La ricerca enumera per esclusione: `p.stato <> 'disdetta'` resta corretto solo finché nessuno aggiunge uno stato, e lo stato aggiunto **c'è già** (`architecture.md` § D4: `attiva | disdetta | no_show`; `StatoPrenotazione` lo ha nell'enum). Una prenotazione decaduta per no-show passa il filtro e continua a occupare la sala — la funzionalità per cui il progetto esiste, nella query principale. Corretto in `p.stato = 'attiva'`. Fonte `blind+edge`: il Blind Hunter ha visto la forma fragile nel diff, l'Edge Case Hunter è andato a leggere il progetto e ha trovato lo stato. L'Acceptance Auditor **non** l'ha segnalato, ed è coerente: rispetto agli AC della 1.1 quel predicato è corretto. [RicercaDisponibilita.java:34]
+- [x] [Review][Patch] APPLICATO (2026-08-29) — La traduzione dell'errore è troppo larga: `catch (DataIntegrityViolationException)` fa diventare «sala occupata» qualunque vincolo violato. `architecture.md` § D3 lo vieta esplicitamente («si verifica il nome del vincolo»). Corretto verificando `prenotazione_no_overlap` e rilanciando il resto. Fonte `blind+edge`. [PrenotazioneService.java:78]
+- [x] [Review][Defer] `PrenotazioneController` mappa 409 e 422; ogni altra eccezione esce come 500 senza corpo, timeout del database compreso — deferred, pre-esistente allo scaffold, non introdotto da questa story. Registrato in `deferred-work.md`. [PrenotazioneController.java:52]
+
+_Scartati come rumore, tutti dal Blind Hunter (che per costruzione non ha
+contesto): validazione null su `salaId` (c'è, `@NotNull` sul DTO a monte);
+indice mancante sul filtro temporale (lo crea `V1__sale_e_prenotazioni.sql` col
+vincolo di esclusione GiST); «4 ore è un magic number» (è l'AC4, costante
+`DURATA_MASSIMA`)._
 
 ## Dev Notes
 
@@ -115,7 +120,7 @@ Amelia (bmad-agent-dev), skill `bmad-dev-story`
   passava sempre, il che è il motivo per cui la strategia di test impone Postgres.
 - Il primo tentativo di traduzione dell'errore intercettava
   `DataIntegrityViolationException` senza guardare quale vincolo fosse violato.
-  Sollevato in code review, corretto.
+  Sollevato in code review come `patch`, corretto.
 - L'ordinamento per capienza crescente non era nel PRD ma nella spec UX. Applicato
   come da spec UX; segnalato perché il PRD dovrebbe citarlo.
 - Durata massima 4 ore: implementata come costante di dominio, non come proprietà
@@ -147,7 +152,7 @@ src/test/java/it/azienda/saleriunioni/disponibilita/RicercaDisponibilitaTest.jav
 |---|---|---|
 | 2026-08-28 | Amelia (`CS`) | Story creata dal piano di sprint |
 | 2026-08-28 | Giulio | Aggiunto AC 5 (fasce contigue): mancava, e senza sarebbe stato un bug scoperto in produzione |
-| 2026-08-29 | Amelia (`DS`) | Implementazione, 14 test verdi |
-| 2026-08-29 | Amelia (`CR`) | Code review, 3 rilievi |
-| 2026-08-29 | Amelia (`DS`) | Rilievi chiusi, 16 test verdi |
-| 2026-08-29 | Giulio | Approvata, merge |
+| 2026-08-29 | Amelia (`DS`) | Implementazione, 16 test verdi, status -> review |
+| 2026-08-29 | Amelia (`CR`) | Code review avversariale: 1 decision-needed, 2 patch, 1 defer, 3 dismiss |
+| 2026-08-29 | Giulio | Decisione sul `decision-needed`: spareggio sul nome della sala |
+| 2026-08-29 | Amelia (`CR`) | 3 patch applicate, 3 test nuovi, 19 verdi, status -> done |

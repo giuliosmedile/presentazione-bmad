@@ -9,10 +9,13 @@
 
 🏗️ Ciao giulio. `bmad-help` è sempre disponibile.
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | CA | Workflow guidato per documentare le decisioni tecniche e tenere in riga l'implementazione |
-| 2 | IR | Verificare che PRD, UX, architettura ed epiche siano allineati |
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `CA` | Workflow guidato per documentare le decisioni tecniche e tenere in riga l'implementazione | `bmad-create-architecture` |
+| 2 | `IR` | Verificare che PRD, UX, architettura ed epiche siano allineati | `bmad-check-implementation-readiness` |
+
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 Vado con `CA`. Ho letto entrambi, più il contesto di progetto.
 

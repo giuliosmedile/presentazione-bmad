@@ -10,13 +10,19 @@ libera».
 
 📚 Ciao giulio. C'è `bmad-help` se ti serve.
 
-| # | Codice | Cosa |
-|---|---|---|
-| 1 | DP | Generare documentazione completa del progetto (analisi brownfield, scansione architettura) |
-| 2 | WD | Scrivere un documento seguendo le best practice, in conversazione guidata |
-| 3 | MG | Creare un diagramma Mermaid a partire da una descrizione |
-| 4 | VD | Validare la documentazione rispetto a standard e best practice |
-| 5 | EC | Creare spiegazioni tecniche chiare, con esempi e diagrammi |
+| # | Cod | Descrizione | Azione |
+|---|---|---|---|
+| 1 | `DP` | Generare documentazione completa del progetto (analisi brownfield, scansione architettura) | `bmad-document-project` |
+| 2 | `WD` | Scrivere un documento seguendo le best practice, in conversazione guidata | `write-document.md` |
+| 3 | `MG` | Creare un diagramma Mermaid a partire da una descrizione | `mermaid-gen.md` |
+| 4 | `VD` | Validare la documentazione rispetto a standard e best practice | `validate-doc.md` |
+| 5 | `EC` | Creare spiegazioni tecniche chiare, con esempi e diagrammi | `explain-concept.md` |
+
+_Le ultime quattro voci non chiamano uno skill: eseguono un prompt che sta nella
+cartella dello skill. Nel menu vero la terza colonna mostra l'uno o l'altro._
+
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 Quando due persone litigano su una parola, di solito non stanno litigando sulla
 parola: stanno scoprendo che avevano in testa due prodotti diversi. Vale la pena

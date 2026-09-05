@@ -1,20 +1,110 @@
 # 💻 Amelia — Code review (`CR`)
 
-> Rilettura su più assi di qualità, in sessione separata dall'implementazione.
-> Artefatto toccato: la sezione **Review Findings** della story.
+> Review avversariale su tre layer in parallelo, in sessione separata
+> dall'implementazione.
+> Artefatti toccati: la sezione **Review Findings** della story,
+> `deferred-work.md`, `sprint-status.yaml`.
+
+---
+
+**giulio** — `/bmad-agent-dev`
+
+💻 Ciao giulio, sono Amelia. Ricorda che puoi invocare `bmad-help` in qualunque
+momento.
+
+| # | Cod | Descrizione | Skill che parte |
+|---|---|---|---|
+| 1 | `DS` | Scrivere test e codice della prossima story | `bmad-dev-story` |
+| 2 | `QD` | Flusso rapido: chiarisci, pianifica, implementa, rivedi | `bmad-quick-dev` |
+| 3 | `QA` | Generare test API ed E2E su feature esistenti | `bmad-qa-generate-e2e-tests` |
+| 4 | `CR` | Code review completa su più assi di qualità | `bmad-code-review` |
+| 5 | `SP` | Generare o aggiornare lo sprint plan | `bmad-sprint-planning` |
+| 6 | `CS` | Preparare una story col contesto per implementarla | `bmad-create-story` |
+| 7 | `ER` | Retrospettiva di fine epic | `bmad-retrospective` |
+
+In attesa. Rispondi con un numero, un codice o una descrizione.
 
 ---
 
 **giulio** — CR sulla 1.1.
 
-💻 `CR`. Sessione nuova. Rileggo il diff contro gli AC della story, il contesto di
-progetto e `architecture.md`. Non riuso il ragionamento con cui ho implementato.
+💻 `CR`. Sessione nuova: non riuso il ragionamento con cui l'ho implementata.
+
+Contesto raccolto:
+
+- diff — 7 file, `git diff main...HEAD`
+- spec — `1-1-ricerca-e-prenotazione-di-una-sala.md`
+- context docs — `project-context.md`, `architecture.md`
+
+Modalità `full` (c'è la spec). Tre reviewer in parallelo, e **ricevono contesto
+diverso apposta**:
+
+| Reviewer | Cosa riceve | Cosa non riceve |
+|---|---|---|
+| **Blind Hunter** | solo il diff | spec, context docs, accesso al progetto |
+| **Edge Case Hunter** | il diff, e può leggere il progetto | la spec |
+| **Acceptance Auditor** | il diff, la spec, i context docs | — |
 
 ---
 
-💻 Tre rilievi.
+💻 Layer completati: 3 su 3. 9 finding grezzi, 2 coppie deduplicate.
 
-### [alta] Traduzione dell'errore troppo larga
+**Code review completa.** 1 `decision-needed`, 2 `patch`, 1 `defer`,
+3 scartati come rumore.
+
+Findings scritti nella sezione **Review Findings** della story.
+
+---
+
+### `decision-needed` · fonte: `auditor`
+
+**AC1 non determina l'ordine a parità di capienza.**
+
+`RicercaDisponibilita.java:41` — `ORDER BY s.capienza ASC`
+
+L'AC1 dice «ordinate per capienza crescente». Con due sale da 8 posti l'ordine è
+quello che restituisce Postgres, che non è stabile fra due chiamate identiche.
+L'utente che ricarica vede le sale scambiate.
+
+Non lo patcho da solo: il criterio di spareggio è una scelta di prodotto.
+
+1. Nome della sala (alfabetico) — prevedibile, ignora dove sei
+2. Piano dell'utente prima — utile, ma serve il piano nel profilo
+3. Lasciare indeterminato e togliere «ordinate» dall'AC1
+
+---
+
+### `patch` · fonte: `blind+edge`
+
+**La ricerca enumera per esclusione: `no_show` continua a occupare la sala.**
+
+`RicercaDisponibilita.java:34`
+
+```diff
+-   AND p.stato <> 'disdetta'
++   AND p.stato = 'attiva'
+```
+
+Il **Blind Hunter**, che vede solo il diff, l'ha segnalato come forma fragile:
+un predicato per esclusione resta corretto solo finché nessuno aggiunge uno
+stato.
+
+L'**Edge Case Hunter**, che la spec non ce l'ha ma il progetto sì, è andato a
+leggere e ha trovato che lo stato aggiunto c'è già: `architecture.md` § D4
+elenca `attiva | disdetta | no_show`, e `StatoPrenotazione` lo ha nell'enum.
+
+Conseguenza: una prenotazione decaduta per no-show passa il filtro e **continua a
+occupare la sala**. È la funzionalità per cui il progetto esiste, nella query
+principale.
+
+L'**Acceptance Auditor** non l'ha segnalato, e ha ragione lui: rispetto agli AC
+della 1.1 quel predicato è corretto.
+
+---
+
+### `patch` · fonte: `blind+edge`
+
+**La traduzione dell'errore è troppo larga.**
 
 `PrenotazioneService.java:78`
 
@@ -24,86 +114,129 @@ progetto e `architecture.md`. Non riuso il ragionamento con cui ho implementato.
 }
 ```
 
-Qualunque vincolo violato diventa «sala occupata». Se domani aggiungiamo un
-`CHECK` sulla durata o una foreign key, l'utente si vede «sala occupata» per un
-errore che non c'entra niente.
+Qualunque vincolo violato diventa «sala occupata». `architecture.md` § D3 lo
+vieta esplicitamente: «non si intercetta genericamente `DataIntegrityViolation`:
+si verifica il nome del vincolo».
 
-`architecture.md` § D3 lo dice esplicitamente: «non si intercetta genericamente
-`DataIntegrityViolation`: si verifica il nome del vincolo».
+Fix: controllare `prenotazione_no_overlap`, rilanciare il resto.
 
-Fix: controllare che sia `prenotazione_no_overlap`, rilanciare gli altri.
+---
 
-### [media] Il filtro della ricerca usa il predicato sbagliato
+### `defer` · fonte: `edge`
 
-`RicercaDisponibilita.java:34` — `stato != 'disdetta'`
+**`PrenotazioneController` non mappa il timeout del database.**
 
-Deve essere `stato = 'attiva'`.
+`PrenotazioneController.java:52` — mappa 409 e 422, ogni altra eccezione esce
+come 500 senza corpo. Pre-esistente allo scaffold, non introdotto da questa
+story. Registrato in `deferred-work.md`.
 
-Con il predicato attuale una prenotazione in `no_show` continua a occupare la
-sala, perché `no_show != disdetta` è vero.
+---
 
-Cioè: **la sala liberata automaticamente non risulterebbe libera.** È esattamente
-il bug che questo progetto esiste per evitare, ed è nella query principale.
+### `dismiss` — 3, tutti dal Blind Hunter
 
-### [bassa] Timestamp con fuso locale in due test
+Senza contesto sono ragionevoli, col contesto no:
 
-`PrenotazioneServiceTest:112` e `:145` usano `LocalDateTime.now()`. Il resto del
-codice è UTC. I test passano sulla macchina di chi li ha scritti.
+- «manca la validazione null su `salaId`» — c'è, `@NotNull` sul DTO a monte
+- «la query non ha un indice sul filtro temporale» — `V1__sale_e_prenotazioni.sql`
+  crea l'indice GiST col vincolo di esclusione
+- «4 ore è un magic number» — è l'AC4, con la costante `DURATA_MASSIMA`
+
+Il Blind Hunter costa tre falsi positivi. Li paga volentieri: è lo stesso
+reviewer che ha aperto il finding grosso.
 
 ---
 
 **giulio** — Il secondo è grosso. Come ti è sfuggito mentre implementavi?
 
-💻 Perché mentre implementavo stavo verificando che la ricerca escludesse le sale
-prenotate, e quel predicato lo fa: con solo prenotazioni `attiva` nel database, i
-due filtri danno lo stesso risultato. I test della 1.1 non creano prenotazioni
-`no_show`, perché lo stato `no_show` arriva nella 1.2.
+💻 Verificavo `AC1`: «solo le sale libere». Il predicato lo fa.
 
-È corretto rispetto agli AC della 1.1 e sbagliato rispetto al progetto. Il tipo di
-errore che si vede solo rileggendo contro l'architettura invece che contro i test.
+I test della 1.1 non seminano `no_show` — quello stato nasce nella 1.2. Con solo
+prenotazioni `attiva` nel database i due filtri danno lo stesso risultato.
+
+Corretto rispetto agli AC. Sbagliato rispetto al progetto.
 
 ---
 
 **giulio** — E se non avessimo fatto la review?
 
-💻 Il bug sarebbe emerso in 1.2, come «la liberazione non funziona». Avremmo
-cercato nel job, che sarebbe stato corretto. Il difetto era nella query della
-story precedente, già approvata.
+💻 Il difetto sarebbe emerso nella 1.2 come «la liberazione non funziona».
+Avremmo cercato nel job, che era corretto. Il difetto stava nella query della
+story precedente, già approvata e chiusa.
 
 ---
 
-**giulio** — Chiudi i tre rilievi.
+**giulio** — Sul `decision-needed` prendi l'opzione 1, nome della sala. Non
+abbiamo il piano nel profilo e non voglio aprire quel fronte adesso.
 
-💻 Chiusi. `DS` di nuovo:
+💻 Registrato. `ORDER BY s.capienza ASC, s.nome ASC`. L'item passa da
+`decision-needed` a `patch`.
 
-- Verifica del nome del vincolo, `PrenotazioneServiceTest` esteso con un caso di
-  vincolo diverso violato
-- Predicato corretto in `stato = 'attiva'`, più un test che inserisce una
-  prenotazione `no_show` e verifica che la sala risulti libera
-- Timestamp portati a UTC
+**Come vuoi gestire le 3 patch?**
 
-**16 test verdi.** I due nuovi coprono i rilievi alta e media: se qualcuno
-reintroduce il difetto, il test rosso lo dice.
-
-Review Findings scritti nella story. Status pronto per la tua approvazione.
+1. **Applicale tutte** — le sistemo adesso, senza conferma una per una
+2. **Lasciale come action item** — sono già scritte nella story
+3. **Vai una per una** — dettaglio di ognuna prima di decidere
 
 ---
 
-**giulio** — Approvata. Merge.
+**giulio** — 1
+
+💻 Applicate.
+
+- `RicercaDisponibilita.java:34` — `stato = 'attiva'`
+- `RicercaDisponibilita.java:41` — spareggio su `s.nome`
+- `PrenotazioneService.java:78` — verifica del nome del vincolo
+
+Test nuovi: 3.
+
+- `ricercaEscludeSalaConPrenotazioneNoShow` — semina una `no_show`, verifica che
+  la sala risulti libera
+- `ordinamentoStabileAParitaDiCapienza` — due chiamate, stesso ordine
+- `vincoloDiversoNonDiventaSalaOccupata` — viola un `CHECK`, si aspetta l'errore
+  vero
+
+`./mvnw verify` — **19 test, 0 failure** (16 preesistenti invariati + 3 nuovi).
+
+Patch spuntate nella story. Status → `done`.
+
+✅ `sprint-status.yaml` aggiornato: `1-1-ricerca-e-prenotazione` → `done`.
+
+> **Review Complete!**
+>
+> **Story Status:** `done`
+> **Issues Fixed:** 3
+> **Action Items Created:** 0
+> **Deferred:** 1
+> **Dismissed:** 3
+
+**Cosa vuoi fare adesso?**
+
+1. **Prossima story** — `dev-story` prende la prossima `ready-for-dev`
+2. **Rifare la review** — dopo aver toccato altro
+3. **Chiudere**
+
+---
+
+**giulio** — 3.
 
 ---
 
 ## Cosa mostrare
 
-- La review è una **sessione separata**: non è l'implementatore che si rilegge
-  con la testa con cui ha scritto
-- Il rilievo `[media]` è il pezzo forte della demo: codice **corretto rispetto
-  agli AC della story e sbagliato rispetto al progetto**. Nessun test lo avrebbe
-  preso
+- **I tre reviewer ricevono contesto diverso apposta.** È la riga che fa capire
+  tutto: l'asimmetria è progettata, non un caso
+- **Il verdetto contraddittorio**: l'Acceptance Auditor dice «spec soddisfatta» e
+  nella stessa review escono due patch. Non è un bug del tool, è la definizione
+  del problema che il talk racconta
+- Il finding grosso è `blind+edge`, **due layer deduplicati**: uno vede la forma
+  fragile, l'altro va a leggere il progetto e trova che lo stato esiste già
+- **Il triage è in quattro caselle**, non in severità: `decision-needed`,
+  `patch`, `defer`, `dismiss`. Il `decision-needed` è quello che si ferma e
+  aspetta te, e non è un caso che sia l'unico che il tool non tocca da solo
+- I tre `dismiss` del Blind Hunter: **il costo del contesto zero**, pagato
+  volentieri
 - La risposta a «come ti è sfuggito» — spiega perché il checkpoint esiste
-- «Se non avessimo fatto la review» — il bug sarebbe stato cercato nel posto
-  sbagliato, nella story dopo
-- I due test aggiunti sui rilievi: la correzione diventa permanente
+- Le patch chiuse diventano tre test: la correzione è permanente
 
 > **Se hai tempo per una sola chat, usa questa.** È l'unica che mostra il processo
 > mentre intercetta qualcosa, che è la tesi del talk.

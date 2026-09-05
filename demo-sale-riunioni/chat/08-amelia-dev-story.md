@@ -62,7 +62,7 @@ Adesso è verde e fallisce se tolgo il vincolo. Prima non falliva.
 
 **giulio** — Questa è la differenza fra un test e un test che serve.
 
-💻 `PrenotazioneConcorrenzaTest`. 14 test verdi in totale.
+💻 `PrenotazioneConcorrenzaTest`. 16 test verdi in totale.
 
 Un punto da segnalare: l'**ordinamento per capienza crescente** non è nel PRD, è
 nella spec UX. L'ho implementato come da spec UX. Segnalo perché il PRD dovrebbe
@@ -77,15 +77,28 @@ di PRD, non mia.
 
 **giulio** — Va bene così. Aggiorna la story.
 
-💻 Dev Agent Record aggiornato:
+💻 Definition of done:
+
+```
+✓ tutti i task e subtask [x]      ✓ AC1-AC5 soddisfatti
+✓ 16 test, 0 failure              ✓ File List completa
+✓ Dev Agent Record compilato      ✓ Change Log aggiornato
+✓ solo le sezioni permesse toccate
+```
+
+Scritto **dentro la story**, non qui:
 
 - Agent Model Used: Amelia, skill `bmad-dev-story`
 - Completion Notes: quattro voci, incluse le due segnalazioni sopra
-- File List: 15 file, tutti elencati con nuovo/modificato
+- File List: 15 file, ognuno con nuovo/modificato
+- Change Log
 
-Change Log aggiornato.
+Status della story → `review`.
 
-Vuoi che chiuda la story o passo a `CR`?
+✅ `sprint-status.yaml` aggiornato: `1-1-ricerca-e-prenotazione` → `review`.
+
+Non decido io quando è finita: la definition of done è una lista che devo
+passare, e lo stato lo muove il workflow, non la mia impressione.
 
 ---
 
@@ -98,6 +111,8 @@ Vuoi che chiuda la story o passo a `CR`?
 - Il **test che passava senza testare niente**: è il momento migliore della demo
   perché è un errore che fa chiunque, umano compreso
 - H2 vs Postgres reale: il motivo per cui `architecture.md` imponeva Testcontainers
+- **La definition of done non è un'autovalutazione**: è una lista che il workflow
+  impone, e lo stato lo muove `sprint-status.yaml`, non l'agente che dice «fatto»
 - Le due segnalazioni che Amelia fa **senza decidere da sola** (ordinamento nel
   PRD, costante vs configurazione)
 - Il **Dev Agent Record** che si scrive da solo: è il «diario della story» della
