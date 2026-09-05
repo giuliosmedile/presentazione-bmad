@@ -992,9 +992,13 @@ body.editing [contenteditable="true"]:focus {
   display: inline-block; font-weight: 700; border-radius: 999px;
   padding: 0 8px; font-size: 0.88em; margin-right: 6px;
 }
-.sev-alta { background: rgba(224,120,90,0.22); color: #f0a08a; }
-.sev-media { background: rgba(198,113,57,0.24); color: #ffc6a5; }
-.sev-bassa { background: rgba(160,151,134,0.20); color: #c0b6a5; }
+.sev + .sev { margin-left: 2px; }
+/* I quattro bucket del triage di bmad-code-review. decision-needed prende il
+   terracotta perche' e' letteralmente il finding che richiede te. */
+.sev-decision { background: rgba(198,113,57,0.26); color: #ffc6a5; }
+.sev-patch { background: rgba(224,120,90,0.22); color: #f0a08a; }
+.sev-defer { background: rgba(160,151,134,0.20); color: #c0b6a5; }
+.sev-dismiss { background: rgba(160,151,134,0.12); color: #8d8577; }
 
 /* Riga conclusiva sotto un terminale: la morale in una frase */
 .term-take {
@@ -2231,7 +2235,7 @@ body.editing [contenteditable="true"]:focus {
     </script>
   </div>
 
-  <!-- ---- 25 · DEMO — IL MENU E I CODICI ---- -->
+  <!-- ---- 25 · DEMO — ATTIVAZIONE E MENU ---- -->
   <div class="slide" data-slide="25" data-chapter="3">
     <p class="slide-tag anim-1" data-edit-key="s25-e0">Demo — 1 di 6</p>
     <h2 class="anim-2" data-edit-key="s25-e1">Non scrivi un prompt. <span class="highlight-blue">Scegli una voce.</span></h2>
@@ -2242,90 +2246,61 @@ body.editing [contenteditable="true"]:focus {
       </div>
       <div class="term-body"><span class="term-user">/bmad-agent-analyst</span>
 
-<span class="term-ag">📊 Ciao giulio, sono Mary. Ricorda che puoi invocare <span class="term-code">bmad-help</span> in qualunque momento.</span>
+<span class="term-ag">📊 Ciao giulio, sono Mary. Puoi invocare <span class="term-code">bmad-help</span> in qualunque momento.</span>
 
-<span class="term-user">Mary, dobbiamo fare qualcosa per le sale riunioni. Non se ne trova mai una.</span>
+<span class="term-dim">   #   Cod   Descrizione                                    Skill che parte</span>
+<span class="term-ag">   1   <span class="term-code">BP</span>    Brainstorming guidato                          <span class="term-file">bmad-brainstorming</span></span>
+<span class="term-ag">   2   <span class="term-code">MR</span>    Analisi di mercato e panorama competitivo      <span class="term-file">bmad-market-research</span></span>
+<span class="term-ag">   3   <span class="term-code">DR</span>    Deep dive di dominio e terminologia            <span class="term-file">bmad-domain-research</span></span>
+<span class="term-ag">   4   <span class="term-code">TR</span>    Fattibilità tecnica e opzioni architetturali   <span class="term-file">bmad-technical-research</span></span>
+<span class="term-ag">   5   <span class="term-code">CB</span>    Creare o aggiornare il product brief           <span class="term-file">bmad-product-brief</span></span>
+<span class="term-ag">   6   <span class="term-code">WB</span>    Working Backwards PRFAQ                        <span class="term-file">bmad-prfaq</span></span>
+<span class="term-ag">   7   <span class="term-code">DP</span>    Documentare un progetto esistente              <span class="term-file">bmad-document-project</span></span>
 
-<span class="term-dim">Ecco cosa posso fare:</span>
-<span class="term-ag">  1 <span class="term-code">BP</span>  Brainstorming guidato</span>
-<span class="term-ag">  2 <span class="term-code">MR</span>  Ricerca di mercato, panorama competitivo, bisogni e trend</span>
-<span class="term-ag">  3 <span class="term-code">DR</span>  Deep dive di dominio, terminologia, competenza specialistica</span>
-<span class="term-ag">  4 <span class="term-code">TR</span>  Fattibilità tecnica, opzioni architetturali</span>
-<span class="term-ag">  5 <span class="term-code">CB</span>  Creare o aggiornare il product brief</span>
-<span class="term-ag">  6 <span class="term-code">WB</span>  Working Backwards PRFAQ</span>
-<span class="term-ag">  7 <span class="term-code">DP</span>  Analizzare un progetto esistente e documentarlo</span>
+<span class="term-dim">   In attesa. Rispondi con un numero, un codice o una descrizione.</span>
 
-<span class="term-user">MR</span>
+<span class="term-user">Non si trova mai una sala riunioni. CB</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">Strategia</span>
-      <span>Attivi l’agente col comando (<strong>/bmad-agent-analyst</strong>), poi si presenta con un menu numerato. Rispondi con <strong>due lettere</strong>: il contesto resta stretto e il compito è uno solo. Comando e codici non sono inventati — stanno nel <strong>customize.toml</strong> dell’agente, versionato nel repo.</span>
+      <span>Il menu non è cortesia: <strong>ogni voce è uno skill che parte</strong>. Rispondi <strong>CB</strong> e si attiva <span class="term-code" style="color:var(--color-accent-700);background:none;border:none;padding:0;">bmad-product-brief</span> — un compito, un contesto. Codici e skill stanno nel <strong>customize.toml</strong> versionato nel repo: se qualcuno in sala ha BMAD e controlla, tornano.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — il menu e i codici", "script": "Si parte da un comando: /bmad-agent-analyst attiva Mary. Prima cosa che vedete dopo: si presenta con un menu numerato. E questa è la risposta alla domanda che mi fanno sempre, cioè come ci si parla. Non gli scrivete un tema. Rispondete con due lettere. MR vuol dire ricerca di mercato. Il vantaggio non è la comodità: è che il contesto resta stretto e il compito è uno solo, che è esattamente quello che abbiamo detto serve per non far deviare un agente.", "notes": ["Si attiva con un comando esplicito, non un tono di voce: /bmad-agent-analyst", "Il menu arriva subito dopo, con i codici veri del customize.toml", "Rispondere con il codice, non con un prompt libero", "Contesto stretto per costruzione: un compito per volta", "I codici sono configurazione versionata: se qualcuno in sala ha BMAD, tornano", "Il promemoria su bmad-help è parte dell'attivazione standard"]}
+    {"title": "Demo — attivazione e menu", "script": "Si parte attivando un agente: bmad-agent-analyst, e Mary è in linea. La prima cosa che fa non è aspettare un tema: si presenta e apre un menu. Guardate la terza colonna, perché è quella che spiega il meccanismo: ogni voce non è un'opzione di conversazione, è uno skill che parte. Rispondo CB e si attiva bmad-product-brief, che è un pezzo di software con i suoi passi. Il vantaggio non è la comodità delle due lettere: è che il contesto resta stretto per costruzione, non perché me lo sono ricordato io.", "notes": ["Tre colonne: codice, descrizione, e lo skill che parte davvero", "Rispondere col codice, non con un prompt libero", "Contesto stretto per costruzione: un compito, uno skill", "Codici e skill vengono dal customize.toml versionato", "Il promemoria su bmad-help è parte dell'attivazione standard", "L'agente si ferma e aspetta: numero, codice o descrizione"]}
     </script>
   </div>
 
-  <!-- ---- 26 · DEMO — CONTESTARE LA PREMESSA ---- -->
+  <!-- ---- 26 · DEMO — IL CHECKPOINT UMANO ---- -->
   <div class="slide" data-slide="26" data-chapter="3">
     <p class="slide-tag anim-1" data-edit-key="s26-e0">Demo — 2 di 6</p>
-    <h2 class="anim-2" data-edit-key="s26-e1">Prima di costruire, <span class="highlight-blue">contesta la premessa</span></h2>
+    <h2 class="anim-2" data-edit-key="s26-e1">Il checkpoint umano, <span class="highlight-orange">per intero</span></h2>
     <div class="term anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
-        <span class="term-name">bmad — analyst (Mary)</span>
+        <span class="term-name">bmad — analyst (Mary) · CB</span>
       </div>
-      <div class="term-body"><span class="term-ag">📊 Prima di scegliere, una domanda:</span>
-<span class="term-hl">«non se ne trova mai una» è un’impressione, o qualcuno l’ha misurata?</span>
+      <div class="term-body"><span class="term-ag">📊 «Non se ne trova mai una» può voler dire due cose: le sale sono poche</span>
+<span class="term-ag">   (budget e mattoni) o risultano occupate quando non lo sono</span>
+<span class="term-ag">   (comportamento). Due prodotti diversi: servono i dati prima.</span>
 
-<span class="term-user">Impressione. Ma è la lamentela numero uno da mesi.</span>
+<span class="term-user">export Outlook 4 settimane · giro fisico su 3 giorni</span>
 
-<span class="term-ag">📊 Allora partiamo da lì, perché è il bivio che decide tutto il resto.</span>
-<span class="term-ag">   Ci sono due storie possibili, e portano a due prodotti diversi:</span>
-
-<span class="term-ag">   • <span class="term-file">Le sale sono poche</span> → problema di budget e mattoni.</span>
-<span class="term-ag">     Un software non lo risolve.</span>
-<span class="term-ag">   • <span class="term-file">Le sale risultano occupate quando non lo sono</span> → problema</span>
-<span class="term-ag">     di comportamento. Lì si può intervenire.</span>
-
-<span class="term-ag">   Se costruiamo per la seconda e la vera è la prima, abbiamo buttato</span>
-<span class="term-ag">   tre mesi. Servono dati <span class="term-code">prima</span> di scrivere qualunque cosa.</span>
-</div>
-    </div>
-    <div class="term-take anim-4">
-      <span class="tk-label">Capacità</span>
-      <span>L’agente non parte a produrre: <strong>separa le ipotesi</strong> e chiede una misura. È il comportamento che il vibe coding non ha mai — lì la premessa non viene mai messa in discussione.</span>
-    </div>
-    <script type="application/json" class="slide-notes">
-    {"title": "Demo — contestare la premessa", "script": "Guardate cosa succede prima di qualunque proposta. Le chiedo di risolvere un problema e lei mi chiede se quel problema qualcuno l'ha misurato. Poi apre il bivio: o le sale sono poche, e allora è un problema di budget che il software non risolve, oppure risultano occupate senza esserlo, e allora è comportamento. Sono due prodotti diversi. Questo è il momento in cui un agente vi fa risparmiare tre mesi, ed è esattamente il contrario del vibe coding, dove la premessa non viene mai messa in discussione.", "notes": ["La domanda sulla misura arriva prima di ogni proposta", "Il bivio esplicitato invece di partire a costruire", "Due ipotesi non equivalenti: portano a due prodotti diversi", "È il contrario del vibe coding: lì la premessa non si discute mai", "Collegare alla slide sul debito cognitivo: qui il perché viene alla luce subito"]}
-    </script>
-  </div>
-
-  <!-- ---- 27 · DEMO — IL CHECKPOINT UMANO ---- -->
-  <div class="slide" data-slide="27" data-chapter="3">
-    <p class="slide-tag anim-1" data-edit-key="s27-e0">Demo — 3 di 6</p>
-    <h2 class="anim-2" data-edit-key="s27-e1">Il checkpoint umano, <span class="highlight-orange">per intero</span></h2>
-    <div class="term anim-3">
-      <div class="term-bar">
-        <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
-        <span class="term-name">bmad — analyst (Mary) · revisione del brief</span>
-      </div>
-      <div class="term-body"><span class="term-ag">📊 Ho aggiunto una classifica dei reparti con più no-show.</span>
-<span class="term-ag">   Il dato c’è ed è solido.</span>
+<span class="term-ag">📊 Brief pronto. Dentro c’è anche la classifica dei reparti con più</span>
+<span class="term-ag">   no-show: il dato è nell’export e regge.</span>
 
 <span class="term-user">La classifica toglila.</span>
 
-<span class="term-hl">📊 Tolta. Mi dici il motivo, così lo scrivo nel brief?
-   Se resta solo qui dentro, al prossimo giro la ripropongo.</span>
+<span class="term-hl">📊 Tolta. Mi dai il motivo, così lo scrivo nel brief?
+   Se resta solo qui dentro, al prossimo giro te la ripropongo.</span>
 
-<span class="term-user">Perché qui una classifica pubblica diventa una gara, e la gente
-  smette di usare lo strumento per non finirci sopra.</span>
+<span class="term-user">Diventa una gara, e la gente smette di usare lo strumento
+  pur di non finirci sopra.</span>
 
-<span class="term-ag">📊 Registrato nel brief come nota del revisore, col motivo per esteso.</span>
+<span class="term-ag">📊 Scritto in <span class="term-file">product-brief.md</span> come nota del revisore, col motivo.</span>
 
-<span class="term-hl olive">   Non era un’informazione che mi mancava: il dato ce l’avevo, la logica
-   funzionava. Mi mancava di sapere <span class="term-code">come funziona questa azienda</span>.</span>
+<span class="term-hl olive">   Non mi mancava un dato. Mi mancava di sapere <span class="term-code">come funziona
+   questa azienda</span>.</span>
 </div>
     </div>
     <div class="term-take trap anim-4">
@@ -2333,7 +2308,48 @@ body.editing [contenteditable="true"]:focus {
       <span>Correggere a voce e chiudere lì. La correzione che <strong>non finisce nell’artefatto</strong> torna al giro dopo — e stavolta magari non te ne accorgi.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — il checkpoint umano", "script": "Questo per me è il pezzo più importante della prima metà. Le dico di togliere una cosa, e lei la toglie — ma poi mi chiede il motivo, e vi dice anche perché lo chiede: se il motivo resta nella chat, al prossimo giro ripropone la stessa cosa. E la frase finale è quella che vale il biglietto: non le mancava un dato, le mancava di sapere come funziona questa azienda. Quel tipo di correzione non può farla da sola, ed è esattamente il motivo per cui il checkpoint umano esiste.", "notes": ["L'agente accetta la correzione e chiede il perché", "Il motivo va nell'artefatto, altrimenti la proposta ritorna", "Aveva ragione sui dati e torto sull'azienda", "Riaggancia le slide 12-13: la memoria come artefatto di progetto", "Il pitfall: approvare o correggere a voce, senza scrivere"]}
+    {"title": "Demo — il checkpoint umano", "script": "Prima cosa: non parte a produrre. Le chiedo di sistemare le sale e lei separa due ipotesi che portano a due prodotti diversi, e chiede i dati. Poi arriva il pezzo che per me vale la slide. Le dico di togliere una cosa dal brief, e lei la toglie — ma mi chiede il motivo, e vi dice anche perché lo chiede: se il motivo resta nella chat, al prossimo giro ripropone la stessa cosa. E la frase finale: non le mancava un dato, il dato ce l'aveva e la logica funzionava. Le mancava di sapere come funziona questa azienda. Quella roba lì gliela potevo dare solo io, ed è esattamente il motivo per cui il checkpoint umano esiste.", "notes": ["Separa le ipotesi e chiede una misura, prima di proporre", "Accetta la correzione e chiede il perché", "Il motivo va nell'artefatto, altrimenti la proposta ritorna", "Aveva ragione sui dati e torto sull'azienda", "Riaggancia la slide 12: la memoria è un artefatto, non una chat", "Il pitfall: approvare o correggere a voce, senza scrivere"]}
+    </script>
+  </div>
+
+  <!-- ---- 27 · DEMO — LA STORY È UN CONTRATTO ---- -->
+  <div class="slide" data-slide="27" data-chapter="3">
+    <p class="slide-tag anim-1" data-edit-key="s27-e0">Demo — 3 di 6</p>
+    <h2 class="anim-2" data-edit-key="s27-e1">La story non è un ticket. <span class="highlight-green">È un contratto.</span></h2>
+    <div class="term anim-3">
+      <div class="term-bar">
+        <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
+        <span class="term-name">bmad — dev (Amelia) · CS · create-story</span>
+      </div>
+      <div class="term-body"><span class="term-user">CS</span>
+
+<span class="term-ag">💻 Prossima in <span class="term-file">epics.md</span>: 1.1. Leggo architettura e project-context,</span>
+<span class="term-ag">   poi la scrivo. Esce un file, non un messaggio.</span>
+
+<span class="term-dim">── 1-1-ricerca-e-prenotazione.md ─────────────────────────────</span>
+<span class="term-ag">Status: <span class="term-code">ready-for-dev</span></span>
+
+<span class="term-ag">## Acceptance Criteria</span>
+<span class="term-ag">1. La ricerca mostra solo le sale libere nella fascia richiesta.</span>
+<span class="term-ag">2. La prenotazione fallisce se la sala si occupa nel frattempo.</span>
+<span class="term-ag">3. Chi prenota vede le proprie prenotazioni attive.</span>
+
+<span class="term-ag">## Tasks / Subtasks</span>
+<span class="term-ag">- [ ] Query di disponibilità <span class="term-dim">(AC: 1)</span></span>
+<span class="term-ag">- [ ] Lock ottimistico sulla prenotazione <span class="term-dim">(AC: 2)</span></span>
+<span class="term-ag">- [ ] Elenco personale <span class="term-dim">(AC: 3)</span></span>
+
+<span class="term-ag">## Dev Notes</span>
+<span class="term-hl">- Stati della prenotazione: attiva | disdetta | <span class="term-code">no_show</span>
+  no_show arriva nella 1.2.  [Source: architecture.md#Stati]</span>
+</div>
+    </div>
+    <div class="term-take anim-4">
+      <span class="tk-label">Strategia</span>
+      <span>Ogni task cita l’<strong>AC</strong> che soddisfa, ogni nota tecnica cita la <strong>fonte</strong>. E guardate l’ultima riga: <strong>no_show esiste già nel progetto, ma non negli AC di questa story</strong>. Fra due slide conta.</span>
+    </div>
+    <script type="application/json" class="slide-notes">
+    {"title": "Demo — la story è un contratto", "script": "Passiamo alla parte di implementazione. CS, create-story: Amelia legge l'architettura e il contesto di progetto, e scrive la story. Non è un ticket con due righe: è un contratto. Criteri di accettazione numerati, e ogni task dice quale criterio soddisfa. Le note tecniche citano la fonte, col percorso del file e la sezione. E adesso vi chiedo di fissare l'ultima riga, perché è l'unica cosa che vi chiedo di ricordare di questa slide: gli stati della prenotazione sono tre, e no_show arriva nella story dopo. Sta scritto nell'architettura. Non sta negli AC di questa story.", "notes": ["CS legge architettura e project-context prima di scrivere", "AC numerati, e ogni task cita l'AC che soddisfa", "Le Dev Notes citano la fonte: file e sezione", "La riga su no_show è la pistola sul tavolo: pagherà alla slide 30", "La story nasce ready-for-dev e sprint-status.yaml lo registra", "Non leggere tutta la story: indicare la struttura e l'ultima riga"]}
     </script>
   </div>
 
@@ -2344,101 +2360,112 @@ body.editing [contenteditable="true"]:focus {
     <div class="term anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
-        <span class="term-name">tree _bmad-output/</span>
+        <span class="term-name">bmad — dev (Amelia) · DS · dev-story</span>
       </div>
-      <div class="term-body"><span class="term-ag">_bmad-output/</span>
-<span class="term-ag">├── <span class="term-file">project-context.md</span></span>          <span class="term-dim">lo carica ogni agente all’attivazione</span>
-<span class="term-ag">├── planning-artifacts/</span>
-<span class="term-ag">│   ├── <span class="term-file">product-brief.md</span></span>        <span class="term-dim">Mary · ipotesi, alternative scartate</span>
-<span class="term-ag">│   ├── <span class="term-file">prd.md</span></span>                  <span class="term-dim">John</span>
-<span class="term-ag">│   ├── <span class="term-file">epics.md</span></span>                <span class="term-dim">John</span>
-<span class="term-ag">│   ├── <span class="term-file">ux-spec.md</span></span>              <span class="term-dim">Sally</span>
-<span class="term-ag">│   ├── <span class="term-file">architecture.md</span></span>         <span class="term-dim">Winston · le decisioni, e il perché</span>
-<span class="term-ag">│   └── <span class="term-file">implementation-readiness-report.md</span></span>
-<span class="term-ag">└── implementation-artifacts/</span>
-<span class="term-ag">    ├── <span class="term-file">sprint-plan-epic-1.md</span></span>   <span class="term-dim">Amelia</span>
-<span class="term-ag">    ├── <span class="term-file">1-1-ricerca-e-prenotazione.md</span></span> <span class="term-dim">done · Dev Agent Record</span>
-<span class="term-ag">    └── <span class="term-file">1-2-check-in-e-liberazione.md</span></span> <span class="term-dim">in progress</span>
+      <div class="term-body"><span class="term-user">DS</span>
+
+<span class="term-ag">💻 <span class="term-file">1-1-ricerca-e-prenotazione.md</span> · AC1-AC3 · 3 task. Red, green, refactor.</span>
+
+<span class="term-ag">💻 Task 1/3 · <span class="term-code">AC1</span> — <span class="term-file">RicercaDisponibilita.java:34</span></span>
+<span class="term-ag">   escludo le prenotazioni che occupano la sala. 4 test verdi.</span>
+<span class="term-ag">💻 Task 2/3 · <span class="term-code">AC2</span> — <span class="term-file">PrenotazioneService.java:88</span>. 5 test verdi.</span>
+<span class="term-ag">💻 Task 3/3 · <span class="term-code">AC3</span> — <span class="term-file">ElencoController.java:21</span>. 3 test verdi.</span>
+
+<span class="term-ag">💻 Definition of done:</span>
+<span class="term-ag">   ✓ tutti i task [x]      ✓ AC1-AC3 soddisfatti</span>
+<span class="term-ag">   ✓ 16 test, 0 failure    ✓ File List completa</span>
+
+<span class="term-ag">   Scritto <span class="term-code">dentro la story</span>: Dev Agent Record (modello usato, debug</span>
+<span class="term-ag">   log, note di completamento), File List, Change Log.</span>
+
+<span class="term-hl olive">✅ Story status → <span class="term-code">review</span> in sprint-status.yaml
+   backlog → ready-for-dev → in-progress → <span class="term-code">review</span> → done</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">Capacità</span>
-      <span>La conversazione è usa-e-getta. Questi file no: si <strong>versionano, si diffano, passano in review</strong>. E ogni agente riparte da <span class="term-code" style="color:var(--color-accent-700);background:none;border:none;padding:0;">project-context.md</span>, non dalla vostra memoria.</span>
+      <span>La conversazione è usa-e-getta; questo no. <strong>Come è stata implementata resta dentro il file della story</strong>, versionato e diffabile. E lo stato non è nella tua testa: sta in <span class="term-code" style="color:var(--color-accent-700);background:none;border:none;padding:0;">sprint-status.yaml</span>.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — cosa resta dopo", "script": "Chiusa la sessione, cosa resta? Questo. Non una cronologia di chat, ma file nel repository. Si versionano, si diffano, passano in code review come qualsiasi altra cosa. E notate il primo: project-context.md, che ogni agente carica all'attivazione. È lì che vive la memoria di cui parlavamo prima, ed è un file, quindi un collega lo può leggere, correggere e commentare.", "notes": ["Gli artefatti sono file nel repo, non messaggi in una chat", "project-context.md viene caricato da ogni agente all'attivazione", "architecture.md contiene anche le alternative scartate e il perché", "Ogni story si lascia dietro il proprio Dev Agent Record", "Riaggancia la slide 12: la memoria è un artefatto versionato"]}
+    {"title": "Demo — cosa resta dopo", "script": "DS, dev-story. Amelia implementa un task per volta, e ogni riga che vi dice è citabile: il task, il criterio di accettazione, il file, la riga, i test. Alla fine passa una definition of done che non si può saltare. Ma la domanda vera è: chiuso il portatile, cosa resta? Resta questo. Non una chat da riscorrere: il diario di come è stata implementata sta dentro il file della story, versionato. E lo stato non è nella mia testa né nella vostra: sta in sprint-status.yaml, che si muove da ready-for-dev a review da solo.", "notes": ["Un task per volta, ogni affermazione citabile: file, riga, AC", "La definition of done è una lista che l'agente deve passare", "Il Dev Agent Record resta nel file della story, non in chat", "Gli stati sono reali: backlog, ready-for-dev, in-progress, review, done", "Riaggancia la slide 12: la memoria è un artefatto versionato", "Qui muore la domanda «e poi cosa mi resta in mano»"]}
     </script>
   </div>
 
-  <!-- ---- 29 · DEMO — LA CODE REVIEW ---- -->
+  <!-- ---- 29 · DEMO — TRE REVIEWER, TRE CONTESTI ---- -->
   <div class="slide" data-slide="29" data-chapter="3">
     <p class="slide-tag anim-1" data-edit-key="s29-e0">Demo — 5 di 6 · il pezzo forte</p>
-    <h2 class="anim-2" data-edit-key="s29-e1">Il rilievo che <span class="highlight-orange">nessun test</span> avrebbe preso</h2>
+    <h2 class="anim-2" data-edit-key="s29-e1">Tre reviewer. <span class="highlight-orange">Tre contesti diversi.</span></h2>
     <div class="term anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
-        <span class="term-name">bmad — dev (Amelia) · CR · sessione nuova</span>
+        <span class="term-name">bmad — code-review (CR) · sessione nuova</span>
       </div>
-      <div class="term-body"><span class="term-ag">💻 <span class="term-code">CR</span>. Sessione nuova. Rileggo il diff contro gli AC, il contesto di</span>
-<span class="term-ag">   progetto e <span class="term-file">architecture.md</span>. Non riuso il ragionamento con cui ho implementato.</span>
+      <div class="term-body"><span class="term-user">CR</span>
 
-<span class="term-ag"><span class="sev sev-media">media</span> Il filtro della ricerca usa il predicato sbagliato</span>
-<span class="term-ag"><span class="term-file">RicercaDisponibilita.java:34</span></span>
+<span class="term-ag">💻 Review di <span class="term-file">1-1-ricerca-e-prenotazione.md</span>. Sessione nuova: non riuso</span>
+<span class="term-ag">   il ragionamento con cui l’ho implementata.</span>
 
-<span class="term-del">-   AND p.stato &lt;&gt; 'disdetta'</span>
-<span class="term-add">+   AND p.stato = 'attiva'</span>
+<span class="term-dim">   Tre reviewer in parallelo, con contesto diverso apposta:</span>
+<span class="term-ag">   <span class="term-code">Blind Hunter</span>         solo il diff. Niente spec, niente progetto.</span>
+<span class="term-ag">   <span class="term-code">Edge Case Hunter</span>     il diff + accesso in lettura al progetto.</span>
+<span class="term-ag">   <span class="term-code">Acceptance Auditor</span>   il diff + la story + i context doc.</span>
 
-<span class="term-ag">   Una prenotazione in <span class="term-code">no_show</span> continua a occupare la sala,</span>
-<span class="term-ag">   perché <span class="term-code">no_show &lt;&gt; disdetta</span> è vero.</span>
+<span class="term-hl olive">💻 Acceptance Auditor — <span class="term-code">spec soddisfatta</span>.
+   AC1-AC3 verificati, tutti i task [x], perimetro rispettato.</span>
 
-<span class="term-hl">   La sala liberata automaticamente non risulterebbe libera.
-   È il bug che questo progetto esiste per evitare, nella query principale.</span>
+<span class="term-hl">💻 Edge Case Hunter — RicercaDisponibilita.java:34
+   <span class="term-code">stato &lt;&gt; 'disdetta'</span> enumera per esclusione. In architecture.md
+   gli stati sono tre: attiva | disdetta | <span class="term-code">no_show</span>. Una prenotazione
+   no_show passa il filtro e continua a occupare la sala.</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">Capacità</span>
-      <span>Rilettura <strong>in sessione separata</strong>, contro l’architettura invece che contro i test. Non è l’implementatore che si rilegge con la testa con cui ha scritto.</span>
+      <span>I tre <strong>non vedono la stessa cosa</strong>, ed è il punto. Chi ha la spec dice che va bene. Chi ha il progetto e <em>non</em> la spec trova il buco. Un reviewer solo non lo prendeva — e l’implementatore men che meno.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — la code review", "script": "E arriviamo al pezzo forte. Code review, sessione nuova, e questo è il rilievo di mezzo. Il filtro della ricerca escludeva le prenotazioni disdette invece di tenere solo le attive. Sembra una sfumatura. Non lo è: una prenotazione in no_show continua a occupare la sala, perché no_show è diverso da disdetta. Cioè la sala liberata automaticamente non risulterebbe libera — che è precisamente la funzionalità per cui questo progetto esiste, e sta nella query principale.", "notes": ["La review gira in sessione separata dall'implementazione", "Si rilegge contro l'architettura e il contesto, non solo contro i test", "Il rilievo media è il momento migliore della demo", "Mostrare il diff: due righe, conseguenza enorme", "La slide dopo spiega perché nessun test lo avrebbe preso"]}
+    {"title": "Demo — tre reviewer, tre contesti", "script": "E arriviamo al motivo per cui vi ho tenuto qui. Faccio partire la code review, in una sessione nuova. E qui BMAD fa una cosa che non mi aspettavo: non manda un revisore, ne manda tre in parallelo, e gli dà apposta contesti diversi. Il Blind Hunter vede solo il diff, niente spec e niente progetto. L'Edge Case Hunter vede il diff e può leggere il progetto. L'Acceptance Auditor vede il diff, la story e i documenti di contesto. Guardate cosa tornano. L'Acceptance Auditor dice: spec soddisfatta, criteri verificati, task tutti spuntati. L'Edge Case Hunter, che la spec non ce l'ha ma il progetto sì, va a leggere architecture.md, trova che gli stati sono tre e non due, e dice che una prenotazione in no_show passa il filtro e continua a occupare la sala.", "notes": ["Non un revisore: tre, in parallelo, con contesti asimmetrici", "Blind Hunter: solo il diff. Edge Case: diff + progetto. Auditor: diff + spec", "L'asimmetria è progettata, non un caso", "L'Auditor approva e l'Edge Case Hunter trova il buco: entrambi hanno ragione", "Rallentare qui: devono leggere le due risposte", "Non dire «l'AI ha trovato il bug»: l'ha trovato un contesto diverso"]}
     </script>
   </div>
 
-  <!-- ---- 30 · DEMO — PERCHÉ IL CHECKPOINT ESISTE ---- -->
+  <!-- ---- 30 · DEMO — CORRETTO PER LA STORY ---- -->
   <div class="slide" data-slide="30" data-chapter="3">
     <p class="slide-tag anim-1" data-edit-key="s30-e0">Demo — 6 di 6</p>
     <h2 class="anim-2" data-edit-key="s30-e1">Corretto per la story. <span class="highlight-red">Sbagliato per il progetto.</span></h2>
     <div class="term anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
-        <span class="term-name">bmad — dev (Amelia) · CR</span>
+        <span class="term-name">bmad — code-review (CR) · triage</span>
       </div>
-      <div class="term-body"><span class="term-user">Il secondo è grosso. Come ti è sfuggito mentre implementavi?</span>
+      <div class="term-body"><span class="term-ag">💻 Code review completa. Findings scritti in § Review Findings della story.</span>
+<span class="term-ag">   <span class="sev sev-decision">decision-needed 1</span><span class="sev sev-patch">patch 2</span><span class="sev sev-defer">defer 1</span><span class="sev sev-dismiss">dismiss 3</span></span>
 
-<span class="term-ag">💻 Perché stavo verificando che la ricerca escludesse le sale prenotate,</span>
-<span class="term-ag">   e quel predicato lo fa. Con solo prenotazioni <span class="term-code">attiva</span> nel database</span>
-<span class="term-ag">   i due filtri danno lo stesso risultato. I test della 1.1 non creano</span>
-<span class="term-ag">   prenotazioni <span class="term-code">no_show</span>: quello stato arriva nella 1.2.</span>
+<span class="term-ag">- [ ] <span class="term-code">[Review][Patch]</span> no_show continua a occupare la sala</span>
+<span class="term-ag">      <span class="term-file">[RicercaDisponibilita.java:34]</span></span>
+<span class="term-del">-   AND p.stato &lt;&gt; 'disdetta'</span>
+<span class="term-add">+   AND p.stato = 'attiva'</span>
 
-<span class="term-hl">   È corretto rispetto agli AC della 1.1 e sbagliato rispetto al progetto.
-   Il tipo di errore che si vede solo rileggendo contro l’architettura.</span>
+<span class="term-user">I test erano verdi e l’hai scritta tu. Come ti è sfuggito?</span>
 
-<span class="term-user">E se non avessimo fatto la review?</span>
+<span class="term-ag">💻 Verificavo <span class="term-code">AC1</span>: «solo le sale libere». Il predicato lo fa. I test</span>
+<span class="term-ag">   della 1.1 non seminano no_show, quello stato nasce nella 1.2:</span>
+<span class="term-ag">   i due filtri danno lo stesso risultato.</span>
 
-<span class="term-ag">💻 Il bug sarebbe emerso nella 1.2 come «la liberazione non funziona».</span>
-<span class="term-ag">   Avremmo cercato nel job, che era corretto. Il difetto stava nella query</span>
-<span class="term-ag">   della story precedente, già approvata.</span>
+<span class="term-hl">   Corretto rispetto agli AC. Sbagliato rispetto al progetto.</span>
 
-<span class="term-hl olive">   Chiusi i tre rilievi. <span class="term-code">16 test verdi</span>, due nuovi coprono i rilievi:
-   se qualcuno reintroduce il difetto, il test rosso lo dice.</span>
+<span class="term-dim">   Come gestisco le 2 patch?  1. tutte  2. action item  3. una per una</span>
+
+<span class="term-user">1</span>
+
+<span class="term-hl olive">💻 Applicate. +2 test su no_show. Story → <span class="term-code">done</span> in sprint-status.yaml.</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">La tesi</span>
-      <span>I test verificano la <strong>story</strong>. Solo una rilettura contro il progetto verifica il <strong>progetto</strong>. E la correzione diventa un test: da qui in poi il difetto non può tornare.</span>
+      <span>Nella stessa review: <strong>spec soddisfatta</strong> e <strong>due patch</strong>. Non è una contraddizione, è la definizione del problema. I test verificano la <strong>story</strong>; solo una rilettura contro il progetto verifica il <strong>progetto</strong>.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — perché il checkpoint esiste", "script": "Le chiedo come le sia sfuggito, e la risposta è la cosa più istruttiva di tutta la demo. Mentre implementava stava verificando gli AC della story, e rispetto a quelli il codice era giusto: i test della uno-uno non creano prenotazioni in no_show, perché quello stato arriva nella story dopo. Corretto per la story, sbagliato per il progetto. Poi la domanda che chiude: e se non avessimo fatto la review? Il bug sarebbe emerso nella uno-due come «la liberazione non funziona», e l'avremmo cercato nel job — che era corretto. Il difetto stava nella query della story precedente, già approvata.", "notes": ["Corretto rispetto agli AC, sbagliato rispetto al progetto", "Nessun test della 1.1 lo avrebbe preso: lo stato no_show arriva dopo", "Senza review il bug si sarebbe cercato nel posto sbagliato", "Le correzioni diventano due test nuovi: il difetto non può tornare", "Questa è la tesi del talk vista in funzione"]}
+    {"title": "Demo — corretto per la story", "script": "Il triage non è una lista di severità: sono quattro caselle. Una cosa da decidere insieme, due patch, una rinviata, tre buttate come rumore. E finiscono scritte dentro la story, non in chat. Poi le faccio la domanda cattiva: i test erano verdi e l'hai scritta tu, come ti è sfuggito? La risposta è la cosa più istruttiva della giornata. Stava verificando il criterio uno, mostra solo le sale libere, e il predicato lo fa. I test della uno-uno non creano prenotazioni in no_show, perché quello stato nasce nella story dopo: i due filtri danno lo stesso identico risultato. Corretto rispetto ai criteri di accettazione, sbagliato rispetto al progetto. E se non l'avessimo fatta, la review? Il bug sarebbe uscito nella uno-due come la liberazione non funziona, e saremmo andati a cercarlo nel job — che era corretto.", "notes": ["Il triage è in quattro caselle, non in severità: decision-needed, patch, defer, dismiss", "I findings finiscono scritti nella story, col percorso e la riga", "La domanda cattiva: come ti è sfuggito, visto che l'hai scritta tu", "Corretto per gli AC, sbagliato per il progetto: è la tesi del talk", "Senza review il bug si sarebbe cercato nel job, che era corretto", "La patch diventa due test: da qui in poi il difetto non può rientrare"]}
     </script>
   </div>
 
@@ -2450,26 +2477,26 @@ body.editing [contenteditable="true"]:focus {
       <div class="pf-col trap bounce-1">
         <div class="pf-head"><svg class="ic" viewBox="0 0 24 24"><path d="M10.3 3.6 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg> Dove si sbaglia</div>
         <div class="pf-list">
-          <div class="pf-item">Scrivere un tema invece di scegliere una voce di menu: contesto largo, deriva garantita</div>
+          <div class="pf-item">Scrivere un tema invece di scegliere una voce: il menu esiste perché ogni voce è uno skill con un contesto suo</div>
           <div class="pf-item">Approvare senza leggere l’artefatto: il checkpoint diventa un timbro</div>
           <div class="pf-item">Correggere a voce e non nel documento: <strong>la correzione torna al giro dopo</strong></div>
-          <div class="pf-item">Far rileggere il codice alla stessa sessione che l’ha scritto</div>
-          <div class="pf-item">Chiedere una feature intera invece di una story per volta</div>
+          <div class="pf-item">Far girare la review nella stessa sessione che ha scritto il codice</div>
+          <div class="pf-item">Fermarsi al verdetto sugli AC: <strong>«spec soddisfatta» non vuol dire «codice giusto»</strong></div>
         </div>
       </div>
       <div class="pf-col good bounce-2">
         <div class="pf-head"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg> Cosa fare invece</div>
         <div class="pf-list">
-          <div class="pf-item">Rispondi col <strong>codice</strong>: due lettere, un compito solo</div>
+          <div class="pf-item">Rispondi col <strong>codice</strong>: due lettere, uno skill, un compito solo</div>
           <div class="pf-item">Pretendi il perché: ipotesi falsificabile e alternative scartate, scritte</div>
           <div class="pf-item">Ogni correzione diventa <strong>una riga nell’artefatto</strong>, col motivo</div>
-          <div class="pf-item">Review in <strong>sessione nuova</strong>, contro l’architettura e non solo contro i test</div>
-          <div class="pf-item">Una story per giro, criteri di accettazione scritti prima</div>
+          <div class="pf-item">Review in <strong>sessione nuova</strong>, con reviewer che hanno contesti diversi</div>
+          <div class="pf-item">Ogni patch chiusa diventa <strong>un test</strong>: il difetto non può rientrare</div>
         </div>
       </div>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — pitfall e strategie", "script": "Riassumo quello che avete appena visto, perché è la parte che vi serve lunedì. A sinistra i modi di sprecare il framework: scrivere un tema invece di scegliere una voce, approvare senza leggere, correggere a voce, far rileggere il codice a chi l'ha scritto, chiedere tutto insieme. A destra le cinque contromisure. Se ne portate a casa una sola, prendete la terza: ogni correzione diventa una riga scritta, col motivo. È quella che trasforma il vostro tempo in memoria del progetto invece che in tempo perso.", "notes": ["Cinque pitfall e cinque contromisure, in parallelo", "Il pitfall del timbro è il più frequente in azienda", "La correzione scritta è la regola che rende il setup migliore nel tempo", "La review in sessione nuova è la meno intuitiva e la più efficace", "Se devi tagliare, questa slide è quella che il pubblico fotografa"]}
+    {"title": "Demo — pitfall e strategie", "script": "Riassumo quello che avete appena visto, perché è la parte che vi serve lunedì. A sinistra i modi di sprecare il framework: scrivere un tema invece di scegliere una voce, approvare senza leggere, correggere a voce, far girare la review nella stessa sessione che ha scritto il codice, e l'ultimo che avete appena visto in azione — fermarsi al verdetto sugli AC. A destra le cinque contromisure. Se ne portate a casa una sola, prendete la terza: ogni correzione diventa una riga scritta, col motivo. È quella che trasforma il vostro tempo in memoria del progetto invece che in tempo perso.", "notes": ["Cinque pitfall e cinque contromisure, in parallelo", "Il pitfall del timbro è il più frequente in azienda", "L'ultimo pitfall è quello appena visto: spec soddisfatta non basta", "La correzione scritta è la regola che rende il setup migliore nel tempo", "La review a contesti asimmetrici è la meno intuitiva e la più efficace", "Se devi tagliare, questa slide è quella che il pubblico fotografa"]}
     </script>
   </div>
 
@@ -2853,7 +2880,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v18',
+  storageKey: 'oltre-il-vibe-coding-edits-v19',
   fields: [],
 
   init: function() {
