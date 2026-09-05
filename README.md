@@ -95,7 +95,7 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 | 32 | pitfall e strategie, la slide che il pubblico fotografa |
 
 La **23** (il loop di sviluppo) apre la strada al diagramma della **24**, che la riassume
-visivamente. La 26 chiude il capitolo dal vivo, con il caso della demo.
+visivamente. La 25 apre la demo con il caso su cui gira tutto il resto del capitolo.
 
 Le slide su «come ci si parla con un agente» e sui quattro documenti del planning sono state
 tolte: dicevano in astratto quello che la demo, appena dopo, mostra succedere davvero — vedi
@@ -253,7 +253,7 @@ salienti sono già selezionati.
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
 parole vere, non appunti. Serve soprattutto per le 30-31, dove il ritmo conta.
 
-**Se devi tagliare**: tieni 31, 32 e 33. Sono le uniche che mostrano il processo *mentre
+**Se devi tagliare**: tieni 30, 31 e 32. Sono le uniche che mostrano il processo *mentre
 intercetta qualcosa*, che è la tesi del talk. Le 26-29 si raccontano a voce in un minuto.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
@@ -265,7 +265,7 @@ I codici di menu (`BP MR DR TR CB WB DP`) non sono inventati: vengono dai `custo
 Se qualcuno in sala ha BMAD installato e controlla, tornano.
 
 **Onestà**: il caso è ricostruito su un progetto di esempio, non è il log di una sessione
-reale. Il tag della 26 dice «caso di esempio» apposta. Se qualcuno chiede, dillo — la
+reale. Il tag della 25 dice «caso di esempio» apposta. Se qualcuno chiede, dillo — la
 credibilità la porta la coerenza dei documenti, non fingere che sia un log.
 
 
@@ -339,8 +339,6 @@ I segnaposto sono tra parentesi quadre `[così]` o in riquadri tratteggiati colo
   prova sfori, togli una o due delle cinque righe di **Cosa fa**, sono le più comprimibili.
   **Verifica i comandi** `/bmad-agent-*` nei badge «Esempio»: solo `bmad-agent-dev` è
   confermato dalle trascrizioni, gli altri quattro sono la convenzione standard
-- **slide 25** — la **Demo**: il riquadro tratteggiato e la riga «cosa stai per mostrare»
-  Il materiale sta in `demo-sale-riunioni/`, con scaletta da 8 minuti e versione da 3
 - **slide 35** — Graphify, llm-wiki e le alternative: resta da confermare lo **stato di
   maturità** dei primi due, e il `[X]` del consiglio finale
 - **slide 36** — il caso di Graphify in pratica è **ricostruito**: se hai una sessione vera,

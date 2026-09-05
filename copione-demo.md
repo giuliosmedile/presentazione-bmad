@@ -1,6 +1,6 @@
 # Copione della demo — SaleRiunioni
 
-Slide **26-33** del deck (quelle che sul contatore in basso a destra fanno 26/40 → 33/40).
+Slide **25-32** del deck (quelle che sul contatore in basso a destra fanno 25/40 → 32/40).
 Otto slide, otto minuti scarsi.
 
 ---
@@ -13,19 +13,19 @@ così tutto il tempo se lo prende il processo invece del contesto.
 
 **La demo ha due metà, e servono a due cose diverse.**
 
-La prima metà (slide 27-30) risponde alla domanda pratica che si stanno facendo tutti:
+La prima metà (slide 26-29) risponde alla domanda pratica che si stanno facendo tutti:
 *ma come ci si parla, a 'sta roba?* Vedono il menu, vedono che si risponde con due lettere,
 vedono l'agente che rimanda indietro una domanda invece di partire a produrre, e vedono
 dove finisce il lavoro quando chiudi il portatile.
 
-La seconda metà (slide 31-32) è il motivo per cui la demo esiste. È il processo che becca
+La seconda metà (slide 30-31) è il motivo per cui la demo esiste. È il processo che becca
 un bug che nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì
 dimostri che l'ordine serve a qualcosa.
 
-L'ultima (33) è il riassunto operativo: cosa non fare, cosa fare.
+L'ultima (32) è il riassunto operativo: cosa non fare, cosa fare.
 
-**Se ti resta poco tempo taglia la prima metà, mai la seconda.** Le slide 27-30 le racconti
-a voce in un minuto. La 31 e la 32 no: lì devono leggere il diff.
+**Se ti resta poco tempo taglia la prima metà, mai la seconda.** Le slide 26-29 le racconti
+a voce in un minuto. La 30 e la 31 no: lì devono leggere il diff.
 
 ---
 
@@ -40,7 +40,7 @@ obiezione che potrebbe farti perdere la sala a metà.
 
 ---
 
-## Slide 26 — Il caso
+## Slide 25 — Il caso
 
 *Sullo schermo: tre numeri grandi. 612 prenotazioni, 41%, 38 ticket.*
 
@@ -64,12 +64,15 @@ obiezione che potrebbe farti perdere la sala a metà.
 
 ---
 
-## Slide 27 — Il menu e i codici
+## Slide 26 — Il menu e i codici
 
 *Sullo schermo: il terminale con l'attivazione di Mary e il menu numerato.*
 
-> Prima cosa che succede quando attivo un agente. Io non gli scrivo un tema. Lui si
-> presenta e mi dà un menu.
+> Si parte da un comando: `/bmad-agent-analyst` e Mary è attiva. Non è un tono di voce,
+> è una riga che scrivo io.
+>
+> E la prima cosa che succede dopo non è che lui aspetta un tema. Si presenta e mi dà
+> un menu.
 >
 > Guardate le sigle nella seconda colonna. BP, MR, DR, TR. Sono codici. Io rispondo `MR`
 > e basta. Due lettere.
@@ -84,7 +87,7 @@ obiezione che potrebbe farti perdere la sala a metà.
 
 ---
 
-## Slide 28 — Contestare la premessa
+## Slide 27 — Contestare la premessa
 
 *Sullo schermo: la domanda evidenziata in arancione e il bivio a due voci.*
 
@@ -106,7 +109,7 @@ obiezione che potrebbe farti perdere la sala a metà.
 
 ---
 
-## Slide 29 — Il checkpoint umano
+## Slide 28 — Il checkpoint umano
 
 *Sullo schermo: due blocchi evidenziati, uno arancione e uno verde oliva.*
 
@@ -136,7 +139,7 @@ visto in funzione.
 
 ---
 
-## Slide 30 — Cosa resta dopo
+## Slide 29 — Cosa resta dopo
 
 *Sullo schermo: l'albero dei file di `_bmad-output/`.*
 
@@ -151,12 +154,13 @@ visto in funzione.
 > Il primo in alto, `project-context`, è quello che ogni agente si carica quando parte.
 > È lì che vive la memoria di cui parlavamo dieci minuti fa.
 >
-> E `architecture`, quello in mezzo, non contiene solo cosa abbiamo deciso. Contiene anche
-> cosa abbiamo scartato, e perché. Che di solito è la parte che si perde per prima.
+> Poi guardate le due righe annotate. Il `product-brief` non porta solo l'ipotesi: porta
+> anche le alternative che abbiamo scartato. E `architecture` non contiene solo cosa
+> abbiamo deciso: contiene il perché. Che di solito è la parte che si perde per prima.
 
 ---
 
-## Slide 31 — La code review
+## Slide 30 — La code review
 
 *Sullo schermo: il diff. Due righe, una rossa e una verde.*
 
@@ -184,7 +188,7 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 
 ---
 
-## Slide 32 — Perché nessun test l'avrebbe preso
+## Slide 31 — Perché il checkpoint esiste
 
 *Sullo schermo: la domanda «come ti è sfuggito?» e la risposta.*
 
@@ -214,7 +218,7 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 
 ---
 
-## Slide 33 — Pitfall e strategie
+## Slide 32 — Pitfall e strategie
 
 *Sullo schermo: due colonne, rossa e verde.*
 
@@ -229,6 +233,9 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 > timbro, e a quel punto tanto vale non averlo — anzi, è peggio, perché vi dà l'impressione
 > di aver controllato.
 >
+> E il quarto lo avete appena visto in funzione: far rileggere il codice alla stessa
+> sessione che l'ha scritto. Il bug di prima è uscito perché la review girava altrove.
+>
 > A destra le contromisure. Se ne prendete una sola, prendete la terza: ogni correzione
 > diventa una riga scritta, col motivo. È quella che trasforma il tempo che ci mettete in
 > memoria del progetto, invece che in tempo perso.
@@ -240,10 +247,10 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 | Tempo | Cosa fai |
 |---|---|
 | 8 min | tutto |
-| 5 min | salti la 27 e la 29, le racconti a voce mentre passi |
-| 3 min | **solo 31, 32, 33**. Il caso lo riassumi in una frase entrando |
+| 5 min | salti la 26 e la 28, le racconti a voce mentre passi |
+| 3 min | **solo 30, 31, 32**. Il caso lo riassumi in una frase entrando |
 
-Il taglio da non fare mai è la 32. Senza quella, la 31 resta un bug trovato per fortuna.
+Il taglio da non fare mai è la 31. Senza quella, la 30 resta un bug trovato per fortuna.
 
 ---
 
@@ -288,7 +295,7 @@ contano invece che su tutto il diff.
 
 Tutto quello che c'è dietro sta in [`demo-sale-riunioni/`](demo-sale-riunioni/), che ha un
 README suo con la struttura completa. Le due chat da cui viene questa demo sono
-`chat/01-mary-analyst.md` e `chat/09-amelia-code-review.md`; il diff mostrato nella slide 31
+`chat/01-mary-analyst.md` e `chat/09-amelia-code-review.md`; il diff mostrato nella slide 30
 è `progetto/_bmad-output/implementation-artifacts/review-1.1.diff`.
 
 Se qualcuno in sala vuole vedere i file veri dopo il talk, sono navigabili così come sono.
