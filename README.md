@@ -97,7 +97,7 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 | 23 | i cinque insieme, e la catena di artefatti che si passano |
 | 24 | il diagramma del loop coi checkpoint umani |
 | 25 | il caso della demo: sei sale, il 41%, l'ipotesi |
-| 26-31 | **la demo**, sei momenti: menu · premessa · checkpoint · artefatti · review · perché |
+| 26-31 | **la demo**, sei momenti: menu · checkpoint · story · artefatti · review · verdetto |
 | 32 | pitfall e strategie, la slide che il pubblico fotografa |
 
 La **23** (i cinque insieme) apre la strada al diagramma del loop della **24**, che riassume
@@ -242,31 +242,57 @@ salienti sono già selezionati.
 | Slide | Momento | Cosa deve arrivare |
 |---|---|---|
 | 25 | il caso | sei sale, il 41%, l'ipotesi falsificabile |
-| 26 | il menu e i codici | non scrivi un prompt, scegli una voce: `MR`, due lettere |
-| 27 | contestare la premessa | «è un'impressione o qualcuno l'ha misurata?» e il bivio |
-| 28 | il checkpoint umano | la classifica tolta, e il motivo che **va scritto** |
-| 29 | cosa resta dopo | l'albero di `_bmad-output/`: file, non chat |
-| 30 | la code review | il diff `stato <> 'disdetta'` → `stato = 'attiva'` |
-| 31 | perché il checkpoint esiste | corretto per la story, sbagliato per il progetto |
+| 26 | attivazione e menu | tre colonne, e la terza è **lo skill che parte**: `CB` → `bmad-product-brief` |
+| 27 | il checkpoint umano | il bivio, poi la classifica tolta e il motivo che **va scritto** |
+| 28 | la story è un contratto | AC numerati, task che citano l'AC — e `no_show` piantato nelle Dev Notes |
+| 29 | cosa resta dopo | `DS`, la definition of done, e lo stato che si muove in `sprint-status.yaml` |
+| 30 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova il buco |
+| 31 | corretto per la story | il triage in quattro bucket, il diff, e «come ti è sfuggito?» |
 | 32 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
 
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
 parole vere, non appunti. Serve soprattutto per le 30-31, dove il ritmo conta.
 
-**Se devi tagliare**: tieni 30, 31 e 32. Sono le uniche che mostrano il processo *mentre
-intercetta qualcosa*, che è la tesi del talk. Le 26-29 si raccontano a voce in un minuto.
+Le otto slide sono **in ordine di tempo** e percorrono il loop della 24 invece di
+raccontarlo: parli a un agente, produci una story, la implementi, la fai rivedere. La
+versione precedente spendeva quattro slide sulla fase di analisi e zero su `create-story` e
+`dev-story`, e saltava dalla chat con Mary alla code review senza mostrare cosa c'era in
+mezzo.
+
+**Se devi tagliare**: tieni 28, 30, 31 e 32. La 28 sembra la più sacrificabile e non lo è:
+è quella che pianta `no_show` come vincolo di progetto, e senza di lei la 30 non ha niente
+da raccogliere. Le 26, 27 e 29 si raccontano a voce in un minuto.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
 classe **`.term-hl`** per la riga su cui deve cadere l'occhio (terracotta) o `.term-hl.olive`
 per le conclusioni dell'agente. Sotto ogni terminale c'è una fascia `.term-take` con
 l'etichetta — *Strategia*, *Capacità*, *Pitfall*, *La tesi* — che dice la morale in una riga.
 
-I codici di menu (`BP MR DR TR CB WB DP`) non sono inventati: vengono dai `customize.toml`.
-Se qualcuno in sala ha BMAD installato e controlla, tornano.
+Il triage della review usa le classi **`.sev-decision`**, `.sev-patch`, `.sev-defer`,
+`.sev-dismiss`: sono i quattro bucket veri di `bmad-code-review`, e `decision-needed` prende
+il terracotta perché è letteralmente il finding che richiede te.
+
+### Cosa è preso dall'installazione vera
+
+Tutte le meccaniche vengono da BMAD 6.6.0 come installato in
+`TIRRENO/BE_TRRN_API_Query_Engine`. Se qualcuno in sala ha BMAD e controlla, tornano:
+
+- **il menu a tre colonne**, codice / descrizione / skill (o prompt), e i codici stessi
+  (`BP MR DR TR CB WB DP` per Mary, `DS QD QA CR SP CS ER` per Amelia) dai `customize.toml`
+- **i tre reviewer** di `bmad-code-review` e il contesto asimmetrico che ricevono:
+  Blind Hunter solo il diff, Edge Case Hunter diff + progetto, Acceptance Auditor
+  diff + spec + context doc
+- **il triage in quattro bucket** e la sintassi dei finding scritti nella story
+  (`- [ ] [Review][Patch] <titolo> [<file>:<riga>]`)
+- **gli stati della story**: `backlog → ready-for-dev → in-progress → review → done`,
+  e `sprint-status.yaml` che li tiene
+- **la voce di Amelia**: il suo `communication_style` dice «ultra-succinct, speaks in file
+  paths and AC IDs». Se la fai parlare in prosa, il pubblico che conosce lo strumento se
+  ne accorge
 
 **Onestà**: il caso è ricostruito su un progetto di esempio, non è il log di una sessione
-reale. Il tag della 25 dice «caso di esempio» apposta. Se qualcuno chiede, dillo — la
-credibilità la porta la coerenza dei documenti, non fingere che sia un log.
+reale. Il tag della 25 dice «caso di esempio» apposta. La distinzione da fare in sala è
+questa: **il caso è finto, le meccaniche sono vere**. Detta così regge; detta a metà no.
 
 
 ## Il capitolo 04, slide per slide (33-37)

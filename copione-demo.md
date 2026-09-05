@@ -11,21 +11,33 @@ Un progetto finto ma coerente: prenotazione delle sale riunioni interne. L'ho sc
 apposta — il dominio non va spiegato, in sala lo capiscono prima che tu finisca la frase, e
 così tutto il tempo se lo prende il processo invece del contesto.
 
+**La demo percorre il loop della slide 24 invece di raccontarlo.** Otto slide, e sono in
+ordine di tempo: parli a un agente, produci una story, la implementi, la fai rivedere.
+
+| Slide | Cosa succede | Chi |
+|---|---|---|
+| 25 | il caso | — |
+| 26 | attivazione e menu | Mary |
+| 27 | il checkpoint umano | Mary |
+| 28 | la story nasce | Amelia `CS` |
+| 29 | la story viene implementata | Amelia `DS` |
+| 30 | tre reviewer, tre contesti | Amelia `CR` |
+| 31 | il verdetto contraddittorio | Amelia `CR` |
+| 32 | pitfall e strategie | — |
+
 **La demo ha due metà, e servono a due cose diverse.**
 
-La prima metà (slide 26-29) risponde alla domanda pratica che si stanno facendo tutti:
-*ma come ci si parla, a 'sta roba?* Vedono il menu, vedono che si risponde con due lettere,
-vedono l'agente che rimanda indietro una domanda invece di partire a produrre, e vedono
+La prima (26-29) risponde alla domanda pratica che si stanno facendo tutti: *ma come ci si
+parla, a 'sta roba, e cosa mi resta in mano dopo?* Vedono il menu, vedono un agente che
+rimanda indietro una domanda invece di partire a produrre, vedono nascere una story e vedono
 dove finisce il lavoro quando chiudi il portatile.
 
-La seconda metà (slide 30-31) è il motivo per cui la demo esiste. È il processo che becca
-un bug che nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì
-dimostri che l'ordine serve a qualcosa.
+La seconda (30-31) è il motivo per cui la demo esiste. È il processo che becca un bug che
+nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì dimostri che
+l'ordine serve a qualcosa.
 
-L'ultima (32) è il riassunto operativo: cosa non fare, cosa fare.
-
-**Se ti resta poco tempo taglia la prima metà, mai la seconda.** Le slide 26-29 le racconti
-a voce in un minuto. La 30 e la 31 no: lì devono leggere il diff.
+**Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 28 non tagliarla:
+è quella che pianta il vincolo che la 30 raccoglie. Senza, la 30 è un colpo di fortuna.
 
 ---
 
@@ -36,7 +48,9 @@ codice**. Quello lo fanno già tutti. Stai facendo vedere un processo che si acc
 qualcosa. Ogni volta che hai un dubbio su cosa dire, torna lì.
 
 E dillo subito che il caso è ricostruito. Costa mezza frase e ti toglie di mezzo l'unica
-obiezione che potrebbe farti perdere la sala a metà.
+obiezione che potrebbe farti perdere la sala a metà. Il caso è finto; **le meccaniche che
+vedete sono quelle vere**, prese dall'installazione di BMAD 6.6.0 che gira su un progetto
+nostro. Questa distinzione dilla, perché è quella che ti tiene la credibilità.
 
 ---
 
@@ -58,65 +72,52 @@ obiezione che potrebbe farti perdere la sala a metà.
 > fare e diventa automatica, la capacità cresce senza costruire niente. Niente sensori,
 > niente hardware, niente budget.
 >
-> Una precisazione così ve la tolgo subito: questo è un caso ricostruito su un progetto di
-> esempio, non è il log di una sessione vera. I documenti però sono coerenti fra loro — se
-> andate a incrociare i numeri fra un file e l'altro, tornano.
+> Una precisazione così ve la tolgo subito: il caso è ricostruito su un progetto di esempio,
+> non è il log di una sessione vera. Ma le meccaniche che vedete — i menu, la review, gli
+> stati — sono quelle vere, prese da un'installazione che gira su un progetto nostro.
 
 ---
 
-## Slide 26 — Il menu e i codici
+## Slide 26 — Attivazione e menu
 
-*Sullo schermo: il terminale con l'attivazione di Mary e il menu numerato.*
+*Sullo schermo: il terminale con l'attivazione di Mary e il menu a tre colonne.*
 
-> Si parte da un comando: `/bmad-agent-analyst` e Mary è attiva. Non è un tono di voce,
-> è una riga che scrivo io.
+> Prima cosa: si attiva un agente. Non è un tono di voce, è una riga che scrivo io.
+> `bmad-agent-analyst`, e Mary è in linea.
 >
-> E la prima cosa che succede dopo non è che lui aspetta un tema. Si presenta e mi dà
-> un menu.
+> E la prima cosa che fa non è aspettare che le scriva un tema. Si presenta e apre un menu.
 >
-> Guardate le sigle nella seconda colonna. BP, MR, DR, TR. Sono codici. Io rispondo `MR`
-> e basta. Due lettere.
+> Adesso guardate la **terza colonna**, perché è quella che spiega il meccanismo e di solito
+> non ve la fa vedere nessuno. Ogni voce non è un'opzione di conversazione: è uno **skill**
+> che parte. Rispondo `CB` e si attiva `bmad-product-brief`, che è un pezzo di software con
+> i suoi passi, i suoi file di contesto, le sue regole.
 >
-> Sembra una comodità e invece è il punto. Quando rispondo MR, quell'agente in quel momento
-> sta facendo una cosa sola — ricerca di mercato — e non sta pensando a nient'altro. Il
-> contesto resta stretto per costruzione, non perché mi sono ricordato di tenerlo stretto io.
+> Il vantaggio quindi non è la comodità delle due lettere. È che il contesto resta stretto
+> **per costruzione**, non perché mi sono ricordato io di tenerlo stretto.
 >
-> E questi codici non me li sono inventati per la slide. Stanno in un file di configurazione
-> dentro il repository. Se qualcuno di voi ha BMAD installato e va a controllare, li trova
-> uguali.
+> E questi non me li sono inventati per la slide. Codici e nomi degli skill stanno in un file
+> di configurazione dentro il repository. Se qualcuno di voi ha BMAD installato e va a
+> controllare, li trova uguali.
 
 ---
 
-## Slide 27 — Contestare la premessa
+## Slide 27 — Il checkpoint umano
 
-*Sullo schermo: la domanda evidenziata in arancione e il bivio a due voci.*
-
-> Qui però succede la cosa che non mi aspettavo.
->
-> Io le ho chiesto di sistemare il problema delle sale. Lei, prima di propormi qualunque
-> cosa, mi chiede se quel problema qualcuno l'ha misurato.
->
-> E poi apre il bivio, che secondo me è il momento più utile di tutta la fase di analisi.
-> Dietro «non trovo una sala» ci sono due storie diverse. O le sale sono poche, e allora è
-> un problema di muri e di budget e il software non c'entra niente. Oppure le sale ci sono
-> ma risultano occupate quando non lo sono, e lì invece si può fare qualcosa.
->
-> Sono due prodotti diversi. Se costruisci per il secondo e la verità era il primo, hai
-> buttato tre mesi.
->
-> Fate la stessa identica richiesta a una chat qualsiasi, stasera. Vi scrive il codice.
-> Non vi chiede se il problema esiste.
-
----
-
-## Slide 28 — Il checkpoint umano
-
-*Sullo schermo: due blocchi evidenziati, uno arancione e uno verde oliva.*
+*Sullo schermo: il bivio in alto, poi due blocchi evidenziati, uno arancione e uno verde oliva.*
 
 Questa è quella su cui vale la pena stare venti secondi in più.
 
-> Lei aveva messo nel brief una classifica dei reparti che prenotano e non disdicono. Il
-> dato c'era ed era corretto.
+> Prima parte, veloce: le chiedo di sistemare il problema delle sale e lei **non parte a
+> produrre**. Separa due ipotesi. O le sale sono poche, e allora è un problema di muri e di
+> budget e il software non c'entra niente. Oppure risultano occupate quando non lo sono, e
+> lì si può fare qualcosa. Sono due prodotti diversi: se costruisci per il secondo e la
+> verità era il primo, hai buttato tre mesi. Quindi prima i dati.
+>
+> *[fai la stessa richiesta a una chat qualsiasi stasera: vi scrive il codice, non vi chiede
+> se il problema esiste]*
+>
+> Adesso la parte che vale la slide. Lei aveva messo nel brief una classifica dei reparti che
+> prenotano e non disdicono. Il dato c'era ed era corretto.
 >
 > Io le dico di toglierla. E lei la toglie. Ma poi mi chiede perché.
 >
@@ -128,93 +129,136 @@ Questa è quella su cui vale la pena stare venti secondi in più.
 >
 > E lei se lo scrive. Nel documento, col motivo per esteso.
 >
-> Poi c'è l'ultima riga, quella verde, che per me vale da sola tutta la slide. Non le
-> mancava un dato: il dato ce l'aveva, la logica funzionava. Le mancava di sapere come
-> funziona questa azienda.
+> Poi c'è l'ultima riga, quella verde, che per me vale da sola tutta la slide. Non le mancava
+> un dato: il dato ce l'aveva, la logica funzionava. Le mancava di sapere come funziona
+> questa azienda.
 >
 > Ecco. Quella roba lì gliela potevo dare solo io.
 
-**Se hai due secondi**, aggancia qui la slide di prima sulla memoria: è lo stesso discorso,
-visto in funzione.
+**Se hai due secondi**, aggancia qui la slide sulla memoria: è lo stesso discorso, visto in
+funzione.
+
+---
+
+## Slide 28 — La story è un contratto
+
+*Sullo schermo: la story appena creata, e l'ultima riga evidenziata.*
+
+**Non leggere la story.** Indichi la struttura, e poi ti fermi sull'ultima riga.
+
+> Passiamo alla parte di implementazione. `CS`, create-story: Amelia legge l'architettura e
+> il contesto di progetto, e scrive la story. Non me la racconta: la scrive in un file.
+>
+> E non è un ticket con due righe. Guardate la forma. Criteri di accettazione numerati. E
+> ogni task, sotto, dice **quale criterio soddisfa**. Le note tecniche citano la fonte, col
+> percorso del file e la sezione.
+>
+> Adesso vi chiedo una cosa sola, ed è l'unica di questa slide.
+>
+> *[indica l'ultima riga]*
+>
+> Gli stati di una prenotazione sono tre: attiva, disdetta, e no_show. Sta scritto
+> nell'architettura del progetto. E `no_show` arriva nella story **dopo**.
+>
+> Quindi: sta nel progetto, non sta nei criteri di accettazione di questa story.
+>
+> Tenetela lì. Fra due slide serve.
 
 ---
 
 ## Slide 29 — Cosa resta dopo
 
-*Sullo schermo: l'albero dei file di `_bmad-output/`.*
+*Sullo schermo: l'esecuzione di `DS`, la definition of done, il passaggio di stato in fondo.*
 
-> Domanda pratica. Finita la giornata, chiudo il portatile: cosa mi resta in mano?
+> `DS`, dev-story. Implementa un task per volta, e notate come parla: task, criterio, file,
+> riga, test. Ogni riga è verificabile. Non è uno stile: sta scritto nella configurazione
+> dell'agente che deve parlare in percorsi di file e identificativi di criteri.
 >
-> Questo. File.
+> Alla fine passa una definition of done che non può saltare. Non è lei che decide quando ha
+> finito: è una lista che deve spuntare.
 >
-> Non una chat da riaprire e riscorrere cercando dove avevamo deciso una cosa, ma roba
-> nella cartella del progetto. Che si versiona, si diffa e passa in review come qualunque
-> altro file.
+> Ma la domanda vera è quella pratica. Finita la giornata, chiudo il portatile: cosa mi resta
+> in mano?
 >
-> Il primo in alto, `project-context`, è quello che ogni agente si carica quando parte.
-> È lì che vive la memoria di cui parlavamo dieci minuti fa.
+> Questo. Non una chat da riaprire e riscorrere cercando dove avevamo deciso una cosa. Il
+> diario di **come** è stata implementata sta dentro il file della story: il modello usato,
+> le note, i file toccati, il change log. Si versiona, si diffa, passa in review come
+> qualunque altro file.
 >
-> Poi guardate le due righe annotate. Il `product-brief` non porta solo l'ipotesi: porta
-> anche le alternative che abbiamo scartato. E `architecture` non contiene solo cosa
-> abbiamo deciso: contiene il perché. Che di solito è la parte che si perde per prima.
+> E l'ultima riga: lo stato non è nella mia testa né nella vostra. Sta in un file,
+> `sprint-status.yaml`, e a muoverlo è il workflow. Backlog, pronta per lo sviluppo, in
+> lavorazione, in review, chiusa.
 
 ---
 
-## Slide 30 — La code review
+## Slide 30 — Tre reviewer, tre contesti
 
-*Sullo schermo: il diff. Due righe, una rossa e una verde.*
+*Sullo schermo: i tre reviewer, poi due blocchi evidenziati che dicono cose opposte.*
 
 Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 
 > E adesso il motivo per cui vi ho tenuto qui.
 >
-> Story finita, codice scritto, test tutti verdi. Faccio partire la code review — e la
-> faccio partire in una **sessione nuova**, che è un dettaglio che vi torna fra un minuto.
+> Story finita, codice scritto, test tutti verdi. Faccio partire la code review, e la faccio
+> partire in una **sessione nuova**.
 >
-> Trova tre cose. Vi faccio vedere quella di mezzo.
+> E qui BMAD fa una cosa che non mi aspettavo. Non manda un revisore. Ne manda **tre, in
+> parallelo**, e gli dà apposta contesti diversi.
 >
-> Nella query della ricerca c'era scritto: *prendi le prenotazioni che non sono disdette*.
-> Doveva esserci: *prendi le prenotazioni attive*.
+> *[indica le tre righe, una alla volta]*
 >
-> Due parole. Sembra la stessa cosa.
+> Il **Blind Hunter** vede solo il diff. Niente specifica, niente progetto, niente.
+> L'**Edge Case Hunter** vede il diff e può leggere il progetto, ma la specifica non ce l'ha.
+> L'**Acceptance Auditor** vede tutto: diff, story, documenti di contesto.
 >
-> Non lo è. Perché una prenotazione decaduta per no-show non è una prenotazione disdetta.
-> Quindi con quel filtro lì continua a occupare la sala.
+> Adesso guardate cosa tornano indietro.
 >
-> Tradotto: la sala che il sistema libera da solo continuava a risultare occupata. La
-> funzione per cui esiste tutto il progetto. Nella query principale.
+> *[blocco verde]* L'Acceptance Auditor — quello che ha la specifica — dice: **spec
+> soddisfatta**. Criteri verificati, task tutti spuntati, perimetro rispettato.
+>
+> *[blocco arancione]* L'Edge Case Hunter — quello che la specifica non ce l'ha, ma il
+> progetto sì — è andato a leggersi l'architettura. E dice: quel filtro enumera per
+> esclusione. Gli stati sono tre, non due. Una prenotazione in no-show passa il filtro e
+> continua a occupare la sala.
+>
+> Cioè: la sala che il sistema libera da solo continuava a risultare occupata. La funzione
+> per cui esiste tutto il progetto. Nella query principale.
 
-*Fermati un attimo qui. Lascia che ci arrivino.*
+*Fermati un attimo qui. Lascia che ci arrivino: hanno appena visto due risposte opposte, e
+hanno ragione tutte e due.*
 
 ---
 
-## Slide 31 — Perché il checkpoint esiste
+## Slide 31 — Corretto per la story, sbagliato per il progetto
 
-*Sullo schermo: la domanda «come ti è sfuggito?» e la risposta.*
+*Sullo schermo: il triage in quattro caselle, il diff, e la domanda cattiva.*
 
-> A quel punto gli faccio la domanda cattiva: come ti è sfuggito, visto che l'hai scritto tu?
+> Prima cosa, veloce, ma dilla perché è quella che fa capire che è uno strumento serio e non
+> un chatbot che commenta il codice. Il triage non è una lista di gravità: sono **quattro
+> caselle**. Una cosa da decidere insieme a me, due patch, una rinviata perché c'era già
+> prima, e tre buttate come rumore. E finiscono scritte **dentro la story**, col file e la
+> riga, non in una chat.
+>
+> Poi la domanda cattiva: i test erano verdi e l'hai scritta tu. Come ti è sfuggito?
 >
 > E la risposta è la cosa più istruttiva di tutta la giornata.
 >
-> Mentre implementava stava verificando i criteri di accettazione della story. E rispetto a
-> quelli il codice era giusto. Nel database di test non esistevano prenotazioni in no-show,
-> perché quello stato arriva nella story dopo. I due filtri davano lo stesso identico
-> risultato.
+> Stava verificando il criterio uno — «mostra solo le sale libere» — e rispetto a quello il
+> predicato è giusto. I test di questa story non creano prenotazioni in no-show, perché
+> quello stato nasce nella story dopo. Quindi i due filtri danno lo stesso identico risultato.
 >
-> Corretto per la story. Sbagliato per il progetto.
+> *[indica la riga evidenziata]*
 >
-> E nessun test lo avrebbe beccato. Non perché i test fossero scritti male: erano scritti
-> bene, per quella story.
+> Corretto rispetto ai criteri di accettazione. Sbagliato rispetto al progetto.
 >
-> Ultima domanda: e se non l'avessimo fatta, la review? Il bug sarebbe uscito nella story
-> dopo, sotto forma di «la liberazione non funziona». E saremmo andati a cercarlo nel job.
-> Che era corretto. Il difetto stava in una query della story precedente, già approvata e
-> chiusa da giorni.
+> E se non l'avessimo fatta, la review? Il bug sarebbe uscito nella story dopo, sotto forma
+> di «la liberazione non funziona». E saremmo andati a cercarlo nel job. Che era corretto.
+> Il difetto stava in una query della story precedente, già approvata e chiusa da giorni.
 >
 > Quanto ci mettevamo a trovarlo? Non lo so. Un giorno, due.
 >
-> Le tre correzioni poi sono diventate anche due test nuovi. Quindi da lì in avanti quel
-> difetto non può più rientrare di nascosto.
+> Ultima cosa: le patch diventano tre test nuovi. Da lì in avanti quel difetto non può più
+> rientrare di nascosto.
 
 ---
 
@@ -224,7 +268,7 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 
 > Ultima e poi andiamo avanti. Questa fotografatela, perché è quella che vi serve lunedì.
 >
-> A sinistra i modi per buttare via il framework. Ve ne dico due.
+> A sinistra i modi per buttare via il framework. Ve ne dico tre.
 >
 > Il primo: scrivere il tema invece di scegliere la voce di menu. Se fate così vi ritrovate
 > di nuovo il contesto largo, e siete tornati esattamente al punto da cui eravamo partiti.
@@ -233,8 +277,9 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 > timbro, e a quel punto tanto vale non averlo — anzi, è peggio, perché vi dà l'impressione
 > di aver controllato.
 >
-> E il quarto lo avete appena visto in funzione: far rileggere il codice alla stessa
-> sessione che l'ha scritto. Il bug di prima è uscito perché la review girava altrove.
+> Il quinto lo avete appena visto in funzione: fermarsi al verdetto sui criteri di
+> accettazione. «Spec soddisfatta» non vuol dire «codice giusto», e stasera avete visto
+> perché.
 >
 > A destra le contromisure. Se ne prendete una sola, prendete la terza: ogni correzione
 > diventa una riga scritta, col motivo. È quella che trasforma il tempo che ci mettete in
@@ -247,23 +292,33 @@ Da qui in avanti rallenta. È il pezzo per cui sono rimasti.
 | Tempo | Cosa fai |
 |---|---|
 | 8 min | tutto |
-| 5 min | salti la 26 e la 28, le racconti a voce mentre passi |
-| 3 min | **solo 30, 31, 32**. Il caso lo riassumi in una frase entrando |
+| 5 min | salti la 26 e la 29, le racconti a voce mentre passi |
+| 3 min | **solo 28, 30, 31**. Il caso lo riassumi in una frase entrando |
 
-Il taglio da non fare mai è la 31. Senza quella, la 30 resta un bug trovato per fortuna.
+Il taglio da non fare mai è la 31: senza quella, la 30 resta un bug trovato per fortuna.
+
+E **nella versione da 3 minuti la 28 resta**, anche se sembra la più sacrificabile: è quella
+che pianta `no_show` come vincolo di progetto. Senza, la 30 non ha niente da raccogliere e
+il pubblico deve fidarsi sulla parola.
 
 ---
 
 ## Le domande che arrivano
 
 **«Ma è una sessione vera?»**
-No, è ricostruita su un progetto di esempio. I documenti sono coerenti fra loro, i codici di
-menu sono quelli veri. Dillo senza giri di parole: la credibilità te la dà la coerenza, non
-il fingere.
+No, il caso è ricostruito su un progetto di esempio. Ma le meccaniche sono quelle vere: i
+codici di menu, gli skill, i tre reviewer, i quattro bucket del triage, gli stati della
+story. Dillo senza giri di parole: la credibilità te la dà la coerenza, non il fingere.
+
+**«Perché tre reviewer e non uno?»**
+Perché è l'asimmetria che trova le cose. Se gli dai a tutti e tre lo stesso contesto,
+trovano tutti e tre le stesse cose. Il Blind Hunter paga tre falsi positivi ed è lo stesso
+che apre il finding grosso: non ha la specifica che gli dice che va tutto bene.
 
 **«Quanto costa in token?»**
-Più di una chat secca, perché i passaggi sono più d'uno e ogni agente si carica il contesto.
-Il paragone onesto non è con la chat: è con il costo di trovare quel bug in produzione.
+Più di una chat secca: i passaggi sono più d'uno, ogni agente si carica il contesto, e la
+review ne fa partire tre in parallelo. Il paragone onesto non è con la chat: è con il costo
+di trovare quel bug in produzione.
 
 **«E il codice che esce dall'azienda?»**
 Sappi in anticipo qual è la policy interna e cita quella. Se non c'è, dillo che non c'è: è
@@ -274,8 +329,9 @@ La parte dei menu, cinque minuti. La parte difficile non è il tool: è prendere
 scrivere il motivo quando correggi qualcosa.
 
 **«E se sbaglia la review?»**
-Succede. Per quello la review non sostituisce la tua: sposta la tua attenzione sui punti che
-contano invece che su tutto il diff.
+Succede, e infatti tre finding su nove erano rumore. Per quello c'è il triage, e per quello
+la review non sostituisce la tua: sposta la tua attenzione sui punti che contano invece che
+su tutto il diff.
 
 ---
 
@@ -286,16 +342,21 @@ contano invece che su tutto il diff.
   quei numeri li ha visti smontare.
 - **Non aprire la story 1.2.** Si ferma su una domanda aperta — il job che partirebbe su
   ogni replica in cluster. È interessante ma è un'altra conversazione, e ti mangia tre minuti.
-- **Non dire «l'AI ha trovato il bug».** L'ha trovato una rilettura fatta con un contesto
-  diverso. È una differenza che questo pubblico coglie, e ti fa guadagnare credito.
+- **Non dire «l'AI ha trovato il bug».** L'ha trovato un reviewer che aveva il progetto e non
+  aveva la specifica. È una differenza che questo pubblico coglie, e ti fa guadagnare credito.
+- **Non dire che l'Acceptance Auditor ha sbagliato.** Non ha sbagliato: rispetto agli AC quel
+  codice è corretto. Se lo presenti come un errore del tool, perdi il punto.
 
 ---
 
 ## Il materiale
 
 Tutto quello che c'è dietro sta in [`demo-sale-riunioni/`](demo-sale-riunioni/), che ha un
-README suo con la struttura completa. Le due chat da cui viene questa demo sono
-`chat/01-mary-analyst.md` e `chat/09-amelia-code-review.md`; il diff mostrato nella slide 30
-è `progetto/_bmad-output/implementation-artifacts/review-1.1.diff`.
+README suo con la struttura completa e la sezione **Fedeltà**, che dice riga per riga cosa è
+preso dall'installazione vera.
+
+Le due chat da cui viene questa demo sono `chat/01-mary-analyst.md` e
+`chat/09-amelia-code-review.md`. La story con i Review Findings nella sintassi vera è
+`progetto/_bmad-output/implementation-artifacts/1-1-ricerca-e-prenotazione-di-una-sala.md`.
 
 Se qualcuno in sala vuole vedere i file veri dopo il talk, sono navigabili così come sono.
