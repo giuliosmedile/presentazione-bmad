@@ -1,8 +1,12 @@
 # Demo — SaleRiunioni
 
-Materiale per la slide **Demo** (slide 26) di `oltre-il-vibe-coding.html`.
-Demo **recitata**: gli artefatti sono già scritti, tu navighi i file e leggi i
-passaggi. Nessuna dipendenza da BMAD in sala, nessun rischio che qualcosa non parta.
+Materiale su cui sono costruite le **slide 25-32** di `oltre-il-vibe-coding.html`.
+In sala non si naviga niente: la demo è fatta di slide, e il discorso da dire sta in
+[`copione-demo.md`](../copione-demo.md). Nessuna dipendenza da BMAD, nessun rischio che
+qualcosa non parta.
+
+Questi file servono a due cose: come fonte da cui le slide sono state estratte, e come
+roba da aprire davvero se qualcuno dopo il talk vuole vedere il materiale intero.
 
 ## Il progetto finto
 
@@ -72,7 +76,10 @@ Le trascrizioni riproducono l'attivazione vera di BMAD 6.6.0 come installato in
 Le voci di menu non sono inventate. Se qualcuno in sala ha BMAD installato e
 controlla, tornano.
 
-## Scaletta consigliata — 8 minuti
+## Se apri i file dal vivo — 8 minuti
+
+Non serve per il talk (lì bastano le slide 25-32). È il percorso da fare se qualcuno
+chiede di vedere il materiale vero dopo, o se un giorno vuoi rifare la demo navigando.
 
 | Min | Cosa | File |
 |---|---|---|

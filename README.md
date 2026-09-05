@@ -13,12 +13,12 @@ copione-demo.md                    il discorso da dire durante la demo, slide pe
 demo-sale-riunioni/                il materiale su cui la demo e' costruita (README suo)
 assets/prompt-vibe-coding.png      lo screenshot del prompt (slide 7)
 assets/codice-senza-memoria.png    il codice con la costante misteriosa (slide 11)
-assets/analyst_mary.jpg            ritratto di Mary, Business Analyst (slide 17)
-assets/pm_john.jpg                 ritratto di John, Product Manager (slide 18)
-assets/architect_winston.jpg       ritratto di Winston, System Architect (slide 19)
-assets/developer_amelia.jpg        ritratto di Amelia, Senior SW Engineer (slide 20)
-assets/ux_sally.jpg                ritratto di Sally, UX Designer (slide 21)
-assets/all_bmad_personas.jpg       i cinque insieme (slide 22)
+assets/analyst_mary.jpg            ritratto di Mary, Business Analyst (slide 18)
+assets/pm_john.jpg                 ritratto di John, Product Manager (slide 19)
+assets/architect_winston.jpg       ritratto di Winston, System Architect (slide 20)
+assets/developer_amelia.jpg        ritratto di Amelia, Senior SW Engineer (slide 21)
+assets/ux_sally.jpg                ritratto di Sally, UX Designer (slide 22)
+assets/all_bmad_personas.jpg       i cinque insieme (slide 23)
 sviluppo-agentico.html             versione precedente, altro taglio — puoi eliminarla
 Sviluppo Agentico (standalone).html  il deck da cui è stato preso lo stile
 ```
@@ -34,14 +34,14 @@ per te: non romperla assegnando quei colori ad altro.
 |---|---|---|
 | 00 · Apertura | 1-5 | ~7 min |
 | 01 · Overview dei tool | 6 | ~3 min |
-| 02 · Vibe coding e debito cognitivo | 7-13 | ~12 min |
-| 03 · BMAD | 14-32 | ~21 min, di cui ~8 di demo |
+| 02 · Vibe coding e debito cognitivo | 7-14 | ~12 min |
+| 03 · BMAD | 15-32 | ~21 min, di cui ~8 di demo |
 | 04 · Trasferire conoscenza agli agenti | 33-37 | ~12 min |
 | 05 · Chiusura | 38-40 | ~4 min |
 
-Il capitolo 03 sta in 19 slide, di cui **otto sono la demo** (25-32). Non è più una demo dal
-vivo: sono slide, quindi il tempo è prevedibile — circa un minuto l'una. Le undici slide che
-la precedono devono stare in undici minuti, quindi vanno tenute veloci.
+Il capitolo 03 sta in 18 slide (15-32), di cui **otto sono la demo** (25-32). Non è più una
+demo dal vivo: sono slide, quindi il tempo è prevedibile — circa un minuto l'una. Le dieci
+slide che la precedono hanno tredici minuti, quindi vanno tenute veloci.
 
 Il capitolo corrente compare in alto al centro, così il pubblico ha il senso di avanzamento
 senza spendere slide separatrici. Se preferisci le separatrici vere, la slide 2 (agenda) è
@@ -67,58 +67,60 @@ codebase, sostituiscilo — funziona ancora meglio.
 **Attenzione al percorso relativo**: aprendo il file con doppio clic (`file://`) l'immagine
 carica senza problemi, ma se sposti l'HTML devi portarti dietro la cartella `assets/`.
 
-## La coppia sulla memoria (slide 11-12)
+## Il blocco sulla memoria (slide 11-13)
 
-La **11** mostra codice reale con una costante che nessuno sa spiegare: è il caso concreto.
-La **12** ne trae la tesi — un agente di sviluppo è un collega nuovo, e come a un collega
-nuovo gli devi fare onboarding. La memoria gli serve su tre assi: fra una sessione e l'altra,
-fra le persone del team, e nel tempo (versionata, correggibile, in review).
+La **11** mostra codice reale con una costante che nessuno sa spiegare, e chi paga il conto:
+in azienda il debito cognitivo non lo paghi tu, lo paga il PM in review, chi è di turno quando
+il servizio è giù, il collega — o l'agente — nuovo. È il caso concreto.
+
+La **12** taglia la scorciatoia che tutti hanno in testa: tenere tutto in una chat sola. Il
+contesto si consuma, vive e muore nella finestra, e riassumere non salva perché nel comprimere
+butti via proprio quello che serviva a chi arriva dopo.
+
+La **13** riformula la domanda — non «AI sì o AI no» ma «AI con quale processo» — e mette
+i tre assi su cui la memoria serve: fra una sessione e l'altra, fra le persone del team, e nel
+tempo (versionata, correggibile, in review).
 
 Chiude sul punto più scomodo: le decisioni prese in pausa caffè, per mail o in riunione non
 esistono finché qualcuno non le scrive. Qui c'è il **requisito**; il **meccanismo** (la
 memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 
 
-## Il capitolo 03, slide per slide (14-25)
+## Il capitolo 03, slide per slide (15-32)
 
 | Slide | Cosa fa |
 |---|---|
-| 14 | la panoramica su BMAD: cinque fasi, sei ruoli, e gli artefatti veri che ne escono |
-| 15 | dove BMAD parcheggia memoria e decisioni: artefatti, contesto, fatti, story |
-| 16 | memoria condivisa col team: lavoro in parallelo su branch diversi, propagazione via commit e PR |
-| 17-21 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
-| 22 | i cinque insieme, e la catena di artefatti che si passano |
-| 23 | il loop di sviluppo: una story per giro |
+| 15 | il flusso ufficiale di BMAD: dal PRD alla story rivista, un artefatto per freccia |
+| 16 | dove BMAD parcheggia memoria e decisioni: artefatti, contesto, fatti, story |
+| 17 | memoria condivisa col team: lavoro in parallelo su branch diversi, propagazione via commit e PR |
+| 18-22 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
+| 23 | i cinque insieme, e la catena di artefatti che si passano |
 | 24 | il diagramma del loop coi checkpoint umani |
 | 25 | il caso della demo: sei sale, il 41%, l'ipotesi |
 | 26-31 | **la demo**, sei momenti: menu · premessa · checkpoint · artefatti · review · perché |
 | 32 | pitfall e strategie, la slide che il pubblico fotografa |
 
-La **23** (il loop di sviluppo) apre la strada al diagramma della **24**, che la riassume
-visivamente. La 25 apre la demo con il caso su cui gira tutto il resto del capitolo.
+La **23** (i cinque insieme) apre la strada al diagramma del loop della **24**, che riassume
+visivamente il giro. La 25 apre la demo con il caso su cui gira tutto il resto del capitolo.
 
 Le slide su «come ci si parla con un agente» e sui quattro documenti del planning sono state
 tolte: dicevano in astratto quello che la demo, appena dopo, mostra succedere davvero — vedi
 **Cosa è stato tolto dal capitolo 03**.
 
-La **14** apre il capitolo con la mappa: BMAD non è un agente che fa tutto, è una squadra
-che copre il ciclo intero. Cinque colonne — analisi, prodotto e UX, architettura,
-documentazione, codice e verifica — con l'agente e il file che ogni fase produce.
+La **14** chiude il capitolo 02 con la tesi in una riga: BMAD non aggiunge intelligenza
+all'AI, aggiunge struttura al processo. È la cerniera, non l'apertura del capitolo 03.
 
-I nomi dei file sono quelli veri di `demo-sale-riunioni/progetto/_bmad-output/`
-(`product-brief.md`, `prd.md`, `epics.md`, `ux-spec.md`, `architecture.md`,
-`docs/glossario-dominio.md`), quindi la slide e la demo si confermano a vicenda.
+La **15** apre il capitolo 03 con il flusso ufficiale: PRD → architettura → epiche e story,
+poi il riquadro tratteggiato che si ripete una volta per story (`create-story`, `dev-story`,
+`review-story`) e si chiude sempre con una revisione umana. Ogni freccia è un artefatto
+scritto, non una conversazione che si perde.
 
-La colonna di **Paige** (technical writer) è quella che porta il punto: il framework copre
-anche la parte non tecnica, e la riga di chiusura fa notare che quasi tutto quello che esce
-sono documenti. Paige **non ha un identikit** fra le 17-21: se qualcuno chiede, è il sesto
-ruolo, e la sua trascrizione sta in `demo-sale-riunioni/chat/05-paige-tech-writer.md`.
+**Paige** (technical writer) non è più nel deck: né fra gli identikit 18-22, né altrove.
+Se qualcuno chiede del sesto ruolo, la sua trascrizione sta in
+`demo-sale-riunioni/chat/05-paige-tech-writer.md`. Stessa sorte per la mappa a cinque
+colonne che apriva il capitolo e per la fila dei cinque ritratti: stanno nella storia git.
 
-La versione precedente di questa slide («non sono tool, sono persone a tua disposizione», con
-la fila dei cinque ritratti) sta nella storia git: la tesi regge ancora, ma come premessa agli
-identikit diceva meno della mappa.
-
-La **15** elenca i quattro posti dove una decisione si deposita:
+La **16** elenca i quattro posti dove una decisione si deposita:
 gli artefatti nel repo, `project-context.md`, i `persistent_facts` nel `customize.toml`
 dell'agente, e il diario che ogni story si lascia dietro. Sotto, la finestra con l'albero
 del progetto — la stessa idea della slide 17 di `Sviluppo Agentico (standalone).html`, ma
@@ -190,7 +192,7 @@ di menu dentro gli agenti esistenti — `bmad-create-story` e `bmad-sprint-plann
 sotto Amelia, `bmad-check-implementation-readiness` sotto John e Winston. Se hai visto
 Sarah, Bob o Quinn in giro, sono di una versione diversa di BMAD: non citarli.
 
-La **22** chiude il blocco degli identikit con la tesi: quello che i cinque si passano è un
+La **23** chiude il blocco degli identikit con la tesi: quello che i cinque si passano è un
 documento, non una conversazione. La demo lo dimostra («cosa resta dopo», slide 29) ed è il
 ponte verso il capitolo 04, dove il problema diventa che quei documenti non contengono la
 conoscenza che sta fuori dal repo. Non anticiparlo qui.
@@ -223,15 +225,13 @@ Se ti servisse recuperarne una, stanno nella storia git (`git log -- oltre-il-vi
 Dalla slide che apriva il capitolo BMAD in poi, ogni slide mostrava il tag e il titolo della
 slide **successiva**: corpo, note del relatore e commenti HTML erano giusti, solo le
 intestazioni erano scivolate su di una posizione. Probabile effetto collaterale della
-rimozione della slide sul setup personale. Ora sono riallineate, e la **14** ha di nuovo un
-titolo suo («BMAD — struttura al processo»).
+rimozione della slide sul setup personale. Ora sono riallineate e i due residui che restavano
+sulla 14 sono rientrati: il titolo è «Il framework in una slide» e il corpo porta la
+formulazione buona, «BMAD non aggiunge intelligenza all'AI».
 
-Due residui da guardare, entrambi sulla **14**:
-
-- il `cb-body` dice ancora «Un prompt, tutto insieme», che suona come il contro-esempio
-  della **15** («Ruoli, non prompt giganti»). Potrebbe essere scivolato anche quello
-- il titolo l'ho scritto io. Se preferisci la tua formulazione — «BMAD non aggiunge
-  intelligenza all'AI» — cambialo: è la stessa idea detta meglio
+La lezione resta valida per il futuro: **i titoli si controllano dopo ogni riordino**, e la
+verifica va fatta sul titolo dentro `script.slide-notes`, mai sui commenti HTML — quelli
+stanno in coda al blocco precedente (vedi `CLAUDE.md`).
 
 ## La demo (slide 25-32)
 
@@ -285,7 +285,7 @@ decimale?»), e una risposta che cita quattro fonti di cui tre fuori dal repo. �
 del punto piantato alla 13 — le decisioni prese in pausa caffè non esistono finché qualcuno
 non le scrive. Qui qualcuno le scrive in due minuti, e restano interrogabili.
 
-**Il terminale della 37 è ricostruito**, come la demo del capitolo 03. Se qualcuno chiede,
+**Il terminale della 36 è ricostruito**, come la demo del capitolo 03. Se qualcuno chiede,
 dillo.
 
 ## Versioning
@@ -335,7 +335,7 @@ su un secondo schermo: le note compaiono nella console a ogni cambio slide.
 I segnaposto sono tra parentesi quadre `[così]` o in riquadri tratteggiati color pesca.
 
 - **slide 1** — nome, ruolo, team, data
-- **slide 17-21** — i cinque identikit: **niente da riempire**. Semmai da tagliare: se in
+- **slide 18-22** — i cinque identikit: **niente da riempire**. Semmai da tagliare: se in
   prova sfori, togli una o due delle cinque righe di **Cosa fa**, sono le più comprimibili.
   **Verifica i comandi** `/bmad-agent-*` nei badge «Esempio»: solo `bmad-agent-dev` è
   confermato dalle trascrizioni, gli altri quattro sono la convenzione standard
