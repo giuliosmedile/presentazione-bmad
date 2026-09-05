@@ -51,8 +51,9 @@ Stato: 21 commit su `main`, working tree pulito, nessun remote.
 7. Ogni slide ha `data-chapter="0..5"` — pilota il segnalibro in alto
 8. `<meta name="generator">` presente
 
-Le note usano il formato `{"title": "…", "script": "…", "notes": [...]}` — **con lo spazio
-dopo i due punti**. Un regex `"title":"` non matcha niente.
+Le note usano il formato `{"title": "…", "script": "…", "notes": [...]}`. Lo spazio dopo i due
+punti c'è quasi ovunque ma **non dappertutto**: usa `"title":\s*"` e non uno dei due letterali,
+altrimenti perdi delle slide senza accorgertene.
 
 ---
 
@@ -133,7 +134,7 @@ decorative, 2.35, identiche al deck di riferimento.
 ### 9. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v11`), altrimenti vecchi testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v19`), altrimenti vecchi testi
 salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
 
 ---
@@ -212,6 +213,7 @@ in fondo a `:root`. I componenti vecchi li usano ancora; funzionano, non serve m
 | `.term-take` | fascia sotto il terminale con la morale (Strategia / Capacità / Pitfall / La tesi) |
 | `.code-window` / `.np-window` | blocco codice scuro / finestra Blocco note chiara |
 | `.loop-diagram.quad` | anello a 4 nodi con checkpoint, in 3 varianti |
+| `.sev-decision/-patch/-defer/-dismiss` | i 4 bucket del triage di `bmad-code-review` |
 | `.idkit` | identikit degli agenti BMAD |
 | `.tri-grid`, `.duo`, `.pf-grid` | griglie a 3, confronto a 2, pitfall/strategie |
 | `.image-frame.image-screenshot` | immagine incorniciata |
@@ -247,7 +249,12 @@ ovvio dal titolo. Trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - Niente numeri inventati: i segnaposto restano `[fra parentesi]` finché non arriva il dato
   vero. Il dato di adozione (slide 5, 68%, JetBrains Developer Ecosystem Survey 2026) è
   confermato — vale ancora per le metriche del walkthrough e ogni nuovo numero che entra
-- Il caso della demo è **ricostruito**, e va detto. Mai spacciarlo per una sessione reale
+- Il caso della demo è **ricostruito**, e va detto. Mai spacciarlo per una sessione reale.
+  Ma le **meccaniche** sono vere e vanno tenute tali: sono prese da BMAD 6.6.0 in
+  `TIRRENO/BE_TRRN_API_Query_Engine`. Prima di inventare come si comporta un agente, apri
+  `.claude/skills/bmad-*/` e guarda. `customize.toml` ha i menu e le voci degli agenti,
+  `bmad-code-review/steps/` ha i tre reviewer e il triage in quattro bucket, e i file in
+  `_bmad-output/` mostrano che forma hanno davvero gli artefatti
 - Quando un contenuto non sta in una slide, se ne fanno due invece di comprimere
 - Verifica misurando, non a occhio: le regressioni di layout qui si vedono solo coi numeri
 
