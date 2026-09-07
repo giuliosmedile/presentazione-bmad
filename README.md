@@ -107,6 +107,13 @@ Le slide su «come ci si parla con un agente» e sui quattro documenti del plann
 tolte: dicevano in astratto quello che la demo, appena dopo, mostra succedere davvero — vedi
 **Cosa è stato tolto dal capitolo 03**.
 
+Il buco che quel taglio lascia è **fra la 27 e la 28**: la demo passa dal product brief di
+Mary a `create-story` senza dire chi ha scritto `epics.md` e `architecture.md`, né cosa si è
+deciso di costruire. Costa caro perché `architecture.md` è il file su cui poggia il finale
+(30-31). Il ponte è ora in cima al terminale della **28**, tre righe grigie: John fa PRD ed
+epiche, Winston l'architettura, ognuno col suo checkpoint. Sono venti secondi parlati, non
+un momento in più della demo — il copione li ha per esteso.
+
 La **14** chiude il capitolo 02 con la tesi in una riga: BMAD non aggiunge intelligenza
 all'AI, aggiunge struttura al processo. È la cerniera, non l'apertura del capitolo 03.
 

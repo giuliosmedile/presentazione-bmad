@@ -130,10 +130,27 @@ Venti secondi in più qui.
 
 ## Slide 28 — La story è un contratto
 
-*Sullo schermo: la story appena creata, e l'ultima riga evidenziata.*
+*Sullo schermo: tre righe grigie in cima al terminale, poi la story appena creata con
+l'ultima riga evidenziata.*
 
-**Non leggere la story.** Indichi la struttura, poi ti fermi sull'ultima riga.
+**Il ponte va detto, non saltato.** Fra il brief e la story sono successe due cose che non
+mostri, e una di queste — `architecture.md` — è il file su cui poggia tutto il finale. Se il
+pubblico non sa che esiste, alla slide 30 la battuta cade.
 
+**Poi non leggere la story.** Indichi la struttura e ti fermi sull'ultima riga.
+
+> *[indica le tre righe grigie]*
+>
+> Prima, cosa è successo nel mezzo — perché non ve lo faccio vedere, siamo a sei momenti e
+> non a venti. Il brief è andato a John, che l'ha spaccato in un PRD e in epiche. Le epiche
+> sono andate a Winston, che ha scritto l'architettura. Due passaggi, e ognuno si è chiuso
+> con un checkpoint umano come quello che avete appena visto.
+>
+> Quello che ne è uscito: prenotare e disdire in due click, e vedere chi non disdice. Senza
+> classifiche — quella l'avevamo tolta.
+>
+> E tenete a mente `architecture.md`, perché fra tre slide è il file che decide tutto.
+>
 > `CS`, create-story. Amelia legge l'architettura e il contesto di progetto, e scrive la
 > story. In un file, non a voce.
 >
@@ -267,6 +284,10 @@ Il taglio da non fare mai è la 31: senza quella, la 30 resta un bug trovato per
 E **nella versione da 3 minuti la 28 resta**, anche se sembra la più sacrificabile: è quella
 che pianta `no_show` come vincolo di progetto. Senza, la 30 non ha niente da raccogliere e
 il pubblico deve fidarsi sulla parola.
+
+Nella 28 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa una riga
+sola — «in mezzo John ha fatto le epiche e Winston l'architettura, con i loro checkpoint» —
+ma `architecture.md` va nominato comunque, altrimenti la 30 non ha su cosa poggiare.
 
 ---
 
