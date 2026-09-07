@@ -1251,13 +1251,6 @@ body.editing [contenteditable="true"]:focus {
 .graph-mini .gm-node.hub { fill: var(--color-accent-200); stroke: var(--color-accent-700); }
 .graph-mini text { font-family: var(--font-body); font-size: 11px; font-weight: 600; fill: var(--color-accent-2-900); text-anchor: middle; }
 
-/* — Cose da portare a casa — */
-.takeaways { width: 100%; max-width: 900px; margin-top: clamp(14px, 2.6vh, 30px); display: flex; flex-direction: column; gap: clamp(10px, 1.6vh, 18px); }
-.takeaway { display: flex; gap: clamp(12px, 1.8vw, 24px); align-items: baseline; }
-.takeaway .tw-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(22px, 2.4vw, 38px); color: var(--color-accent-600); line-height: 1; flex: none; }
-.takeaway .tw-text { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(15px, 1.7vw, 26px); line-height: 1.25; color: var(--color-text); }
-.takeaway .tw-text em { font-style: normal; color: var(--color-accent-700); }
-
 /* — Segnaposto: da riempire con materiale tuo prima del talk — */
 .placeholder {
   border: 2px dashed var(--color-accent-400); background: var(--color-accent-100);
@@ -1331,13 +1324,10 @@ body.editing [contenteditable="true"]:focus {
 
 @media (max-height: 600px) {
   .big-figure .bf-value { font-size: clamp(50px, 9vw, 110px); }
-  .takeaway .tw-text { font-size: clamp(13px, 1.4vw, 20px); }
-  .takeaway .tw-num { font-size: clamp(18px, 2vw, 28px); }
   .agenda-row { padding: 7px 18px; }
   .human-check { padding: 8px 18px; margin-top: 10px; }
   .step-item { padding: 10px 12px; }
   .tri-card, .duo-panel, .dd-col { padding: 12px 14px; }
-  .takeaways { gap: 9px; margin-top: 14px; }
 }
 
 @media (max-height: 500px) {
@@ -2674,19 +2664,31 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   </div>
 
   <!-- ══════════ 05 · CHIUSURA ══════════ -->
-  <!-- ---- 37 · RICAPITOLANDO ---- -->
+  <!-- ---- 38 · IL CONTO: COSA GUADAGNI, COSA PAGHI ---- -->
   <div class="slide" data-slide="37" data-chapter="5">
     <div class="glow-blob glow-blue" style="top:20%;right:5%;"></div>
-    <p class="slide-tag anim-1" data-edit-key="s37-e0">Da portare a casa</p>
-    <h2 class="anim-2" style="max-width:900px;" data-edit-key="s37-e1">Quattro cose</h2>
-    <div class="takeaways anim-3">
-      <div class="takeaway"><span class="tw-num">01</span><span class="tw-text" data-edit-key="s37-e2">I tool di AI sono proprio questo - un tool che richiede metodo</span></div>
-      <div class="takeaway"><span class="tw-num">02</span><span class="tw-text" data-edit-key="s37-e3">Sviluppare con i tool di AI non sempre é uguale a fare vibe coding</span></div>
-      <div class="takeaway"><span class="tw-num">03</span><span class="tw-text" data-edit-key="s37-e4">I framework come BMAD e i sistemi di memoria aiutano a rendere il processo piú deterministico, e l'umano nel loop mantiene l'ownership delle decisioni</span></div>
-      <div class="takeaway"><span class="tw-num">04</span><span class="tw-text" data-edit-key="s37-e5">Tutto é in evoluzione!</span></div>
+    <p class="slide-tag anim-1" data-edit-key="s37-e0">Il conto onesto</p>
+    <h2 class="anim-2" data-edit-key="s37-e1">Cosa guadagni, cosa <span class="highlight-red">paghi</span></h2>
+    <div class="pf-grid anim-3">
+      <div class="pf-col good bounce-1">
+        <div class="pf-head"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg> Cosa guadagni</div>
+        <div class="pf-list">
+          <div class="pf-item" data-edit-key="s37-e2">Il processo rende l’AI <strong>più deterministica</strong>: l’esito dipende dagli artefatti, non da come hai scritto il prompt quel giorno</div>
+          <div class="pf-item" data-edit-key="s37-e3">L’approccio strutturato allevia il <strong>debito cognitivo</strong>: le decisioni le scrivi mentre le prendi, non le ricostruisci sei mesi dopo</div>
+          <div class="pf-item" data-edit-key="s37-e4">Gli artefatti <strong>restano</strong>: sopravvivono alla sessione e alla persona — chi arriva dopo legge, invece di ricostruire</div>
+        </div>
+      </div>
+      <div class="pf-col trap bounce-2">
+        <div class="pf-head"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path></svg> Cosa paghi</div>
+        <div class="pf-list">
+          <div class="pf-item" data-edit-key="s37-e5">Il metodo <strong>si paga in token</strong>: ogni giro rilegge il contesto, e la bolletta è più alta di una chat improvvisata</div>
+          <div class="pf-item" data-edit-key="s37-e6">Sei <strong>schiavo del framework</strong>: se una cosa non è nel processo non esiste, e piegarlo al tuo caso costa</div>
+          <div class="pf-item" data-edit-key="s37-e7">C’è un <strong>overhead sui task piccoli</strong>: per un fix di due righe la cerimonia costa più del fix</div>
+        </div>
+      </div>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title":"Ricapitolando","script":"Quattro cose. Il problema non è l'AI, è l'assenza di processo. Il debito cognitivo è invisibile finché non serve, e quando serve è tardi. Struttura e contesto sono due problemi distinti e servono entrambi: BMAD risolve il primo, la memoria a grafo il secondo. La stessa memoria versionata che allinea gli agenti allinea anche le persone: in un team grande, pregno di processi, è la differenza fra ricostruire ogni volta e ritrovare lo stato. E soprattutto: si può partire in piccolo. Un checkpoint umano messo nel punto giusto è già molto meglio di zero.","notes":["Il problema è l'assenza di processo, non lo strumento","Il debito cognitivo è invisibile fino al momento sbagliato","Struttura e contesto: due problemi distinti, entrambi necessari","01: la memoria condivisa è anche fra persone, non solo agenti — chiude la promessa della 13","Si può iniziare in piccolo","Lasciare questa slide proiettata durante il Q&A"]}
+    {"title": "Il conto onesto", "script": "Chiudo con il conto, e lo faccio onesto, perché un talk che vi vende solo il lato buono non vi serve a niente. A sinistra cosa guadagnate. Uno: il processo rende l'AI più deterministica — l'esito dipende dagli artefatti, non da come avete formulato il prompt quel martedì mattina. Due: la struttura allevia il debito cognitivo, perché le decisioni le scrivete mentre le prendete, invece di ricostruirle sei mesi dopo quando non ve le ricorda più nessuno. Tre: gli artefatti restano — sopravvivono alla sessione e alla persona, e chi arriva dopo legge invece di ricostruire. A destra cosa pagate, e sono tre costi veri. Il metodo si paga in token: ogni giro rilegge il contesto, la bolletta è più alta di una chat improvvisata. Siete schiavi del framework: se una cosa non è nel processo, non esiste — e piegarlo al vostro caso costa tempo. E c'è un overhead sui task piccoli: per un fix di due righe la cerimonia costa più del fix. Il conto torna quando il lavoro è abbastanza grande da doverlo ricordare. Su un fix di due righe non torna, e va benissimo così.", "notes": ["Il talk si chiude col conto, non con lo slogan", "Pro 1 e 2 sono le due promesse fatte nel capitolo 01 e 02", "Pro 3 è il pay-off del capitolo 04: gli artefatti sopravvivono alla persona", "I tre costi sono veri: token, rigidità del framework, overhead sui task piccoli", "La regola: il conto torna quando il lavoro è abbastanza grande da doverlo ricordare", "Se qualcuno obietta sul costo in token, dategli ragione e passate alla 39", "Lasciare questa slide proiettata durante il Q&A"]}
     </script>
   </div>
 
@@ -2868,7 +2870,7 @@ var EDITABLE_SELECTOR = [
   '.si-text', '.si-who', '.si-ask', '.si-out',
   '.dd-name', '.dd-body', '.dd-label',
   '.hc-text', '.hc-label',
-  '.tw-text',
+  '.pf-item',
   '.ph-text',
   '.loop-label', '.loop-detail', '.loop-center-main',
   '.lh-text', '.lf-text',
@@ -2880,7 +2882,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v19',
+  storageKey: 'oltre-il-vibe-coding-edits-v20',
   fields: [],
 
   init: function() {
