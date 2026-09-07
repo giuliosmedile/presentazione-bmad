@@ -15,6 +15,7 @@ CREATE TABLE prenotazione (
     sala_id         uuid      NOT NULL REFERENCES sala (id),
     periodo         tstzrange NOT NULL,
     stato           text      NOT NULL CHECK (stato IN ('attiva', 'conclusa', 'disdetta', 'no_show', 'forzata')),
+    titolo          text      NOT NULL,
     organizzatore   text      NOT NULL,
     id_evento_graph text      NOT NULL UNIQUE,
     check_in_at     timestamptz,

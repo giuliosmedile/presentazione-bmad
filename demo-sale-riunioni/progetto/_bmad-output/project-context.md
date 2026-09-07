@@ -7,9 +7,9 @@
 
 Servizio interno che affianca Outlook sulle sei sale riunioni della sede di Milano.
 **Le sale si continuano a prenotare su Outlook**: il servizio non sostituisce niente,
-legge. Sincronizza i calendari delle sale da Microsoft Graph, alimenta i display
-fuori dalle porte, tiene una web app di ricerca «sala libera adesso» e manda il
-report mensile al facility.
+legge. Sincronizza i calendari delle sale da Microsoft Graph, alimenta i sei display
+appesi fuori dalle porte, tiene una web app di ricerca «sala libera adesso» e manda
+il report mensile al facility manager.
 
 In produzione dal marzo 2022. Due sviluppatori, nessuno dei due a tempo pieno.
 Chi l'ha scritto non lavora più qui.
@@ -25,27 +25,24 @@ stati ricostruiti leggendo il codice. Dove un documento descrive una scelta del
   database locale è uno specchio: se le due versioni divergono, ha ragione Graph.
 - **Autenticazione**: SSO aziendale esistente (OIDC). Non si costruisce login.
 - **Dati**: restano on-premise, tranne quelli che per forza passano da Graph.
-  Nessun altro servizio esterno tocca i dati dei dipendenti.
-- **Stack imposto**: Java 21 + Spring Boot, PostgreSQL. È lo stack del team, non
-  si discute per un servizio interno.
+- **Stack imposto**: Java 21 + Spring Boot, PostgreSQL.
 - **Deploy**: container sul cluster interno, pipeline già esistente.
 - **Permessi Graph**: l'app ha `Calendars.ReadWrite` sulle sole sei caselle sala.
-  Allargare il perimetro dei permessi passa da IT security, non da noi.
+  Allargare il perimetro passa da IT security, non da noi.
 
 ## Regole di prodotto
 
 Decise con l'umano, valgono per tutto il prodotto e non solo per il documento in
 cui sono nate.
 
-- **Nessuna comunicazione automatica che nomini una persona.** Niente mail al
-  responsabile, niente nome dell'organizzatore sul display, niente classifica dei
-  reparti. Deciso il 2026-08-26 con John e Winston.
-  *Perché*: qui una misura pubblica sul singolo diventa una gara al contrario. La
-  gente smette di prenotare col proprio nome — prenota il collega, o non prenota
-  affatto e occupa la sala lo stesso. Il primo effetto è che il dato su cui si
-  regge tutto il progetto smette di essere vero.
-  *Conseguenza tecnica*: nessun endpoint espone il conteggio no-show per persona.
-  L'aggregato per reparto sopra le dieci persone è ammesso.
+- **Una sala liberata deve risultare libera dove le persone guardano davvero.**
+  Il display, la pagina di ricerca, e il calendario di Outlook. Deciso il
+  2026-08-27 con John e Winston.
+  *Perché*: quasi tutti cercano una sala dal calendario. Una sala che risulta
+  libera solo nel nostro database non è libera: nessuno riesce a prenderla, e
+  avremmo scritto una funzione che non produce l'effetto per cui esiste.
+  *Contropartita accettata*: da qui in poi **il servizio scrive fuori da sé**.
+  Un nostro difetto non resta più dentro una nostra tabella.
 
 ## Convenzioni di codice
 
@@ -57,14 +54,13 @@ cui sono nate.
 - Niente Lombok. Record Java dove il tipo è immutabile.
 - Migrazioni con Flyway, mai `ddl-auto`.
 - Ogni chiamata in scrittura verso Graph passa da `PrenotazioneOutlookClient`.
-  Nessun `RestClient` verso Graph sparso nei service.
 
 ## Glossario minimo
 
 Il glossario completo sta in `docs/glossario-dominio.md`. I termini che non si
 traducono mai: **fascia** (slot da 30 minuti), **no-show** (prenotazione mai
-usata), **check-in** (conferma di presenza in sala), **serie** (prenotazione
-ricorrente), **occorrenza** (la singola ripetizione di una serie).
+usata), **check-in** (conferma di presenza in sala), **display** (lo schermo
+appeso fuori dalla sala, che legge chiunque passi in corridoio).
 
 ## Cosa NON è in scope
 

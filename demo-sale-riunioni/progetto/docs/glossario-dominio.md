@@ -29,6 +29,9 @@ L'associazione fra una sala, un intervallo di fasce contigue e la persona che l'
 richiesta. **Da noi è uno specchio**: l'originale è un evento sul calendario della
 sala, su Outlook. Noi lo copiamo per poterlo mostrare e contare.
 
+Ha un titolo, ed è il campo su cui si sbaglia: `titolo()` è il dato grezzo dello
+specchio, non testo da mostrare.
+
 Ha uno stato, e lo stato è il cuore del dominio:
 
 ```mermaid
@@ -49,25 +52,28 @@ comportamento virtuoso, `no_show` è il problema che stiamo misurando, `forzata`
 un'eccezione con un responsabile. Contarli insieme farebbe sparire l'unico numero
 che ci interessa.
 
-## Serie
+## Display
 
-Una prenotazione ricorrente, così come la crea Outlook: una regola («ogni martedì
-alle 9:30») e non un appuntamento. Da sola non occupa nessuna fascia. Occupa
-attraverso le sue occorrenze.
+Lo schermo appeso fuori dalla sala. Non è «una schermata dell'applicazione»: è un
+**cartello acceso in un corridoio**, senza login, che legge chiunque passi —
+colleghi, fornitori, candidati in attesa, chi fa le pulizie.
 
-## Occorrenza
+Lo diciamo così, con questa insistenza, perché la differenza fra «schermata» e
+«cartello in corridoio» decide cosa ci si può scrivere sopra. Vedi
+`architecture.md` § E3.
 
-La singola ripetizione di una serie. È quella che occupa la sala martedì 15 alle
-9:30, ed è quella che il display mostra.
+## Riunione privata
 
-**Le occorrenze sono il 70% delle prenotazioni.** Quando qualcuno dice
-«prenotazione» in una riunione, nella maggioranza dei casi sta parlando di
-un'occorrenza — e le occorrenze si comportano diversamente dalle singole in due
-punti: hanno una serie alle spalle che sopravvive loro, e sul database condividono
-con la serie la chiave di sincronizzazione (`architecture.md` § E4).
+Una riunione che su Outlook chi la crea ha marcato come privata. Da noi arriva
+nella colonna `privato`.
 
-Non diciamo mai «ricorrenza» per intendere l'occorrenza: la ricorrenza è la
-regola, l'occorrenza è il singolo appuntamento.
+Non è una categoria tecnica: sono i colloqui, gli uno-a-uno, le riunioni
+sindacali, le cose di cui esiste il fatto ma non il contenuto. **Il titolo di una
+riunione privata non esce mai su un display.** Al suo posto si scrive «Riunione
+riservata».
+
+Chi scrive testo destinato all'esterno non deve ricordarselo: deve usare
+`TestoDisplay`, che se lo ricorda al posto suo.
 
 ## Check-in
 
@@ -91,7 +97,7 @@ per le fasce residue — **anche su Outlook**, altrimenti l'abbiamo liberata sol
 per noi e chi cerca una sala dal calendario continua a vederla occupata.
 
 Non è una cancellazione: la nostra riga resta, con il suo stato, perché serve a
-contare.
+contare. E l'evento su Outlook resta: gli togliamo la sala, non lo cancelliamo.
 
 ## Disdetta
 

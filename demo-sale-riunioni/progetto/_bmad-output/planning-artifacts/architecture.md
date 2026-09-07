@@ -27,12 +27,11 @@ e niente che chieda di essere spezzato.
 ```
 it.azienda.saleriunioni
 ├── sala/            Sala, CollezioneSale, SalaRepository
-├── prenotazione/    Prenotazione, TipoPrenotazione, StatoPrenotazione,
-│                    PrenotazioneRepository, PrenotazioneService
-├── sincronizzazione/ SincronizzazioneGraphJob, MappaturaEventoGraph
+├── prenotazione/    Prenotazione, StatoPrenotazione, PrenotazioneRepository
+├── sincronizzazione/ SincronizzazioneGraphJob
 ├── outlook/         PrenotazioneOutlookClient  ← unico punto di scrittura verso Graph
 ├── disponibilita/   RicercaDisponibilita (query di lettura)
-├── display/         DisplayController, endpoint del check-in
+├── display/         DisplayController, TestoDisplay, endpoint del check-in
 └── shared/          eccezioni di dominio, config, mapping errori HTTP
 ```
 
@@ -46,64 +45,45 @@ il posto dove si decide. Cambiare una riga di `prenotazione` senza cambiare
 l'evento su Graph produce uno stato che il prossimo giro di sincronizzazione
 cancella. Ogni scrittura reale passa da `PrenotazioneOutlookClient`.
 
-## E2 — Sincronizzazione con delta query su `calendarView`
+## E2 — Sincronizzazione con delta query ogni minuto
 
-**Scelta (2022):** un job ogni minuto chiama la delta query di Graph su
-`/users/{sala}/calendarView` per le sei caselle sala, finestra da oggi a +60 giorni.
-**Ricostruito, non documentato:** il `calendarView` restituisce le ricorrenze già
-espanse in occorrenze. Chi l'ha scritto voleva una riga per riunione fisica,
-perché il display deve mostrare *questa* riunione, non la regola che la genera.
+**Scelta (2022):** un job ogni minuto chiama la delta query di Graph sulle sei
+caselle sala, finestra da oggi a +60 giorni. Il servizio non chiama mai Graph
+durante una richiesta utente: legge sempre lo specchio locale.
 
-## E3 — Tre tipi di prenotazione
-
-`TipoPrenotazione` è `SINGOLA`, `OCCORRENZA`, `SERIE`.
-
-Non è una distinzione teorica: **le occorrenze di serie sono il 70% delle righe**.
-Gli stand-up, gli allineamenti settimanali, i comitati mensili. Una sala su tre
-la mattina è occupata da una serie creata anni fa da qualcuno che magari non
-lavora più qui.
-
-## E4 — Per le occorrenze, `id_evento_graph` contiene l'id della serie
+## E3 — Il display è un cartello appeso in corridoio
 
 Questa è la cosa che più facilmente si sbaglia in questo progetto, ed è per
-questo che ha un capitolo suo.
+questo che ha un capitolo suo invece di una riga in mezzo alle altre.
 
-**Il fatto:** la colonna `id_evento_graph` **non contiene sempre l'id dell'evento
-che la riga rappresenta.**
+I sei display non sono un'interfaccia dell'applicazione. Sono **schermi accesi in
+un corridoio**, senza login, che legge chiunque passi: colleghi, fornitori,
+candidati in attesa del colloquio, l'addetto alle pulizie.
 
-| `tipo` | cosa c'è in `id_evento_graph` |
-|---|---|
-| `SINGOLA` | l'id dell'evento |
-| `SERIE` | l'id della serie |
-| `OCCORRENZA` | **l'id della serie**, non quello dell'occorrenza |
+**Il fatto:** su Outlook una riunione può essere marcata **privata**, e nel nostro
+specchio quel flag arriva nella colonna `privato` (`V3__eventi_privati.sql`, 2022).
 
-L'occorrenza si identifica con la coppia `(id_evento_graph, inizio)`, ed è così
-che è fatto l'indice unico in `V3__sincronizzazione.sql`.
+**La regola che ne è nata:** nessun testo destinato a un display può usare
+`Prenotazione.titolo()`. Si passa da `TestoDisplay`, che per gli eventi privati
+scrive «Riunione riservata» al posto del titolo vero.
 
-**Perché (ricostruito):** gli id delle occorrenze restituiti da `calendarView` non
-sono stabili fra una delta query e la successiva. Usarli come chiave voleva dire
-duplicare mezza tabella a ogni giro. Chi l'ha scritto ha preso l'unica cosa stabile
-che aveva — l'id della serie — e ha aggiunto l'orario di inizio per distinguere le
-occorrenze.
+**Perché** — e questa non l'ho ricostruita, sta nel commit del 2022 e me l'ha
+confermata il facility manager: nella prima versione il display mostrava il
+titolo di tutto. Sullo schermo davanti alla sala grande è comparso il titolo di
+un colloquio con nome e cognome dentro. Le Risorse Umane hanno aperto un caso, e
+la colonna `privato` e `TestoDisplay` sono nati quella settimana.
 
-**Conseguenza per chi implementa:** `prenotazione.idEventoGraph()` è una chiave di
-sincronizzazione, **non un indirizzo a cui scrivere**. Passarla a un'operazione di
-scrittura su Graph, per una riga di tipo `OCCORRENZA`, significa operare sulla
-serie intera.
+**Conseguenza per chi implementa:** `titolo()` è il dato grezzo dello specchio.
+Serve per la sincronizzazione e per i log interni. **Non è testo da mostrare.**
+Tutto ciò che finisce su uno schermo pubblico passa da `TestoDisplay`, e non
+perché è più elegante: perché quella funzione sa una cosa che chi la chiama non
+è tenuto a sapere.
 
-**Quando rivederla:** se un giorno passiamo a `/events` con espansione manuale
-delle ricorrenze, questa colonna torna a voler dire una cosa sola e il capitolo si
-può cancellare. Non è lavoro di questa epic.
+## E4 — `PrenotazioneOutlookClient`, dal 2023
 
-## E5 — `PrenotazioneOutlookClient.annulla()` è del 2023 e nasce per le singole
-
-Scritto per il bottone «libera la sala» della web app. Nella UI quel bottone
-compare solo all'organizzatore e **solo sulle prenotazioni singole**: `ux-spec.md`
-del 2023 lo dice, e il template lo nasconde sulle ricorrenti.
-
-Il client fa una `DELETE` sull'evento indicato. Non guarda il tipo della
-prenotazione, perché nel 2023 non gli arrivavano ricorrenti: il filtro era nella
-UI, tre livelli più su.
+Unico punto di scrittura verso Graph. Nato per il bottone «libera la sala» della
+web app, fa una cosa sola: rimuove la sala da un evento lasciando in piedi
+l'evento e i suoi inviti.
 
 ---
 
@@ -118,41 +98,39 @@ minuti senza check-in e le porta a `no_show`.
 **Scartato:** `pg_cron`, e scheduler applicativo per singola prenotazione.
 **Perché:** un job che scansiona è banale da capire, da testare e da rieseguire se
 salta un giro. Uno scheduler per prenotazione va tenuto in sincrono con disdette,
-spostamenti e modifiche della serie, e sbaglia in silenzio.
+spostamenti e modifiche, e sbaglia in silenzio.
 **Vincolo derivato:** il job deve essere idempotente. Se gira due volte sullo
 stesso minuto il risultato non cambia, e su questo NFR2 non ammette sconti: mai
 liberare una prenotazione che ha il check-in.
 
-## D2 — Il rilascio passa da `PrenotazioneOutlookClient`, che si riusa
+## D2 — La sala torna libera anche su Outlook
 
-**Scelta:** la liberazione chiama il client esistente. Non si apre una seconda
-strada di scrittura verso Graph.
-**Scartato:** un client nuovo dedicato alla liberazione.
-**Perché:** due punti di scrittura verso Graph vogliono dire due posti dove
-sbagliare i permessi, due gestioni del throttling, due comportamenti diversi
-quando Graph risponde 429. Il client c'è, è l'unico punto di scrittura per
-convenzione di progetto (`project-context.md`), e va riusato.
-**Quando rivederla:** se la liberazione avesse bisogno di operazioni che il client
-non sa fare.
+**Scelta:** la liberazione scrive anche su Graph, rimuovendo la sala dall'evento.
+**Scartato:** marcare `no_show` solo nel nostro database.
+**Perché:** una sala libera solo per noi non è libera. Chi cerca una sala dal
+calendario — cioè la maggior parte delle persone — continuerebbe a vederla
+occupata, e avremmo liberato qualcosa che nessuno riesce a prendere.
+**Contropartita, e non è piccola:** da questa story in poi **il servizio scrive
+fuori da sé**. Fino alla 1.1 leggeva. Un nostro difetto non sporca più una nostra
+tabella: tocca il calendario delle persone e gli schermi in corridoio.
+**Decisione umana (Giulio, 2026-08-27):** si scrive. Vedi la nota in fondo.
 
 ## D3 — Stato calcolato, non event sourcing
 
 **Scelta:** la prenotazione è una riga con uno stato (`attiva`, `no_show`,
-`disdetta`, `conclusa`). Le transizioni scrivono una riga in `prenotazione_evento`
-per l'audit.
+`disdetta`, `conclusa`, `forzata`). Le transizioni scrivono una riga in
+`prenotazione_evento` per l'audit.
 **Scartato:** event sourcing pieno con proiezioni.
 **Perché:** serve la storia delle transizioni (FR7 chiede la motivazione della
-forzatura), non serve ricostruire lo stato dagli eventi. La tabella di audit dà il
-90% del valore al 10% del costo.
+forzatura), non serve ricostruire lo stato dagli eventi.
 
 ## D4 — Aggiornamento del display in polling, non WebSocket
 
-**Scelta:** display e web app rileggono la disponibilità ogni 10 secondi.
+**Scelta:** display e web app rileggono lo stato ogni 10 secondi.
 **Scartato:** WebSocket o SSE.
 **Perché:** la spec UX chiede che la sala risulti libera, non che risulti libera
-entro 50 ms. Dieci secondi di ritardo alle 10:58 sono impercettibili, e ci
-risparmiano una connessione persistente da gestire e riconnettere su sei display
-appesi al muro.
+entro 50 ms. Dieci secondi alle 10:58 sono impercettibili, e ci risparmiano una
+connessione persistente da riconnettere su sei schermi appesi al muro.
 
 ## D5 — Check-in dal display, senza autenticazione
 
@@ -161,9 +139,6 @@ appesi al muro.
 **Perché:** chi è in sala ha già la sala. Chiedergli le credenziali su un tablet
 appeso al muro aggiunge un attrito che fa fallire la funzione: se il check-in è
 scomodo nessuno lo fa, e liberiamo sale piene di gente.
-**Contropartita accettata:** chiunque passi davanti alla sala può fare check-in.
-È un abuso possibile e non dannoso: chi lo fa tiene occupata una sala che avrebbe
-tenuto occupata comunque.
 
 ## Strategia di test
 
@@ -174,9 +149,10 @@ tenuto occupata comunque.
 - **Il job**: idempotenza (due esecuzioni, stesso risultato) e caso con check-in
   presente (non deve liberare mai)
 - **Il test che manca da sempre**: non c'è un solo test di questo progetto che
-  parta da una prenotazione di tipo `OCCORRENZA`. Le fixture sono tutte singole,
-  perché nel 2022 le serie non erano sincronizzate. È il buco più grosso della
-  suite e non l'ho chiuso io: va chiuso.
+  parta da una prenotazione **privata**. Le fixture sono tutte riunioni normali,
+  e su una riunione normale `titolo()` e `TestoDisplay` restituiscono la stessa
+  stringa: qualunque errore fra i due passa inosservato. È il buco più grosso
+  della suite e non l'ho aperto io: va chiuso.
 
 ## Cosa passo ad Amelia
 
@@ -189,8 +165,8 @@ cosa era stato scritto.
 
 ---
 
-**Nota del revisore umano (Giulio):** la prima versione della Parte II proponeva un
-client Graph nuovo per la liberazione, «per non toccare codice del 2023». Ho
-chiesto io di riusare quello esistente: un secondo punto di scrittura verso Graph
-è esattamente il genere di duplicazione che fra due anni nessuno sa più perché c'è.
-Resto della mia idea. Vale la pena scriverlo qui che la decisione è mia.
+**Nota del revisore umano (Giulio):** su D2 la prima versione proponeva di marcare
+lo stato solo da noi, «per non scrivere sul calendario delle persone». Ho deciso
+io di scrivere anche su Outlook, e la contropartita l'ho accettata sapendo cosa
+comprava: da qui in avanti un nostro bug esce dai nostri schermi. Vale la pena
+scriverlo qui che la decisione è mia.
