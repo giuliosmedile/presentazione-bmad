@@ -67,7 +67,7 @@ Poi l'ho riletta e ti dico una cosa che vale contro me stessa: ventidue è
 esattamente il numero che avevo appena detto di non fare. C'erano dentro «utente»,
 «email», «pagina». Le ho tolte.
 
-**Undici voci**: sala, fascia, prenotazione, serie, occorrenza, check-in,
+**Undici voci**: sala, fascia, prenotazione, display, riunione privata, check-in,
 no-show, liberazione, disdetta, forzatura, capienza.
 
 Su una in particolare mi sono fermata, ed è quella del vostro litigio:
@@ -79,14 +79,16 @@ Su una in particolare mi sono fermata, ed è quella del vostro litigio:
 Quell'ultima riga è la distinzione che vi mancava in riunione.
 
 E due voci le ho aggiunte io senza che nessuno le chiedesse, perche' me le ha
-messe davanti `DP` guardando i dati: **serie** e **occorrenza**. La serie e' la
-regola, «ogni martedi alle 9:30», e da sola non occupa niente. L'occorrenza e' il
-singolo appuntamento, ed e' quella che occupa la sala.
+messe davanti `DP` leggendo il codice: **display** e **riunione privata**.
 
-Le ho separate perche' in questo progetto sono il 70% delle prenotazioni e perche'
-in riunione le sentivo chiamare tutte e due «ricorrenza». Due cose diverse con lo
-stesso nome, su tre quarti dei dati, e' esattamente il tipo di ambiguita' che
-prima o poi qualcuno traduce in codice.
+Sul display ho scritto una frase che sembra ovvia e non lo e': non e' una
+schermata dell'applicazione, e' un cartello acceso in un corridoio. La differenza
+non e' poetica — decide cosa ci si puo' scrivere sopra, e in questo progetto c'e'
+gia' un caso in cui qualcuno l'ha scoperto nel modo scomodo.
+
+La riunione privata l'ho messa perche' nel codice c'e' una colonna, un metodo
+dedicato e un commento arrabbiato, e da nessuna parte c'era scritto in italiano
+cosa vuol dire. Adesso c'e'.
 
 ---
 
@@ -135,8 +137,8 @@ Se sta scritta qui, non ve lo chiede. Se non sta scritta, indovina.
 - L'agente che riduce il proprio output da 22 a 11 voci contro se stesso
 - **`DP` come primo gesto su un progetto che esiste gia'**: la documentazione non
   c'era, e senza quella ogni agente riparte da zero
-- Serie e occorrenza separate perche' in riunione le chiamavano tutte e due
-  «ricorrenza»: due cose diverse con lo stesso nome, sul 70% dei dati
+- Display e riunione privata: due parole che nel codice avevano un metodo e un
+  commento arrabbiato, e in italiano non stavano scritte da nessuna parte
 - La riga «misuriamo il no-show perché è quello che possiamo osservare»
 - Il file in `docs/` che gli altri agenti trovano da soli — il **contesto di
   progetto** della slide 15, in pratica

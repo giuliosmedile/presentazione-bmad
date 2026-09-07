@@ -37,9 +37,10 @@ In attesa. Rispondi con un numero, un codice o una descrizione.
 
 Tre vincoli che attraversano le story:
 
-- **La 1.2 è la prima cosa che scrive su Outlook.** Fino alla 1.1 il servizio
-  legge soltanto. Ogni scrittura passa da `PrenotazioneOutlookClient` (D2): non
-  si apre una seconda strada verso Graph.
+- **La 1.2 è la prima cosa che scrive fuori da sé.** Fino alla 1.1 il servizio
+  legge soltanto. Da qui produce testo che finisce sul calendario delle persone e
+  sugli schermi in corridoio. Verso Graph si passa da
+  `PrenotazioneOutlookClient`; verso un display, da `TestoDisplay`.
 - **Il job idempotente dal primo commit** (D1). Renderlo idempotente dopo
   significa riscriverlo, e vale anche per il job dell'avviso in 1.3.
 - **I permessi Graph non si toccano.** Se una story ne chiede di più si ferma e
@@ -68,14 +69,14 @@ Rischi, e il primo lo metto in grassetto perché è l'unico che non so mitigare:
 
 | Rischio | Dove | Mitigazione |
 |---|---|---|
-| **Le occorrenze sono il 70% delle righe e la suite non le copre** | 1.2, e tutto ciò che scrive su Graph | Nessuna, in questo sprint. È R2 della IR, e lo accettiamo dichiarandolo. Chi implementa la 1.2 rilegga `architecture.md` § E4 prima di scrivere |
+| **Niente nella suite parte da una riunione privata, e la 1.2 scrive su schermi pubblici** | 1.2, e ogni testo che finisce su un display | Nessuna, in questo sprint. È R2 della IR, e lo accettiamo dichiarandolo. Chi implementa la 1.2 rilegga `architecture.md` § E3 prima di scrivere |
 | Il job libera una prenotazione con check-in | 1.2 | NFR2. Test dedicato, non opzionale |
 | Il job gira su tre repliche in cluster | 1.2 | `@SchedulerLock`, deciso qui per non farlo scoprire a metà story |
 | Fusi orari sulle fasce | 1.1, 1.2 | Tutto UTC nel db, conversione solo in presentazione |
 
 Sul primo ti dico anche cosa non è: non è una mitigazione. È un rischio scritto.
-Se la 1.2 tocca le occorrenze e nessun test le copre, l'unica rete che resta è la
-review.
+Se la 1.2 scrive su un display e nessun test parte da una riunione privata,
+l'unica rete che resta è la review.
 
 Piano scritto. Comincio dalla 1.1?
 

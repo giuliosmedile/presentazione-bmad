@@ -28,10 +28,12 @@ il codice, con `DP` (`bmad-document-project`). È il motivo per cui
 Il 41% delle sale risultate occupate erano vuote al giro fisico di controllo.
 
 **La feature richiesta**: liberazione automatica. Nessun check-in entro 10 minuti,
-la sala torna libera — anche su Outlook.
+la sala torna libera — anche su Outlook, e il display lo scrive.
 
-**Il dato che cambia la forma di tutto**: il 70% delle prenotazioni sono occorrenze
-di serie ricorrenti.
+**Il fatto di progetto che regge il finale**: il display è un cartello appeso in
+corridoio. Dal 2022 esiste `TestoDisplay`, che per le riunioni marcate private
+scrive «Riunione riservata» invece del titolo, e quella classe esiste perché una
+volta era già andata male.
 
 Tutti i numeri sono inventati ma coerenti fra loro: se qualcuno in sala li
 incrocia fra due documenti, tornano.
@@ -58,7 +60,7 @@ demo-sale-riunioni/
 │   │       ├── 1-1-check-in-dal-display.md   done
 │   │       ├── 1-2-liberazione-…-sala.md     done, con Dev Agent Record e Review Findings
 │   │       ├── 1-3-avviso-…md                in progress, si ferma su una domanda
-│   │       └── review-1.2.diff               il diff prima/dopo
+│   │       └── review-1.2.diff               il diff prima/dopo, e le due righe sul display
 │   ├── docs/glossario-dominio.md         Paige
 │   └── src/                              quattro file veri da aprire durante la review
 └── chat/
@@ -134,10 +136,10 @@ chiede di vedere il materiale vero dopo, o se un giorno vuoi rifare la demo navi
 
 | Min | Cosa | File |
 |---|---|---|
-| 0-1 | «Questo è il progetto, e ha quattro anni». Il 41% e il 70% | `product-brief.md`, sezione L'evidenza |
+| 0-1 | «Questo è il progetto, e ha quattro anni». Il 41% | `product-brief.md`, sezione L'evidenza |
 | 1-2 | Come si parla a un agente: il menu a tre colonne | `chat/01-mary-analyst.md`, fino a `CB` |
-| 2-3 | Il checkpoint umano, e la regola che sale nel contesto | `chat/01` le due leve tolte, `chat/02` il party mode |
-| 3-4 | Il vincolo che nessuno legge | `architecture.md` § E4 e `V3__sincronizzazione.sql` |
+| 2-3 | Il checkpoint umano, e la regola che sale nel contesto | `chat/01` la decisione di scrivere fuori, `chat/02` il party mode |
+| 3-4 | Il vincolo che nessuno legge | `architecture.md` § E3 e `TestoDisplay.java` |
 | 4-5 | La story è un contratto, e cosa resta dopo | `1-2-liberazione-…md`: AC, Task, Dev Agent Record |
 | 5-8 | **Il pezzo forte**: la review a tre layer | `chat/09` + la sezione Review Findings della 1.2 |
 
@@ -146,13 +148,17 @@ processo mentre intercetta qualcosa, che è la tesi del talk.
 
 ## Il momento migliore
 
-Il `patch` della review 1.2: il rilascio della sala chiamava
-`outlook.annulla(prenotazione.idEventoGraph())`. Per una riga di tipo
-`OCCORRENZA` quel campo contiene **l'id della serie**, non quello dell'occorrenza:
-la chiamata cancella la serie intera, tutte le occorrenze passate e future, dai
-calendari di tutti i partecipanti. Su Exchange non si annulla.
+Il `patch` della review 1.2. Il dev compone il testo del display dentro il
+service: `"Libera — nessun check-in per " + prenotazione.titolo()`.
 
-Le occorrenze sono il 70% delle prenotazioni.
+Cosa cambia sullo schermo in corridoio, alle 9:40:
+
+```
+prima    Libera — nessun check-in per «Colloquio di uscita — Marco Rossi»
+dopo     Libera — nessun check-in per «Riunione riservata»
+```
+
+Non serve spiegare niente a nessuno: due righe e il danno si vede.
 
 Ma il momento non è il bug: è **chi lo trova e chi no**. Nella stessa review
 l'Acceptance Auditor scrive «spec soddisfatta» e l'Edge Case Hunter apre il
@@ -160,19 +166,22 @@ finding. Hanno ragione tutti e due, e la contraddizione è la tesi del talk mess
 per iscritto dallo strumento invece che da te.
 
 Il punto da far arrivare: quel codice era **corretto rispetto ai criteri di
-accettazione della story** e sbagliato rispetto al progetto. AC3 dice «la sala non
-risulta più occupata su Outlook», e la `DELETE` lo ottiene. I test erano verdi e
-lo erano onestamente: nella suite non esiste una fixture di tipo `OCCORRENZA`.
+accettazione della story** e sbagliato rispetto al progetto. AC3 chiede che il
+display dica perché la sala è libera, e quel testo lo dice. I test erano verdi e
+lo erano onestamente: nella suite non esiste una fixture con `privato = true`, e
+su una riunione normale il metodo giusto e quello sbagliato restituiscono la
+stessa identica stringa.
 
-E il pezzo che vale il doppio: **il dev ha riusato un metodo che c'era già**,
-perché `architecture.md` D2 dice di riusare il client invece di riscriverlo.
-Riusare era la cosa giusta da fare. Il difetto non è nel codice scritto, è nel
-contesto mancante — che è la tesi del talk detta con un esempio invece che con un
-aggettivo.
+E il pezzo che vale il doppio: **il dev non ha scritto codice sciatto.** Ha
+scritto due righe invece di chiamare una funzione, perché aggiungere un metodo a
+una classe di formattazione per una stringa sola sembrava sproporzionato. È un
+ragionamento che fa chiunque. Solo che quella non era una classe di formattazione:
+era il posto dove stava un pezzo di conoscenza, e il nome non lo diceva.
 
-E la domanda che chiude: senza la review il bug esce il martedì mattina, quando
-allo stand-up non si presenta nessuno perché l'invito non c'è più nel calendario
-di nessuno. E la segnalazione arriva come «Outlook ha cancellato le riunioni».
+E la domanda che chiude: senza la review, il difetto esce il primo giorno in cui
+una riunione privata non fa check-in — statisticamente entro la settimana. E non
+lo scopriamo noi: lo scopre qualcuno che passa in corridoio. Nel 2022 era andata
+esattamente così.
 
 ## Cose da non dire
 
@@ -181,10 +190,10 @@ di nessuno. E la segnalazione arriva come «Outlook ha cancellato le riunioni».
   fingere che sia un log.
 - **Paige non ha una slide** nel deck. Se usi `chat/05`, presentala a voce come
   «c'è anche una sesta agente» oppure aggiungile l'identikit.
-- La story 1.3 si ferma su una domanda aperta (a chi va l'avviso, se
-  l'organizzatore della serie ha creato la ricorrenza tre anni fa e non è chi è
-  in ritardo davanti alla sala). È voluto: mostra un agente che si ferma invece
-  di indovinare. Se non hai tempo di spiegarla, non aprirla.
+- La story 1.3 si ferma su una domanda aperta (cosa scrive l'avviso, visto che una
+  mail può essere inoltrata e il titolo di una riunione privata non dovrebbe
+  uscire da nessuna parte). È voluto: mostra un agente che si ferma invece di
+  indovinare. Se non hai tempo di spiegarla, non aprirla.
 
 ## Se un giorno vuoi la demo vera
 

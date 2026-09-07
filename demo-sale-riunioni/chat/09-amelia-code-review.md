@@ -43,7 +43,7 @@ diverso apposta**:
 |---|---|---|
 | **Blind Hunter** | solo il diff | spec, context docs, accesso al progetto |
 | **Edge Case Hunter** | il diff, e può leggere il progetto | la spec |
-| **Acceptance Auditor** | il diff, la spec, i context docs | — |
+| **Acceptance Auditor** | il diff, la spec, i context doc | — |
 
 ---
 
@@ -58,63 +58,58 @@ Findings scritti nella sezione **Review Findings** della story.
 
 ### `patch` · fonte: `blind+edge`
 
-**Il rilascio opera sulla serie, non sull'occorrenza.**
+**Il testo del display espone il titolo delle riunioni private.**
 
-`LiberazioneService.java:57`
+`LiberazioneService.java:66`
 
 ```diff
--   outlook.annulla(prenotazione.idEventoGraph());
-+   outlook.rilasciaSala(prenotazione);
+-   display.aggiorna(
+-       prenotazione.salaId(),
+-       "Libera — nessun check-in per " + prenotazione.titolo());
++   display.aggiorna(prenotazione.salaId(), TestoDisplay.rigaLibera(prenotazione));
+```
+
+Cosa cambia sullo schermo appeso in corridoio, alle 9:40:
+
+```
+prima    Libera — nessun check-in per «Colloquio di uscita — Marco Rossi»
+dopo     Libera — nessun check-in per «Riunione riservata»
 ```
 
 Il **Blind Hunter**, che vede solo il diff, l'ha segnalato come forma sospetta:
-un identificativo che arriva da una riga di database e finisce dritto in una
-`DELETE`, senza che nessuno guardi di che tipo sia quella riga.
+una stringa costruita a mano dove tutto quello che le sta intorno passa da una
+classe dedicata.
 
 L'**Edge Case Hunter**, che la spec non ce l'ha ma il progetto sì, è andato a
-leggere cosa c'è dentro quel campo. `architecture.md` § E4:
+leggere quella classe. `TestoDisplay` esiste dal 2022 e per le riunioni marcate
+private scrive «Riunione riservata» al posto del titolo. `architecture.md` § E3
+racconta anche perché è nata: nella prima versione il display mostrava il titolo
+di tutto, davanti alla sala grande è comparso il titolo di un colloquio con nome e
+cognome, e le Risorse Umane hanno aperto un caso.
 
-| `tipo` | cosa c'è in `id_evento_graph` |
-|---|---|
-| `SINGOLA` | l'id dell'evento |
-| `SERIE` | l'id della serie |
-| `OCCORRENZA` | **l'id della serie** |
+Il display non è una schermata dell'applicazione: è un cartello acceso in un
+corridoio, senza login, che legge chiunque passi.
 
-Stessa cosa detta dallo schema (`V3__sincronizzazione.sql`, indice unico su
-`(id_evento_graph, inizio)`) e dal commento in `MappaturaEventoGraph`.
-
-Conseguenza: la prima occorrenza non usata di una serie fa partire una `DELETE`
-sull'id della serie. **Sparisce la serie intera** — tutte le occorrenze, passate e
-future, dai calendari di tutti i partecipanti. Su Exchange non si annulla.
-
-Le occorrenze sono il 70% delle prenotazioni di questo sistema.
-
-L'**Acceptance Auditor** non l'ha segnalato, e ha ragione lui: rispetto ad AC3 —
-«la sala non risulta più occupata su Outlook» — quel codice fa esattamente quello
-che c'è scritto.
+L'**Acceptance Auditor** non l'ha segnalato, e ha ragione lui: AC3 chiede che il
+display mostri che la sala è libera e per quale motivo, e quel codice lo fa.
 
 ---
 
-### `decision-needed` · fonte: `edge+auditor`
+### `decision-needed` · fonte: `auditor`
 
-**Rilasciare la sala fa partire una notifica che sfiora una regola di prodotto.**
+**Chi ha prenotato non sa di aver perso la sala.**
 
-`PrenotazioneOutlookClient.java:71`
+`LiberazioneService.java:60`
 
-Togliere la sala da un evento fa mandare a Exchange un messaggio all'organizzatore:
-«la sala ha rifiutato l'invito». Non è sopprimibile, non la mandiamo noi.
+FR5 prevede l'avviso **prima** della liberazione (story 1.3). Dopo, non c'è
+niente: chi aveva prenotato lo scopre entrando in riunione e trovandoci gente.
 
-`project-context.md` § Regole di prodotto: *nessuna comunicazione automatica che
-nomini una persona*. Questa non nomina nessuno, ma arriva a una persona sola e
-per un motivo che la riguarda.
+Mandare una mail «hai perso la sala» è una scelta di prodotto: c'è un modo di
+farla che è utile e uno che è umiliante. Non la prendo io.
 
-Non lo decido io: è dove passa il confine di quella regola, e il confine l'hai
-tirato tu.
-
-1. Si rilascia, e la notifica si accetta
-2. Si marca `no_show` solo da noi, senza toccare Outlook
-3. Si rilascia e si prova a sopprimere la notifica (non risulta possibile con i
-   permessi che abbiamo)
+1. Si avvisa chi ha prenotato, e basta
+2. Si avvisa anche chi era invitato
+3. Non si avvisa nessuno: se ne accorge da solo
 
 ---
 
@@ -122,11 +117,11 @@ tirato tu.
 
 **La scrittura su Graph viene prima del cambio di stato.**
 
-`LiberazioneService.java:55`
+`LiberazioneService.java:63`
 
 Se il commit fallisce dopo una scrittura andata a buon fine, la sala risulta
 rilasciata su Outlook e ancora `attiva` da noi. Il giro dopo il job ci riprova
-sopra: due scritture per la stessa prenotazione, contro AC4.
+sopra: due scritture per la stessa prenotazione, contro AC5.
 
 Fix: invertire le due righe.
 
@@ -134,14 +129,16 @@ Fix: invertire le due righe.
 
 ### `defer` · fonte: `edge`
 
-**Non esiste una sola fixture di tipo `OCCORRENZA` in tutta la suite.**
+**Non esiste una sola fixture di riunione privata in tutta la suite.**
 
-Tutte le prenotazioni di test sono singole: le fixture sono del 2022 e le serie
-sono arrivate nel 2024. Pre-esistente a questa story — `architecture.md`
-§ Strategia di test lo dichiara già come il buco più grosso.
+Tutte le prenotazioni di test hanno `privato = false`, e su una riunione normale
+`titolo()` e `TestoDisplay.titoloVisibile()` restituiscono la stessa identica
+stringa. Vuol dire che il verde non è la prova di niente: qualunque confusione fra
+i due metodi passa inosservata.
 
-È anche il motivo per cui il primo finding è arrivato fino a qui invece di essere
-un test rosso ieri. Registrato in `deferred-work.md`.
+Pre-esistente a questa story — `architecture.md` § Strategia di test lo dichiara
+già come il buco più grosso. È anche il motivo per cui il primo finding è arrivato
+fino a qui invece di essere un test rosso ieri. Registrato in `deferred-work.md`.
 
 ---
 
@@ -152,7 +149,8 @@ Senza contesto sono ragionevoli, col contesto no:
 - «`Clock` iniettato senza motivo» — serve a rendere testabile la finestra dei 10
   minuti
 - «10 minuti è un magic number» — è l'AC1, con la costante `ATTESA_CHECK_IN`
-- «manca il controllo di null su `idEventoGraph`» — la colonna è `NOT NULL` dal 2022
+- «la stringa del display andrebbe in un file di messaggi» — il progetto non è
+  localizzato e non lo sarà: è una sede sola
 
 Il Blind Hunter costa tre falsi positivi. Li paga volentieri: è lo stesso
 reviewer che ha aperto il finding grosso.
@@ -161,19 +159,20 @@ reviewer che ha aperto il finding grosso.
 
 **giulio** — Il primo è grosso. Come ti è sfuggito mentre implementavi?
 
-💻 Verificavo `AC3`: «la sala non risulta più occupata su Outlook». La `DELETE`
-lo ottiene.
+💻 Verificavo `AC3`: «il display mostra che la sala è libera e per quale motivo».
+Il testo che ho scritto lo dice.
 
-E il metodo l'ho riusato perché me lo dice il progetto: `architecture.md` § D2
-dice che ogni scrittura verso Graph passa da `PrenotazioneOutlookClient` e che il
-client si riusa, non si riscrive. L'ho letto e l'ho fatto.
+E la stringa l'ho composta lì perché aveva una forma diversa dalle altre. In
+`TestoDisplay` ci sono i testi degli altri stati, ma nessuno con quella forma, e
+aggiungere un metodo per una stringa sola mi sembrava sproporzionato.
 
-Quello che non ho letto è il capitolo E4, sessanta righe più su nello stesso
-documento, che dice cosa contiene il campo che stavo passando.
+Quello che non sapevo è che `TestoDisplay` non è una classe di formattazione.
+È il posto dove sta un pezzo di conoscenza — e la conoscenza non era nel nome
+della classe, era in `architecture.md` § E3.
 
-I test erano verdi, e lo erano onestamente: nella suite non esiste una fixture di
-tipo `OCCORRENZA`. Con sole prenotazioni singole i due percorsi fanno la stessa
-cosa.
+I test erano verdi, e lo erano onestamente: nella suite non esiste una fixture con
+`privato = true`. Su una riunione normale le due strade producono la stessa
+stringa carattere per carattere.
 
 Corretto rispetto agli AC. Sbagliato rispetto al progetto.
 
@@ -181,27 +180,24 @@ Corretto rispetto agli AC. Sbagliato rispetto al progetto.
 
 **giulio** — E se non avessimo fatto la review?
 
-💻 Sarebbe uscito il martedì mattina. Una serie che nessuno usa più viene
-liberata alle 9:40, e insieme all'occorrenza sparisce la ricorrenza: allo
-stand-up della settimana dopo non si presenta nessuno, perché l'invito non c'è
-più nel calendario di nessuno.
+💻 Sarebbe uscito il primo giorno in cui una riunione privata non fa check-in.
+Statisticamente, entro la prima settimana.
 
-Nessuno lo collegherebbe a noi. La segnalazione arriverebbe come «Outlook ha
-cancellato le riunioni», e il codice da cui parte è un job schedulato che gira
-di notte su un'altra funzionalità.
+Alle 9:40 sullo schermo davanti alla sala compare il titolo vero di un colloquio,
+e resta lì finché la sala non viene riprenotata. In corridoio ci passa chiunque,
+compreso chi aspetta di entrare in quella sala.
 
-E non si torna indietro: gli eventi cancellati su Exchange non si recuperano da
-qui.
+E non è un difetto che scopriamo noi: lo scopre qualcuno che passa. Nel 2022 è
+andata esattamente così.
 
 ---
 
-**giulio** — Sul `decision-needed` prendi la 1. La notifica riguarda la sala, non
-la persona, e senza quella l'organizzatore scopre di non avere più la sala
-entrando in riunione.
+**giulio** — Sul `decision-needed` prendi la 1. Si avvisa chi ha prenotato, e
+nessun altro: la sala l'ha presa una persona, la notizia riguarda quella.
 
-💻 Registrato nella story, col motivo e con l'alternativa scartata: la 2
-renderebbe la liberazione invisibile a chi cerca una sala dal calendario, cioè
-quasi tutti. L'item passa da `decision-needed` a `patch`.
+💻 Registrato nella story, col motivo e con l'alternativa scartata: non avvisare
+nessuno vuol dire far scoprire la cosa entrando in riunione, che è il modo
+migliore per far odiare la funzione a chi la subisce. Task aperto in 1.3.
 
 **Come vuoi gestire le 2 patch?**
 
@@ -215,18 +211,15 @@ quasi tutti. L'item passa da `decision-needed` a `patch`.
 
 💻 Applicate.
 
-- `LiberazioneService.java:57` — `outlook.rilasciaSala(prenotazione)`
-- `LiberazioneService.java:55` — stato prima, scrittura su Graph dopo
-- `PrenotazioneOutlookClient` — aggiunto `rilasciaSala()`, che sulle occorrenze
-  risolve l'id vero prima di scrivere
+- `LiberazioneService.java:66` — il testo lo compone `TestoDisplay.rigaLibera()`
+- `LiberazioneService.java:63` — stato prima, scrittura su Graph dopo
+- `TestoDisplay` — aggiunto `rigaLibera()`, che passa da `titoloVisibile()`
 
-Test nuovi: 4, e tutti e quattro partono da una prenotazione di tipo
-`OCCORRENZA`.
+Test nuovi: 4. Tre partono da una riunione con `privato = true`.
 
-- `rilascioSuOccorrenzaNonToccaLaSerie` — verifica che la chiamata a Graph non
-  usi l'id della serie
-- `rilascioSuOccorrenzaRisolveIdIstanza`
-- `rilascioSuSingolaRestaInvariato` — la strada vecchia non cambia comportamento
+- `rigaLiberaNonEsponeIlTitoloDiUnaRiunionePrivata`
+- `rigaLiberaMostraIlTitoloDiUnaRiunioneNormale`
+- `displayNonRiceveMaiIlTitoloGrezzo` — verifica sul pannello, non sul testo
 - `statoCambiaPrimaDellaScrittura` — commit fallito, nessuna doppia scrittura
 
 `./mvnw verify` — **15 test, 0 failure** (11 preesistenti invariati + 4 nuovi).
@@ -239,7 +232,7 @@ Patch spuntate nella story. Status → `done`.
 >
 > **Story Status:** `done`
 > **Issues Fixed:** 2
-> **Action Items Created:** 0
+> **Action Items Created:** 1
 > **Deferred:** 1
 > **Dismissed:** 3
 
@@ -260,20 +253,24 @@ Patch spuntate nella story. Status → `done`.
 - **I tre reviewer ricevono contesto diverso apposta.** È la riga che fa capire
   tutto: l'asimmetria è progettata, non un caso
 - **Il verdetto contraddittorio**: l'Acceptance Auditor dice «spec soddisfatta» e
-  nella stessa review esce il finding che cancella le riunioni di tutti. Non è un
-  bug del tool, è la definizione del problema che il talk racconta
-- Il finding grosso è `blind+edge`, **due layer deduplicati**: uno vede la forma
-  sospetta, l'altro va a leggere il progetto e trova cosa c'e' dentro quel campo
-- **La risposta a «come ti e' sfuggito»**: il dev ha riusato un metodo che
-  c'era gia', perche' glielo diceva l'architettura. Riusare era la cosa giusta.
-  Il difetto non e' nel codice scritto, e' nel contesto mancante
+  nella stessa review esce il finding che mette un colloquio su uno schermo in
+  corridoio. Non è un bug del tool, è la definizione del problema che il talk
+  racconta
+- **Il prima e il dopo sullo schermo**: due righe, e non serve spiegarle a nessuno
+- Il finding grosso è `blind+edge`, **due layer deduplicati**: uno vede la stringa
+  scritta a mano, l'altro va a leggere cosa faceva la classe che non e' stata usata
+- **La risposta a «come ti e' sfuggito»**: il dev ha scritto due righe invece di
+  chiamare una funzione, perche' aggiungere un metodo per una stringa sola
+  sembrava sproporzionato. È un ragionamento che fa chiunque. Il difetto non e'
+  nel codice, e' nel fatto che quella funzione **sapeva una cosa** e il suo nome
+  non lo diceva
 - **Il triage è in quattro caselle**, non in severità: `decision-needed`,
   `patch`, `defer`, `dismiss`. Il `decision-needed` è quello che si ferma e
-  aspetta te, e qui si ferma **su una regola che hai scritto tu sei slide prima**
+  aspetta te
 - I tre `dismiss` del Blind Hunter: **il costo del contesto zero**, pagato
   volentieri
-- Le patch chiuse diventano quattro test, tutti su occorrenze: la correzione è
-  permanente e chiude anche il buco che l'aveva lasciata passare
+- Le patch chiuse diventano quattro test, tre dei quali su riunioni private: la
+  correzione è permanente e chiude anche il buco che l'aveva lasciata passare
 
 > **Se hai tempo per una sola chat, usa questa.** È l'unica che mostra il processo
 > mentre intercetta qualcosa, che è la tesi del talk.

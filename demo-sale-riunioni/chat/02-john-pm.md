@@ -68,51 +68,33 @@ Dal brief e dal contesto di progetto ho tirato fuori questi candidati:
 
 - Sale di altre sedi
 - Prenotare dal servizio invece che da Outlook
-- Toccare una serie ricorrente invece della singola occorrenza
+- Cancellare o modificare una riunione: si toglie la sala, l'evento resta
 - Allargare i permessi Graph oltre le sei caselle sala
 - Notifiche push
-- Statistiche per reparto o per persona
+- Report per persona
 
 ---
 
-**giulio** — Tutti fuori. E il terzo scrivilo grosso: la serie non si tocca mai.
+**giulio** — Tutti fuori.
 
 📋 Tutti e sei fuori, e il terzo l'ho messo dentro FR4 e non solo nella lista, così
 chi legge i requisiti lo trova nel punto in cui gli serve.
 
-Su quello vorrei essere preciso, perché il brief di Mary lascia una porta aperta.
-Il 70% delle prenotazioni sono occorrenze: se «liberare la sala» volesse dire
-«toccare la ricorrenza», il prodotto cambierebbe natura. Non staremmo liberando
-una sala, staremmo modificando l'agenda delle persone.
-
-PRD scritto. Otto requisiti funzionali, quattro non funzionali. Le tre cose da
+PRD scritto. Otto requisiti funzionali, cinque non funzionali. Le tre cose da
 guardare:
 
-- **FR4**: la sala torna libera anche su Outlook, e sulle serie vale per la
-  singola occorrenza. L'ho aggiunto io: la prima versione diceva «la sala torna
-  prenotabile» senza dire dove, e dove è tutto il punto
+- **FR4**: la sala torna libera anche su Outlook. L'ho aggiunto io: la prima
+  versione diceva «la sala torna prenotabile» senza dire dove, e dove è tutto il
+  punto
 - **NFR2**: la liberazione non può avere falsi positivi. Se il check-in c'è, la
   prenotazione non decade mai
 - La sezione «cosa NON facciamo» è la prima del documento, non l'ultima
 
-Ho incluso anche FR8 come report per reparto con la classifica dei peggiori: nel
-brief c'era il dato ed era solido.
-
 ---
 
-**giulio** — No. Mary l'aveva già tolta, è rientrata.
-
-📋 Ritolta. E hai ragione a farmelo notare due volte: il dato è nel brief, quindi
-finché resta solo lì continuerò a ripescarlo. FR8 resta come aggregato per sala e
-per fascia, mai per persona.
-
-L'ho messa nella sezione «cosa NON facciamo» con la riga esplicita, e nella nota
-di revisione ho scritto il motivo. Adesso è in due documenti.
-
----
-
-**giulio** — Due documenti non bastano. Questa regola non vale per il PRD, vale per
-il prodotto. `party-mode` con Winston.
+**giulio** — Su FR4. Mary l'aveva sollevata: liberare anche su Outlook vuol dire
+che da qui in poi il servizio scrive fuori da sé. L'ho scritto nel brief, ma il
+brief lo legge chi lavora su questa cosa e basta. `party-mode` con Winston.
 
 📋 D'accordo, e ti dico perché sono d'accordo: il PRD descrive *questa* cosa che
 stiamo aggiungendo. La story della settimana prossima non lo rilegge, e fra sei
@@ -122,16 +104,16 @@ Il posto è `project-context.md`, che ogni agente carica all'attivazione. Non è
 documento di prodotto: è la riga che tutti leggono prima di leggere qualunque
 altra cosa.
 
-Scrivo la regola con il motivo per esteso, non solo il divieto. Un divieto senza
-motivo viene aggirato dal primo che ha una buona idea.
+E la scrivo con la contropartita accanto, non solo con la scelta. Una regola
+scritta senza il motivo viene aggirata dal primo che ha una buona idea.
 
-🏗️ Winston. E ha un riflesso tecnico che mi prendo io: se la regola è «nessuna
-misura pubblica sul singolo», allora **nessun endpoint espone il conteggio dei
-no-show per persona**, nemmeno interno, nemmeno «solo per il facility manager».
-Un endpoint che esiste prima o poi qualcuno lo chiama.
+🏗️ Winston. E il riflesso tecnico me lo prendo io, perché è più grosso di come
+suona: «scrivere fuori» qui vuol dire due superfici, non una. Il calendario delle
+persone, **e i sei display appesi in corridoio**.
 
-Lo scrivo come conseguenza tecnica sotto la regola, e lo porto in `architecture.md`
-quando ci arrivo.
+Sui display il progetto ha già una regola, dal 2022, e non l'ho scritta io: me la
+sono trovata leggendo il codice. La riporto in `architecture.md` quando ci arrivo,
+perché adesso torna a contare.
 
 ---
 
@@ -145,16 +127,16 @@ quando ci arrivo.
 | 1.2 | Liberazione automatica della sala | FR3, FR4 | M |
 | 1.3 | Avviso di liberazione imminente | FR5 | S |
 | 1.4 | Pannello del facility manager | FR6, FR7 | M |
-| 1.5 | Report no-show aggregato | FR8 | S |
+| 1.5 | Report aggregato | FR8 | S |
 
 Due cose da rispettare. **1.1 prima di 1.2**: senza check-in non c'è nessun
 segnale da cui capire se una sala è usata. E **1.3 non si rilascia senza 1.2**: un
 avviso che annuncia una liberazione che non avviene è peggio di nessun avviso.
 
 Ho anche messo in `epics.md` una nota che non è una story: dalla 1.2 in poi il
-servizio **scrive** su Outlook, mentre fino alla 1.1 leggeva soltanto. È un cambio
-di categoria, non una funzionalità in più — da lì un nostro bug non sporca una
-nostra tabella, tocca il calendario delle persone.
+servizio **scrive fuori da sé**, mentre fino alla 1.1 leggeva soltanto. È un
+cambio di categoria, non una funzionalità in più — da lì un nostro difetto non
+sporca una nostra tabella, lo vede qualcuno.
 
 Passo a Sally per i flussi, o vuoi rileggere?
 
@@ -171,10 +153,10 @@ Passo a Sally per i flussi, o vuoi rileggere?
 - Il rifiuto di decidere lo scope da solo: «te li elenco, tu tagli»
 - La distinzione fra la **leva** (no-show) e il **risultato** (disponibilità
   percepita)
-- **Il checkpoint umano**: la classifica rientrata dal brief. Una decisione che
-  sta in un documento solo torna indietro al documento dopo
+- **Il checkpoint umano**: una decisione che sta in un documento solo non
+  sopravvive al documento dopo. È l'umano a dire «non basta»
 - **Party mode**: due agenti veri nella stessa stanza, e la regola che sale da
   «nota nel brief» a riga di `project-context.md`. Winston ci aggiunge il
-  riflesso tecnico che John non avrebbe visto
-- La nota sul cambio di categoria: da qui in poi il sistema scrive sul calendario
-  delle persone
+  riflesso tecnico che John non avrebbe visto — e nomina i display, che è il
+  gancio di tutto il finale
+- La nota sul cambio di categoria: da qui in poi il sistema scrive fuori da sé

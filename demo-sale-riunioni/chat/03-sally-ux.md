@@ -116,8 +116,13 @@ non è una nostra schermata. Se la sala torna libera solo da noi, chiunque la ce
 dal calendario — cioè la maggior parte delle persone — continua a vederla
 occupata. Avremmo liberato una sala che nessuno riesce a prendere.
 
-L'ho scritto nella spec come vincolo, non come nota: passa a Winston e da lì
-finisce in un requisito.
+E sul primo dei tre metto un vincolo che non ho inventato io: il display non è una
+schermata dell'applicazione, è un cartello appeso in corridoio. Su cosa ci si può
+scrivere sopra il progetto ha già una regola dal 2022, e la spec la eredita invece
+di riaprirla.
+
+Tutti e due nella spec come vincoli, non come note: passano a Winston e da lì
+finiscono in un requisito.
 
 ---
 
@@ -137,3 +142,5 @@ finisce in un requisito.
   togliere la vista calendario. Da raccontare, perché rompe l'idea che il
   checkpoint serva solo a correggere la macchina
 - I tre posti dove la sala deve risultare libera, e il terzo che non è nostro
+- Il display trattato come **cartello in corridoio** e non come schermata: e' una
+  distinzione di design, e regge tutto il finale della demo

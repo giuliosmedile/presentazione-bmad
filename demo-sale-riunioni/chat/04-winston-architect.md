@@ -42,56 +42,38 @@ Le mie decisioni nuove sono cinque, e la più interessante è la più piccola.
 
 **giulio** — Dimmi.
 
-🏗️ Nella prima stesura avevo proposto un client Graph nuovo, dedicato alla
-liberazione. Il ragionamento era: non tocco codice del 2023 che non ho scritto io,
-riduco il rischio.
+🏗️ La decisione che vale è D2, e l'hai presa tu in party mode: la sala torna
+libera anche su Outlook. Io ci ho aggiunto la contropartita scritta accanto, che è
+la parte che di solito non si scrive: da questa story in avanti **il servizio
+scrive fuori da sé**.
 
-Poi mi sono chiesto cosa costa davvero. Due punti di scrittura verso Graph
-vogliono dire due posti dove sbagliare i permessi, due gestioni del throttling,
-due comportamenti diversi quando Exchange risponde 429. E fra due anni nessuno
-saprà più perché ce ne sono due.
-
-Riuso quello esistente. È anche la convenzione scritta in `project-context.md`:
-ogni scrittura verso Graph passa da `PrenotazioneOutlookClient`.
+Fino alla 1.1 leggeva calendari e li mostrava. Da domani mette le mani su due
+superfici che non sono nostre: il calendario delle persone, e i sei schermi
+appesi nei corridoi.
 
 ---
 
-**giulio** — Confermo, riusalo. Non voglio due strade verso Outlook.
+**giulio** — Sui display avevi detto che c'era già una regola.
 
-🏗️ Registrato come D2, con l'alternativa scartata e con il tuo nome sulla
-conferma.
+🏗️ Sì, e non è una mia decisione: è una cosa che ho trovato leggendo il codice.
+Le ho dato un capitolo suo, § E3, invece di una riga in mezzo alle altre.
 
-Adesso però la cosa importante di questo documento, e non è una mia decisione: è
-una cosa che ho trovato leggendo il codice.
+**Il display non è una schermata dell'applicazione. È un cartello acceso in un
+corridoio.**
 
----
+Nel database c'è una colonna `privato`, aggiunta sei settimane dopo il primo
+rilascio, e c'è una classe `TestoDisplay` che per le riunioni private scrive
+«Riunione riservata» invece del titolo. Il commento sulla migrazione dice perché,
+e l'ho verificato col facility manager: nella prima versione il display mostrava
+il titolo di tutto, e sullo schermo davanti alla sala grande è comparso il titolo
+di un colloquio con nome e cognome. Le Risorse Umane hanno aperto un caso.
 
-**giulio** — Vai.
+La conseguenza per chi implementa la scrivo in una riga sola: `titolo()` è il dato
+grezzo dello specchio, serve alla sincronizzazione e ai log. **Non è testo da
+mostrare.** Tutto quello che finisce su uno schermo passa da `TestoDisplay`.
 
-🏗️ **La colonna `id_evento_graph` non contiene sempre l'id dell'evento che la riga
-rappresenta.**
-
-| `tipo` | cosa c'è dentro |
-|---|---|
-| `SINGOLA` | l'id dell'evento |
-| `SERIE` | l'id della serie |
-| `OCCORRENZA` | **l'id della serie** |
-
-Ci sono arrivato dalla migrazione del 2024: l'indice unico è su
-`(id_evento_graph, inizio)`, e un indice del genere ha senso solo se quella
-colonna da sola non identifica una riga.
-
-Il perché l'ho ricostruito e sta scritto come ricostruzione: gli id delle
-occorrenze che Graph restituisce nel `calendarView` non sono stabili fra due delta
-query. Chi l'ha scritto ha preso l'unica cosa stabile che aveva — l'id della serie
-— e ha aggiunto l'orario per distinguere le occorrenze. Era la scelta giusta con
-le informazioni che aveva.
-
-Ma la conseguenza vale adesso: **quella colonna è una chiave di sincronizzazione,
-non un indirizzo a cui scrivere.** Le occorrenze sono il 70% delle righe, e dalla
-1.2 in poi cominciamo a scrivere.
-
-Le ho dato un capitolo suo, § E4, invece di una riga in mezzo alle altre.
+E non perché è più elegante. Perché quella funzione sa una cosa che chi la chiama
+non è tenuto a sapere.
 
 ---
 
@@ -99,8 +81,8 @@ Le ho dato un capitolo suo, § E4, invece di una riga in mezzo alle altre.
 
 🏗️ Chi implementa lo trova **se lo legge**. Che non è la stessa cosa, e non ho un
 modo per garantirlo: il documento è lungo, la story è auto-contenuta per
-costruzione, e il capitolo che serve sta sessanta righe più su di quello che
-cerchi.
+costruzione, e su una riunione normale il metodo giusto e quello sbagliato
+restituiscono la stessa identica stringa. Non è un errore che si vede.
 
 Quello che posso fare è metterlo anche nei rischi dello sprint plan e chiedere ad
 Amelia di riportarlo nelle note della story. Fatte tutte e due.
@@ -113,7 +95,7 @@ Amelia di riportarlo nelle note della story. Fatte tutte e due.
 
 Le alternative erano `pg_cron` e uno scheduler per singola prenotazione. Scartate
 entrambe: uno scheduler per prenotazione va tenuto in sincrono con disdette,
-spostamenti e modifiche della serie, e quando sbaglia sbaglia in silenzio. Un job
+spostamenti e modifiche, e quando sbaglia sbaglia in silenzio. Un job
 che scansiona è banale da capire, da testare e da rieseguire se salta un giro.
 
 Vincolo che ne deriva: **il job deve essere idempotente dal primo commit**. E NFR2
@@ -137,9 +119,11 @@ l'interfaccia. Non blocca l'epic — 1.1, 1.2 e 1.3 sono complete su tutti e qua
 i documenti — ma 1.4 non entra in sprint finché Sally non estende la spec.
 
 **R2 — la strategia di test dichiara un buco che nessuna story chiude.** Nella
-suite non esiste una fixture di tipo `OCCORRENZA`: l'ho scritto nella strategia di
-test, ma scriverlo non lo chiude. Nessuna story dell'epic 1 lo copre, e l'epic 1 è
-tutta sulle scritture verso i calendari.
+suite non esiste una fixture di riunione privata: l'ho scritto nella strategia di
+test, ma scriverlo non lo chiude. Ed è un buco peggiore di quanto sembri, perché
+su una riunione normale il metodo giusto e quello sbagliato danno lo stesso
+risultato: il verde non prova niente. Nessuna story dell'epic 1 lo copre, e
+l'epic 1 è tutta su cose che finiscono su schermi che legge chiunque passi.
 
 Verdetto: epic 1 pronta per 1.1, 1.2 e 1.3. R2 resta aperto e dichiarato.
 
@@ -156,12 +140,12 @@ verdetto della IR. È il massimo che posso fare da qui: dopo, dipende da chi leg
 
 - La premessa: **metà del documento è una ricostruzione**, ed è dichiarata come
   tale. È come si scrive architettura su un progetto che esiste già
-- Il client nuovo proposto e poi ritirato dall'agente stesso, con il motivo — e
-  la conferma umana che finisce nel documento col nome sopra
-- **§ E4 trovato leggendo una migrazione**: l'indice unico su due colonne ha senso
-  solo se la prima da sola non basta. È il pezzo che salva il finale della demo
-- «Chi implementa lo trova **se lo legge**»: l'agente dice da solo qual è il limite
-  di quello che sta facendo
+- La contropartita di D2 scritta accanto alla scelta: da qui il servizio scrive
+  fuori da sé, su due superfici che non sono nostre
+- **§ E3 trovato leggendo il codice**: una colonna, una classe e un commento
+  arrabbiato del 2022. È il pezzo che salva il finale della demo
+- «Chi implementa lo trova **se lo legge**», e il motivo per cui non basta: su una
+  riunione normale il metodo giusto e quello sbagliato danno la stessa stringa
 - Ogni decisione con l'**alternativa scartata** e la condizione per rivederla
 - **La IR che dichiara un rischio che nessuno chiude.** R2 è scritto tre volte e
   il bug passa lo stesso: un rischio scritto non è una mitigazione

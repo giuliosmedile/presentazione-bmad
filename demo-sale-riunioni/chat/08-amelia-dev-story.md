@@ -17,7 +17,7 @@ Eseguo in ordine, non salto.
 `src/main/java/it/azienda/saleriunioni/liberazione/LiberazioneJob.java`
 
 Ogni minuto, con `@SchedulerLock`: in cluster l'applicazione gira su tre repliche
-e senza lock il job partirebbe tre volte. L'idempotenza di AC4 lo renderebbe
+e senza lock il job partirebbe tre volte. L'idempotenza di AC5 lo renderebbe
 innocuo, ma tre volte innocuo sono comunque tre scritture verso Graph.
 
 Task 1 ✅.
@@ -31,15 +31,18 @@ verdi.
 (`sala_liberata_se_nessun_check_in_entro_dieci_minuti`,
 `prenotazione_con_check_in_mai_toccata`…).
 
-Per il rilascio ho riusato `PrenotazioneOutlookClient.annulla()`: c'era già, e
-`architecture.md` § D2 dice che verso Graph si passa da lì e che il client si
-riusa invece di riscriverlo.
+Per il rilascio su Graph ho usato `PrenotazioneOutlookClient`, come dice D2.
 
-Tutti verdi tranne AC 4.
+Per AC3, la riga del display, ho scritto il testo qui nel service:
+`"Libera — nessun check-in per " + prenotazione.titolo()`. C'è una classe
+`TestoDisplay` con i testi degli altri stati, ma quelli hanno una forma diversa da
+questo e aggiungerci un metodo per una stringa sola mi sembrava sproporzionato.
+
+Tutti verdi tranne AC 5.
 
 ---
 
-**giulio** — Perché AC 4 no?
+**giulio** — Perché AC 5 no?
 
 💻 Perché con una sola esecuzione non è testabile. Il test lanciava il job una
 volta e verificava il risultato: sarebbe passato anche senza `@SchedulerLock` e
@@ -47,11 +50,11 @@ anche con l'ordine delle operazioni sbagliato. Non stavo testando l'idempotenza,
 stavo testando che il job funziona.
 
 Riscritto: due esecuzioni con lo stesso `Clock` fisso, e la verifica non è sul
-risultato finale ma sul **numero di chiamate a Graph**. Deve essere uno.
+risultato finale ma sul **numero di scritture verso Graph**. Deve essere una.
 
-E lì ho trovato un secondo problema, nello stub: lo stub di WireMock rispondeva
-`200` a qualunque `DELETE` su qualunque URL. Il test verificava che una chiamata
-partisse, non quale. Stretto lo stub sull'URL esatto dell'evento.
+E già che c'ero ho stretto anche il test di AC3: verificava che la riga del display
+contenesse «Libera», e sarebbe passato con qualunque testo dopo. Adesso confronta
+la stringa intera.
 
 Adesso è verde e fallisce se tolgo il lock. Prima non falliva.
 
@@ -63,10 +66,10 @@ Adesso è verde e fallisce se tolgo il lock. Prima non falliva.
 
 Due punti da segnalare, e su nessuno dei due decido io.
 
-Il primo: AC 5 dice che la transizione locale resta se Graph fallisce. Sembra un
-errore a chi legge il codice, e non lo è: è la scelta di D1, riconciliazione al
-giro di sincronizzazione. L'ho scritto nelle Completion Notes perché in review
-verrà sollevato.
+Il primo: la transizione locale resta anche se Graph fallisce. Sembra un errore a
+chi legge il codice, e non lo è: è la scelta di D1, riconciliazione al giro di
+sincronizzazione. L'ho scritto nelle Completion Notes perché in review verrà
+sollevato.
 
 Il secondo: i 10 minuti sono una costante di dominio, non una proprietà di
 configurazione. Se il facility manager vuole poterla cambiare senza rilascio è una
@@ -108,13 +111,14 @@ passare, e lo stato lo muove il workflow, non la mia impressione.
 ## Cosa mostrare
 
 - Il **test che passava senza testare niente**, due volte di fila: l'esecuzione
-  singola che non prova l'idempotenza, e lo stub che accettava qualunque URL. È
+  singola che non prova l'idempotenza, e l'assert che cercava una sottostringa. È
   un errore che fa chiunque, umano compreso
-- E il seguito amaro: lo stub **stretto sull'URL giusto** resta verde lo stesso,
-  perché la fixture è una prenotazione singola. Il test è migliorato e non ha
-  trovato niente
-- Il riuso di `annulla()` motivato con l'architettura alla mano: la cosa giusta da
-  fare, e la strada per cui passa il bug
+- E il seguito amaro: il test **stretto sulla stringa intera** resta verde lo
+  stesso, perché la fixture non è una riunione privata. Il test è migliorato e non
+  ha trovato niente
+- La motivazione con cui il dev scrive il testo nel posto sbagliato: «aggiungere
+  un metodo per una stringa sola mi sembrava sproporzionato». È un ragionamento
+  che fa chiunque, e non e' nemmeno sbagliato in generale
 - **La definition of done non è un'autovalutazione**: è una lista che il workflow
   impone, e lo stato lo muove `sprint-status.yaml`, non l'agente che dice «fatto»
 - Le due segnalazioni che Amelia fa **senza decidere da sola** (errore Graph,

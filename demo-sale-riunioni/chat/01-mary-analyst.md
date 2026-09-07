@@ -96,7 +96,6 @@ appiglio.
 | Fonte | Dato |
 |---|---|
 | Il nostro database, 4 settimane | 612 prenotazioni su 6 sale |
-| Delle quali | **70% occorrenze di serie ricorrenti** |
 | Giro fisico, 3 giorni | **41% delle sale "occupate" erano vuote** |
 | Ticket, 6 mesi | 38 richieste «non trovo una sala», zero su altri temi |
 
@@ -106,11 +105,6 @@ occupate a vuoto. Il tuo facility manager ha ragione sulla direzione.
 E ha una conseguenza scomoda che ti dico subito: **quel numero va rimisurato dopo
 il rilascio**. Se non scende, il prodotto non è servito a niente, e sarà onesto
 dirlo.
-
-Il 70% invece è il dato che non mi aspettavo, ed è quello che cambia la forma di
-quello che costruiremo. La maggior parte di ciò che libereremo non è una riunione:
-è la ripetizione di una riunione decisa una volta e mai più guardata. Chi l'ha
-creata magari non lavora nemmeno più qui.
 
 I ticket dicono un'altra cosa utile: nessuno si lamenta delle sale, del wifi o
 delle prese. Solo di non trovarne. È un problema a una dimensione sola, il che è
@@ -126,10 +120,6 @@ Non è che la gente sia sbadata. È che **disdire non ha nessuna conseguenza**, 
 prenotare largo «per sicurezza» è il comportamento razionale in un sistema dove
 chi non prenota non trova. Stiamo osservando persone che rispondono bene a un
 sistema fatto male.
-
-E per il 70% non c'è nemmeno una scelta da fare: disdire una singola occorrenza di
-una ricorrenza su Outlook è un gesto che metà delle persone non sa fare. Non
-stiamo osservando pigrizia, stiamo osservando un'interfaccia.
 
 Se lo formuliamo come «i colleghi sono sbadati», il prodotto diventa un sistema di
 richiami e fallirà. Se lo formuliamo come «liberare deve costare zero ed essere
@@ -152,37 +142,37 @@ Le parti che ti chiedo di guardare per prime:
   l'ipotesi è sbagliata ed è la capienza il problema. L'ho scritta apposta in modo
   che si possa perdere
 - **Le alternative scartate**, con il motivo: sensori di presenza, limite di
-  prenotazioni a testa, scadenza automatica delle serie, solo un report
-- **Tre domande aperte** che non ho voluto chiudere da sola. La terza è la più
-  importante: le occorrenze si liberano una alla volta o si tocca la serie?
+  prenotazioni a testa, solo un report
+- **Tre domande aperte** che non ho voluto chiudere da sola
 
-Ho anche proposto due leve per far scendere il numero: una mail al responsabile
-dopo tre no-show, e una classifica dei reparti. I dati per farle ci sono.
-
----
-
-**giulio** — Le leve toglile tutte e due.
-
-📊 Tolte. Mi dici il motivo, così lo scrivo nel brief? Se resta solo qui dentro,
-al prossimo giro te le ripropongo.
+E una cosa che non mi avevi chiesto, ma che secondo me è la decisione vera di
+questo brief.
 
 ---
 
-**giulio** — Perché in questa azienda una misura pubblica sul singolo diventa una
-gara al contrario, e la gente smette di prenotare col proprio nome. Il primo
-effetto è che il 41% smette di essere misurabile: prenotano col nome del collega o
-non prenotano e occupano la sala lo stesso. Il dato lo teniamo aggregato.
+**giulio** — Dimmi.
 
-📊 Registrato nel brief come nota del revisore, con il tuo motivo per esteso.
+📊 Perché la funzione serva a qualcosa, la sala deve tornare libera **anche su
+Outlook**. Quasi tutti cercano una sala dal calendario: se la libero solo nel
+vostro database, la vedete libera voi e nessun altro.
 
-E dico una cosa che vale per il resto del progetto: questa non era
-un'informazione che mi mancava — il dato ce l'avevo, la logica funzionava. Mi
-mancava di sapere **come funziona questa azienda**. È il tipo di correzione che
-non potevo fare da sola, ed è il motivo per cui il brief passa da te prima di
-arrivare a John.
+Ma questo vuol dire che da questa funzione in avanti **il servizio smette di
+leggere e comincia a scrivere**. Fino a oggi copiava i calendari e li mostrava. Da
+domani mette le mani sul calendario delle persone e sugli schermi appesi in
+corridoio.
 
-Una cosa però te la segnalo: il motivo l'ho scritto **nel brief**, e il brief
-descrive questo prodotto. Il prossimo documento non lo legge.
+Non è un dettaglio tecnico e non lo decido io: cambia il rischio di tutto il
+progetto. L'ho scritto nel brief come cosa che pesa, ma la decisione è tua.
+
+---
+
+**giulio** — Sì, si scrive. Altrimenti non abbiamo fatto niente.
+
+📊 Registrato, con la contropartita accanto e non solo la scelta.
+
+Una cosa però te la segnalo: l'ho scritta **nel brief**, e il brief descrive
+questo prodotto. Il prossimo documento non lo legge, e questa è una cosa che vale
+per tutto quello che verrà dopo.
 
 Vuoi che passi il brief al product manager, o preferisci rileggerlo prima?
 
@@ -199,8 +189,7 @@ Vuoi che passi il brief al product manager, o preferisci rileggerlo prima?
 - **«Quella che mi hai dato non è un problema, è già una soluzione»**: arriva
   prima di qualunque cosa, su una feature che il committente ha gia' deciso
 - Il bivio esplicitato (poche sale vs sale sprecate) invece di partire a costruire
-- Il 70% di occorrenze, che nessuno cercava e che cambia la forma del prodotto
-- **Il checkpoint umano**: le due leve punitive. L'agente aveva ragione sui dati
-  e torto sull'azienda
+- **Il checkpoint umano**: la decisione di scrivere fuori dal servizio. L'agente
+  la solleva e si ferma, perche' cambia il rischio del progetto e non e' sua
 - L'ultima riga di Mary: il motivo e' scritto nel brief, e nel brief resta. E'
   il gancio della slide dopo
