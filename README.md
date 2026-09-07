@@ -314,6 +314,32 @@ non le scrive. Qui qualcuno le scrive in due minuti, e restano interrogabili.
 **Il terminale della 36 è ricostruito**, come la demo del capitolo 03. Se qualcuno chiede,
 dillo.
 
+## La chiusura (slide 38-40)
+
+| Slide | Cosa fa |
+|---|---|
+| 38 | il conto: cosa guadagni e cosa paghi, due colonne affiancate |
+| 39 | il primo passo, piccolo: cosa fare lunedì mattina |
+| 40 | contatti e domande |
+
+La **38** ha sostituito una slide che elencava quattro tesi già dette («Quattro cose»).
+Al suo posto un bilancio a due colonne, con lo stesso componente `.pf-grid` della **31**:
+oliva a sinistra, terracotta a destra.
+
+| Cosa guadagni | Cosa paghi |
+|---|---|
+| il processo rende l'AI più deterministica: l'esito dipende dagli artefatti, non dal prompt di quel giorno | il metodo si paga in token: ogni giro rilegge il contesto |
+| l'approccio strutturato allevia il debito cognitivo: le decisioni le scrivi mentre le prendi | sei schiavo del framework: se una cosa non è nel processo non esiste, e piegarlo costa |
+| gli artefatti restano: sopravvivono alla sessione e alla persona | c'è un overhead sui task piccoli: per un fix di due righe la cerimonia costa più del fix |
+
+I due «guadagni» in cima chiudono le promesse dei capitoli 01 e 02; il terzo è il pay-off
+del 04. I tre costi sono veri e vanno detti: **una chiusura che vende solo il lato buono
+perde la sala che ha già provato e si è scottata**. La morale del parlato è che il conto
+torna quando il lavoro è abbastanza grande da doverlo ricordare — ed è la rampa per la
+**39**, che chiede un passo piccolo.
+
+Da lasciare proiettata durante il Q&A.
+
 ## Versioning
 
 Il progetto è un repo git. **Niente più file `.bak`**: la storia dei dieci backup fatti a
