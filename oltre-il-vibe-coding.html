@@ -2216,14 +2216,14 @@ body.editing [contenteditable="true"]:focus {
         <div class="stat-desc" data-edit-key="s24-e8">al giro fisico di controllo, su 3 giorni diversi</div>
       </div>
       <div class="stat-card pop-3">
-        <div class="stat-number green" data-edit-key="s24-e9">70%</div>
-        <div class="stat-label" data-edit-key="s24-e10">Sono ricorrenze</div>
-        <div class="stat-desc" data-edit-key="s24-e11">occorrenze di serie create una volta e mai più guardate</div>
+        <div class="stat-number green" data-edit-key="s24-e9">6</div>
+        <div class="stat-label" data-edit-key="s24-e10">Display in corridoio</div>
+        <div class="stat-desc" data-edit-key="s24-e11">uno per sala, senza login: li legge chiunque passi</div>
       </div>
     </div>
     <p class="subtitle anim-4 mt-16" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s24-e12">La richiesta: <strong>se nessuno fa check-in entro dieci minuti, la sala torna libera</strong>. Da aggiungere a un codice che ha quattro anni e nessun autore reperibile.</p>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — il caso", "script": "Facciamo un giro completo su un caso piccolo. Sale riunioni: il dominio non ve lo devo spiegare, ed è voluto. Ma attenzione a cosa NON stiamo facendo: non costruiamo un sistema di prenotazione. Le sale si prenotano su Outlook come sempre. Quello che esiste è un servizio interno, in produzione dal 2022, che legge i calendari delle sale e accende i display fuori dalle porte. Quattro anni, due sviluppatori, e nessuno degli autori originali lavora ancora qui. Adesso arriva una richiesta: se nessuno fa check-in entro dieci minuti, la sala torna libera. Una feature nuova su un codice che c'è già, che è la situazione in cui siete tutti lunedì mattina. Il quarantuno per cento è il numero che giustifica il progetto. Il settanta per cento è quello che ve lo farà ricordare.", "notes": ["Caso ricostruito su un progetto di esempio: se qualcuno chiede, dirlo", "Brownfield, e dirlo esplicitamente: nessuno lunedì parte da un repository vuoto", "Le sale si prenotano su Outlook: non stiamo sostituendo niente", "Il 41% giustifica il progetto, il 70% decide come va a finire", "Non spiegare adesso perché conta il 70%: si paga da solo alla slide 31"]}
+    {"title": "Demo — il caso", "script": "Facciamo un giro completo su un caso piccolo. Sale riunioni: il dominio non ve lo devo spiegare, ed è voluto. Ma attenzione a cosa NON stiamo facendo: non costruiamo un sistema di prenotazione. Le sale si prenotano su Outlook come sempre. Quello che esiste è un servizio interno, in produzione dal 2022, che legge i calendari delle sale, accende i sei display fuori dalle porte e manda un report al facility. Quattro anni, due sviluppatori, nessuno degli autori originali lavora ancora qui. Adesso arriva una richiesta: se nessuno fa check-in entro dieci minuti, la sala torna libera. Una feature nuova su un codice che c'è già, che è la situazione in cui siete tutti lunedì mattina. Il quarantuno per cento è il numero che giustifica il progetto. Il sei, quello che sembra il numero inutile dei tre, è quello che ve lo farà ricordare.", "notes": ["Caso ricostruito su un progetto di esempio: se qualcuno chiede, dirlo", "Brownfield, e dirlo esplicitamente: nessuno lunedì parte da un repository vuoto", "Le sale si prenotano su Outlook: non stiamo sostituendo niente", "I display: schermi in corridoio, senza login, li legge chiunque passi", "Non spiegare adesso perché contano: si pagano da soli alla slide 31"]}
     </script>
   </div>
 
@@ -2292,52 +2292,53 @@ body.editing [contenteditable="true"]:focus {
 <span class="term-ag">📊 <span class="term-code">41%</span> delle sale «occupate» erano vuote. Il bivio è deciso: il facility</span>
 <span class="term-ag">   manager ha ragione sulla direzione.</span>
 
-<span class="term-hl olive">   E un dato che non cercava nessuno: il <span class="term-code">70%</span> sono occorrenze di serie.
-   Non stiamo liberando riunioni. Stiamo liberando ripetizioni di
-   riunioni decise una volta e mai più guardate.</span>
+<span class="term-ag">   Una cosa però va decisa prima di costruire, e non la decido io.</span>
+<span class="term-ag">   Perché la funzione serva a qualcosa, la sala deve tornare libera</span>
+<span class="term-ag">   <span class="term-code">anche su Outlook</span>: quasi tutti cercano una sala dal calendario.</span>
+
+<span class="term-hl olive">   Ma vuol dire che da domani il servizio <span class="term-code">scrive fuori da sé</span>.
+   Fino a oggi copiava calendari e li mostrava. Da domani mette le mani
+   sul calendario delle persone e sugli schermi appesi in corridoio.</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">Strategia</span>
-      <span>Chi ti chiede una feature ti sta dando <strong>la sua soluzione</strong>, non il suo problema. Qui l’agente non la rifiuta e non la esegue: la <strong>rimanda al bivio</strong> che la giustifica, e chiede il dato. <em>Fate la stessa richiesta a una chat qualsiasi stasera: vi scrive il codice.</em></span>
+      <span>Chi ti chiede una feature ti sta dando <strong>la sua soluzione</strong>, non il suo problema. Qui l’agente non la rifiuta e non la esegue: la <strong>rimanda al bivio</strong> che la giustifica, chiede il dato — e alla fine si ferma su una scelta che non è sua. <em>Fate la stessa richiesta a una chat qualsiasi stasera: vi scrive il codice.</em></span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — il problema dietro la feature", "script": "Guardate la prima riga, perché è quella che non fa nessun altro strumento. Io le ho dato una feature già decisa — liberazione automatica, dieci minuti — e lei non parte a scriverla. Dice: quella è già una soluzione, la domanda qual è. Poi chiede se il problema è stato misurato, e quando dico di no separa due ipotesi che portano a due prodotti diversi. Se le sale sono poche è un problema di muri e di budget, e la feature che ho chiesto non sposta niente. Se risultano occupate senza esserlo, allora sì. Il giro fisico dà il quarantuno per cento e il bivio è deciso. Ma la riga che conta è l'ultima, ed è un dato che nessuno stava cercando: il settanta per cento delle prenotazioni sono occorrenze di serie. Non stiamo liberando riunioni: stiamo liberando ripetizioni di riunioni decise una volta e mai più guardate. Tenetevelo lì.", "notes": ["Il committente dà sempre la soluzione, mai il problema: qui l'agente lo dice", "Non rifiuta la feature e non la esegue: la rimanda al bivio che la giustifica", "«Fatelo stasera con una chat qualsiasi: vi scrive il codice» — dirlo, funziona", "Il 41% decide fra i due prodotti possibili", "Il 70% è la pistola sul tavolo: nominarlo e non spiegarlo", "Nel materiale è chat/01, e il bivio sta scritto anche nel brief"]}
+    {"title": "Demo — il problema dietro la feature", "script": "Guardate la prima riga, perché è quella che non fa nessun altro strumento. Io le ho dato una feature già decisa — liberazione automatica, dieci minuti — e lei non parte a scriverla. Dice: quella è già una soluzione, la domanda qual è. Poi chiede se il problema è stato misurato, e quando dico di no separa due ipotesi che portano a due prodotti diversi. Se le sale sono poche è un problema di muri e di budget, e la feature che ho chiesto non sposta niente. Se risultano occupate senza esserlo, allora sì. Il giro fisico dà il quarantuno per cento e il bivio è deciso. E poi fa una cosa che non le avevo chiesto: mi dice che per funzionare davvero la sala deve tornare libera anche su Outlook, perché quasi tutti cercano una sala dal calendario. Il che vuol dire che da domani questo servizio smette di leggere e comincia a scrivere: sul calendario delle persone e sugli schermi appesi in corridoio. Non è un dettaglio tecnico, cambia il rischio di tutto il progetto — e infatti si ferma e me lo chiede.", "notes": ["Il committente dà sempre la soluzione, mai il problema: qui l'agente lo dice", "Non rifiuta la feature e non la esegue: la rimanda al bivio che la giustifica", "«Fatelo stasera con una chat qualsiasi: vi scrive il codice» — dirlo, funziona", "Il 41% decide fra i due prodotti possibili", "«Scrive fuori da sé» è la pistola sul tavolo: nominare i display e non spiegarli", "Nel materiale è chat/01, e il bivio sta scritto anche nel brief"]}
     </script>
   </div>
 
   <!-- ---- 27 · DEMO — LA DECISIONE SALE NEL CONTESTO ---- -->
   <div class="slide" data-slide="27" data-chapter="3">
     <p class="slide-tag anim-1" data-edit-key="s27-e0">Demo — 3 di 7</p>
-    <h2 class="anim-2" data-edit-key="s27-e1">Il motivo non resta nel brief. <span class="highlight-orange">Sale nel contesto.</span></h2>
+    <h2 class="anim-2" data-edit-key="s27-e1">Una decisione. <span class="highlight-orange">La leggono tutti gli agenti.</span></h2>
     <div class="term anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
         <span class="term-name">bmad — party-mode · John + Winston</span>
       </div>
-      <div class="term-body"><span class="term-ag">📊 Nel brief ho messo due leve: mail al responsabile dopo tre no-show,</span>
-<span class="term-ag">   e la classifica dei reparti. I dati per farle ci sono.</span>
+      <div class="term-body"><span class="term-user">Sì, si scrive anche su Outlook. Altrimenti non abbiamo fatto niente.</span>
 
-<span class="term-user">Toglile.</span>
-
-<span class="term-hl">📊 Tolte. Mi dai il motivo, così lo scrivo? Se resta solo qui dentro,
-   al prossimo giro te le ripropongo.</span>
-
-<span class="term-user">Diventa una gara al contrario: smettono di prenotare col proprio nome.
-  Il primo effetto è che il 41% non è più misurabile.</span>
-
-<span class="term-ag">📊 Scritto in <span class="term-file">product-brief.md</span>, col motivo. Ma il brief descrive</span>
-<span class="term-ag">   <em>questo</em> prodotto: il prossimo documento non lo legge.</span>
+<span class="term-hl">📊 Registrato nel brief, con la contropartita accanto e non solo la scelta.
+   Ma il brief descrive <em>questo</em> prodotto: il prossimo documento non lo legge.</span>
 
 <span class="term-user">/bmad-party-mode  John, Winston</span>
 
 <span class="term-ag"><span class="term-who">John</span>     Il posto è <span class="term-file">project-context.md</span>. Un vincolo che vale sempre non</span>
-<span class="term-ag">         sta in un documento di prodotto.</span>
-<span class="term-ag"><span class="term-who">Winston</span>  E ha un riflesso tecnico: niente endpoint che espone il conteggio</span>
-<span class="term-ag">         per persona. Lo porto in <span class="term-file">architecture.md</span>.</span>
+<span class="term-ag">         sta in un documento di prodotto. E lo scrivo col motivo: un</span>
+<span class="term-ag">         divieto senza motivo lo aggira il primo che ha una buona idea.</span>
+
+<span class="term-ag"><span class="term-who">Winston</span>  Il riflesso tecnico me lo prendo io, ed è più grosso di come suona.</span>
+<span class="term-ag">         «Scrivere fuori» qui vuol dire <span class="term-code">due</span> superfici: il calendario delle</span>
+<span class="term-ag">         persone, e i <span class="term-code">sei display appesi in corridoio</span>.</span>
+<span class="term-ag">         Sui display il progetto ha già una regola, dal 2022, e non l'ho</span>
+<span class="term-ag">         scritta io: me la sono trovata leggendo il codice.</span>
 
 <span class="term-hl olive">✅ <span class="term-file">_bmad-output/project-context.md</span>
-   «Nessuna comunicazione automatica che nomini una persona.»
+   «Una sala liberata deve risultare libera dove le persone guardano
+    davvero. Da qui in poi il servizio scrive fuori da sé.»
    <span class="term-dim">Ogni agente ha file:**/project-context.md nei persistent_facts.</span></span>
 </div>
     </div>
@@ -2346,7 +2347,7 @@ body.editing [contenteditable="true"]:focus {
       <span>Il brief è <em>un</em> documento; <span class="term-code" style="color:var(--color-accent-700);background:none;border:none;padding:0;">project-context.md</span> è <strong>il contesto di tutti</strong>. Ogni agente lo carica all'attivazione, perché sta nei suoi <strong>persistent_facts</strong>. Una regola scritta lì non va più ripetuta: la eredita anche chi arriva dopo.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — la decisione sale nel contesto", "script": "Il brief è pronto e dentro ci sono due leve per far scendere il numero: una mail al responsabile dopo tre no-show, e la classifica dei reparti. I dati ci sono ed è tutto corretto. Le dico di toglierle. Le toglie — ma mi chiede il motivo, e vi dice anche perché lo chiede: se il motivo resta nella chat, al prossimo giro me le ripropone. Il motivo glielo do: qui una misura pubblica sul singolo diventa una gara al contrario, e la gente smette di prenotare col proprio nome. Il primo effetto è che il quarantuno per cento smette di essere misurabile. E lei fa una cosa che nessuno le ha chiesto: mi dice che quel motivo l'ha scritto nel brief, e che il brief descrive questo prodotto. Il prossimo documento non lo legge. Allora apro party mode con John e Winston — non è una trovata scenica, sono due subagenti veri con la loro testa. John decide il posto: project-context.md. Winston ci vede subito il riflesso tecnico. E qui c'è il pezzo che vale la slide: quel file sta nei persistent_facts di ogni agente, riga letterale, con la glob. Dalla prossima attivazione quella regola ce l'hanno tutti senza che io la ripeta. Tenetela a mente, perché torna alla fine della demo da sola.", "notes": ["Due gesti in una slide: la correzione scritta, e poi promossa a regola di tutti", "L'agente accetta la correzione e chiede il perché: senza motivo, ritorna", "«Il brief descrive questo prodotto»: è l'agente a dire che non basta", "Party mode con due agenti nominati: subagenti veri, non un trucco scenico", "John decide il posto, Winston il riflesso tecnico in architecture.md", "persistent_facts = file:{project-root}/**/project-context.md, verificabile nel customize.toml", "Questa regola torna alla slide 32 come decision-needed: annunciarlo senza spiegarlo", "Ponte verso il capitolo 04: qui il contesto è un file, lì diventa un grafo"]}
+    {"title": "Demo — la decisione sale nel contesto", "script": "Ho deciso: si scrive anche su Outlook, altrimenti abbiamo liberato una sala che nessuno riesce a prendere. E Mary fa una cosa che non le ho chiesto: mi dice che quella decisione l'ha scritta nel brief, e che il brief descrive questo prodotto. Il prossimo documento non lo legge. Allora apro party mode e mi tiro dentro John e Winston insieme — non è una trovata scenica, ognuno dei due è un subagente vero con la sua testa. John decide il posto, project-context.md, e insiste per scriverci accanto il motivo: un divieto senza motivo lo aggira il primo che ha una buona idea. Poi parla Winston, e questa è la riga che dovete sentire. Dice: scrivere fuori qui vuol dire due superfici, non una. Il calendario delle persone, e i sei display appesi in corridoio. E aggiunge che sui display il progetto ha già una regola, dal 2022, che lui non ha scritto: se l'è trovata leggendo il codice. Adesso il pezzo che vale la slide: project-context.md sta nei persistent_facts di ogni agente, riga letterale, con la glob. Dalla prossima attivazione quella regola ce l'hanno tutti senza che io la ripeta — anche Amelia, che quando l'abbiamo scritta non era nella stanza.", "notes": ["Il gesto: non chiudere la decisione nel documento in cui è nata", "«Il brief descrive questo prodotto»: è l'agente a dire che non basta", "Party mode con due agenti nominati: subagenti veri, non un trucco scenico", "John decide il posto e pretende il motivo accanto alla regola", "Winston nomina i display: è il gancio del finale, dirlo e non spiegarlo", "persistent_facts = file:{project-root}/**/project-context.md, verificabile nel customize.toml", "Ponte verso il capitolo 04: qui il contesto è un file, lì diventa un grafo"]}
     </script>
   </div>
 
@@ -2374,16 +2375,18 @@ body.editing [contenteditable="true"]:focus {
 <span class="term-ag">## Acceptance Criteria</span>
 <span class="term-ag">1. Oltre 10 minuti senza check-in → la prenotazione passa a <span class="term-code">no_show</span>.</span>
 <span class="term-ag">2. Se il check-in c’è, la prenotazione non viene toccata. Mai.</span>
-<span class="term-ag">3. La sala non risulta più occupata <span class="term-code">su Outlook</span>.</span>
+<span class="term-ag">3. Il display mostra che la sala è libera <span class="term-code">e per quale motivo</span>.</span>
+<span class="term-ag">4. La sala non risulta più occupata su Outlook.</span>
 
 <span class="term-ag">## Tasks / Subtasks</span>
 <span class="term-ag">- [ ] Job schedulato al minuto <span class="term-dim">(AC: 1)</span></span>
 <span class="term-ag">- [ ] Transizione di stato con riga di audit <span class="term-dim">(AC: 1)</span></span>
-<span class="term-ag">- [ ] Rilascio della sala su Graph <span class="term-dim">(AC: 3)</span></span>
+<span class="term-ag">- [ ] Riga del display per la sala liberata <span class="term-dim">(AC: 3)</span></span>
 
 <span class="term-ag">## Dev Notes</span>
-<span class="term-hl">- <span class="term-code">id_evento_graph</span>, per le occorrenze di una serie, contiene l’id
-  della SERIE.  [Source: architecture.md#E4]
+<span class="term-hl">- Il display non è una schermata: è un cartello in corridoio, e una
+  riunione può essere <span class="term-code">privata</span>. Il testo lo compone TestoDisplay,
+  mai Prenotazione.titolo().  [Source: architecture.md#E3]
   Sta nel progetto. Non sta negli AC di questa story.</span>
 </div>
     </div>
@@ -2392,7 +2395,7 @@ body.editing [contenteditable="true"]:focus {
       <span>Ogni task cita l’<strong>AC</strong> che soddisfa, ogni nota tecnica cita la <strong>fonte</strong>. E guardate l’ultima riga: è un <strong>vincolo di progetto, non un requisito</strong> — per questo sta nelle note e non fra i criteri. Fra tre slide è tutto.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — la story è un contratto", "script": "Nel mezzo, in due righe, cosa è successo che non vi faccio vedere: John ha spaccato il brief in un PRD e in epiche, e Winston ha scritto l'architettura — che su un progetto di quattro anni vuol dire leggersi il codice e ricostruire perché è fatto così. Ognuno col suo checkpoint. Tenete a mente architecture.md, perché fra tre slide è il file che decide tutto. Adesso CS, create-story: Amelia legge l'architettura e il contesto di progetto, e scrive la story. In un file, non a voce. Non è un ticket con due righe: criteri di accettazione numerati, ogni task dice quale criterio soddisfa, e ogni nota tecnica cita la fonte col percorso e la sezione. E adesso l'ultima riga, che è l'unica cosa che vi chiedo di ricordare di questa slide. Nel database, la colonna con l'identificativo dell'evento Outlook, per le riunioni ricorrenti, non contiene l'id di quella riunione: contiene l'id della serie. È scritto nell'architettura del progetto. E non sta nei criteri di accettazione di questa story. Se qualcuno si chiede perché non è un criterio: perché non è un requisito. È un vincolo del progetto, e i criteri descrivono cosa deve fare la story per essere accettata.", "notes": ["Il ponte è corto adesso: John e Winston li ha appena visti in scena", "Su brownfield l'architettura si scrive leggendo il codice, non prima", "Nominare architecture.md adesso: alla slide 31 è il file che decide", "AC numerati, ogni task cita l'AC, ogni nota cita file e sezione", "L'ultima riga è la pistola sul tavolo: leggerla piano, due volte se serve", "Vincolo di progetto ≠ requisito: per questo sta nelle note e non negli AC", "Non leggere tutta la story: indicare la struttura e fermarsi sull'ultima riga"]}
+    {"title": "Demo — la story è un contratto", "script": "Nel mezzo, in due righe, cosa è successo che non vi faccio vedere: John ha spaccato il brief in un PRD e in epiche, e Winston ha scritto l'architettura — che su un progetto di quattro anni vuol dire leggersi il codice e ricostruire perché è fatto così. Ognuno col suo checkpoint. Tenete a mente architecture.md, perché fra tre slide è il file che decide tutto. Adesso CS, create-story: Amelia legge l'architettura e il contesto di progetto, e scrive la story. In un file, non a voce. Non è un ticket con due righe: criteri di accettazione numerati, ogni task dice quale criterio soddisfa, e ogni nota tecnica cita la fonte col percorso e la sezione. Guardate il criterio tre, perché è quello su cui gira tutto: il display deve dire che la sala è libera e perché. E adesso l'ultima riga, che è l'unica cosa che vi chiedo di ricordare di questa slide. Il display non è una schermata dell'applicazione: è un cartello appeso in corridoio, e una riunione su Outlook può essere marcata privata. Per il testo che ci finisce sopra c'è una classe apposta, e non si usa il titolo grezzo. È scritto nell'architettura del progetto. E non sta nei criteri di accettazione di questa story. Se qualcuno si chiede perché non è un criterio: perché non è un requisito. È un vincolo del progetto, vale per tutto quello che il sistema mostra, e i criteri descrivono cosa deve fare questa story per essere accettata.", "notes": ["Il ponte è corto adesso: John e Winston li ha appena visti in scena", "Su brownfield l'architettura si scrive leggendo il codice, non prima", "Nominare architecture.md adesso: alla slide 31 è il file che decide", "AC numerati, ogni task cita l'AC, ogni nota cita file e sezione", "L'ultima riga è la pistola sul tavolo: leggerla piano, due volte se serve", "Vincolo di progetto ≠ requisito: per questo sta nelle note e non negli AC", "Non leggere tutta la story: indicare la struttura e fermarsi sull'ultima riga"]}
     </script>
   </div>
 
@@ -2411,9 +2414,10 @@ body.editing [contenteditable="true"]:focus {
 
 <span class="term-ag">💻 Task 1/6 · <span class="term-code">AC1</span> — <span class="term-file">LiberazioneJob.java:18</span>, schedulato al minuto.</span>
 <span class="term-ag">💻 Task 3/6 · <span class="term-code">AC1</span> — <span class="term-file">LiberazioneService.java:44</span>. 5 test verdi.</span>
-<span class="term-ag">💻 Task 5/6 · <span class="term-code">AC3</span> — rilascio della sala su Graph.</span>
-<span class="term-ag">   Riuso <span class="term-file">PrenotazioneOutlookClient.annulla()</span>: c’è già, e</span>
-<span class="term-ag">   <span class="term-file">architecture.md</span> D2 dice di riusare il client, non di riscriverlo.</span>
+<span class="term-ag">💻 Task 5/6 · <span class="term-code">AC3</span> — la riga del display. Il testo lo scrivo qui:</span>
+<span class="term-ag">   <span class="term-code">"Libera — nessun check-in per " + prenotazione.titolo()</span></span>
+<span class="term-ag">   C’è <span class="term-file">TestoDisplay</span> con i testi degli altri stati, ma hanno una forma</span>
+<span class="term-ag">   diversa: un metodo per una stringa sola mi pare sproporzionato.</span>
 
 <span class="term-ag">💻 Definition of done:</span>
 <span class="term-ag">   ✓ tutti i task [x]      ✓ AC1-AC5 soddisfatti</span>
@@ -2431,7 +2435,7 @@ body.editing [contenteditable="true"]:focus {
       <span>La conversazione è usa-e-getta; questo no. <strong>Come è stata implementata resta dentro il file della story</strong>, versionato e diffabile. E lo stato non è nella tua testa: sta in <span class="term-code" style="color:var(--color-accent-700);background:none;border:none;padding:0;">sprint-status.yaml</span>.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — cosa resta dopo", "script": "DS, dev-story. Amelia implementa un task per volta, e ogni riga che vi dice è citabile: il task, il criterio di accettazione, il file, la riga, i test. Guardate il task cinque, perché fra due slide ci torniamo: per rilasciare la sala su Outlook riusa un metodo che c'era già, e lo fa perché glielo dice l'architettura — verso Graph si passa da quel client, e il client si riusa invece di riscriverlo. È la cosa giusta da fare, ed è quello che avreste fatto anche voi. Alla fine passa una definition of done che non si può saltare. Ma la domanda vera è: chiuso il portatile, cosa resta? Resta questo. Non una chat da riscorrere: il diario di come è stata implementata sta dentro il file della story, versionato, diffabile. E lo stato non è nella mia testa né nella vostra: sta in sprint-status.yaml, e a muoverlo è il workflow.", "notes": ["Un task per volta, ogni affermazione citabile: file, riga, AC", "Il riuso del client è seminato qui: non sottolinearlo, ma leggerlo", "La definition of done è una lista che l'agente deve passare", "Il Dev Agent Record resta nel file della story, non in chat", "Gli stati sono reali: backlog, ready-for-dev, in-progress, review, done", "Qui muore la domanda «e poi cosa mi resta in mano»"]}
+    {"title": "Demo — cosa resta dopo", "script": "DS, dev-story. Amelia implementa un task per volta, e ogni riga che vi dice è citabile: il task, il criterio di accettazione, il file, la riga, i test. Guardate il task cinque, perché fra due slide ci torniamo. Deve scrivere la riga del display, e la scrive lì dove sta lavorando: libera, nessun check-in per, più il titolo della riunione. E dice anche perché non l'ha messa nella classe dei testi: quelli hanno una forma diversa, e aggiungere un metodo per una stringa sola le sembrava sproporzionato. È un ragionamento onesto. È quello che avreste fatto anche voi, e infatti non lo commento. Alla fine passa una definition of done che non si può saltare. Ma la domanda vera è: chiuso il portatile, cosa resta? Resta questo. Non una chat da riscorrere: il diario di come è stata implementata sta dentro il file della story, versionato, diffabile. E lo stato non è nella mia testa né nella vostra: sta in sprint-status.yaml, e a muoverlo è il workflow.", "notes": ["Un task per volta, ogni affermazione citabile: file, riga, AC", "Il task 5 è il seme: leggerlo come una cosa normale, non sottolinearlo", "La motivazione che dà è ragionevole, ed è il punto: non è codice sciatto", "La definition of done è una lista che l'agente deve passare", "Il Dev Agent Record resta nel file della story, non in chat", "Qui muore la domanda «e poi cosa mi resta in mano»"]}
     </script>
   </div>
 
@@ -2457,11 +2461,11 @@ body.editing [contenteditable="true"]:focus {
 <span class="term-hl olive">💻 Acceptance Auditor — <span class="term-code">spec soddisfatta</span>.
    AC1-AC5 verificati, tutti i task [x], perimetro rispettato.</span>
 
-<span class="term-hl">💻 Edge Case Hunter — LiberazioneService.java:57
-   <span class="term-code">annulla(p.idEventoGraph())</span> non guarda il tipo della prenotazione.
-   In architecture.md § E4: per le occorrenze quel campo contiene l’id
-   <span class="term-code">della serie</span>. La chiamata cancella la serie intera — tutte le
-   occorrenze, dai calendari di tutti. Sono il 70% delle prenotazioni.</span>
+<span class="term-hl">💻 Edge Case Hunter — LiberazioneService.java:66
+   Il testo del display usa <span class="term-code">prenotazione.titolo()</span>. In architecture.md
+   § E3: il display è un cartello in corridoio, e per le riunioni marcate
+   private si passa da TestoDisplay, che scrive «Riunione riservata».
+   Così sullo schermo finisce il titolo vero.</span>
 </div>
     </div>
     <div class="term-take anim-4">
@@ -2469,7 +2473,7 @@ body.editing [contenteditable="true"]:focus {
       <span>I tre <strong>non vedono la stessa cosa</strong>, ed è il punto. Chi ha la spec dice che va bene. Chi ha il progetto e <em>non</em> la spec trova il buco. Un reviewer solo non lo prendeva — e l’implementatore men che meno.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — tre reviewer, tre contesti", "script": "E arriviamo al motivo per cui vi ho tenuto qui. Faccio partire la code review, in una sessione nuova. E qui BMAD fa una cosa che non mi aspettavo: non manda un revisore, ne manda tre in parallelo, e gli dà apposta contesti diversi. Il Blind Hunter vede solo il diff, niente spec e niente progetto. L'Edge Case Hunter vede il diff e può leggere il progetto, la spec no. L'Acceptance Auditor vede tutto: diff, story e documenti di contesto. Guardate cosa tornano. L'Acceptance Auditor dice: spec soddisfatta, criteri verificati, task tutti spuntati. L'Edge Case Hunter, che la spec non ce l'ha ma il progetto sì, è andato a leggersi l'architettura e ha trovato cosa c'è dentro quel campo: per le riunioni ricorrenti non è l'id di quella riunione, è l'id della serie. Quindi quella riga non libera una sala: cancella la serie intera. Tutte le occorrenze, passate e future, dal calendario di tutti i partecipanti. Su Exchange non si annulla. E le ricorrenti sono il settanta per cento delle prenotazioni di questo sistema.", "notes": ["Non un revisore: tre, in parallelo, con contesti asimmetrici", "Blind Hunter: solo il diff. Edge Case: diff + progetto. Auditor: tutto", "L'asimmetria è progettata, non un caso", "L'Auditor approva e l'Edge Case Hunter trova il buco: entrambi hanno ragione", "Rallentare qui: devono leggere le due risposte e sentire il danno", "Il danno è concreto: il martedì allo stand-up non si presenta nessuno", "Non dire «l'AI ha trovato il bug»: l'ha trovato un contesto diverso"]}
+    {"title": "Demo — tre reviewer, tre contesti", "script": "E arriviamo al motivo per cui vi ho tenuto qui. Faccio partire la code review, in una sessione nuova. E qui BMAD fa una cosa che non mi aspettavo: non manda un revisore, ne manda tre in parallelo, e gli dà apposta contesti diversi. Il Blind Hunter vede solo il diff, niente spec e niente progetto. L'Edge Case Hunter vede il diff e può leggere il progetto, la spec no. L'Acceptance Auditor vede tutto: diff, story e documenti di contesto. Guardate cosa tornano. L'Acceptance Auditor dice: spec soddisfatta, criteri verificati, task tutti spuntati. L'Edge Case Hunter, che la spec non ce l'ha ma il progetto sì, è andato a leggersi l'architettura. E ha trovato che quel titolo lì non si può stampare così: il display è un cartello appeso in corridoio, una riunione su Outlook può essere marcata privata, e dal 2022 c'è una classe che per quelle scrive «Riunione riservata» al posto del titolo. Quella classe non è stata usata. Quindi alle nove e quaranta, sullo schermo davanti alla sala, compare il titolo vero di una riunione privata. E in corridoio ci passa chiunque.", "notes": ["Non un revisore: tre, in parallelo, con contesti asimmetrici", "Blind Hunter: solo il diff. Edge Case: diff + progetto. Auditor: tutto", "L'asimmetria è progettata, non un caso", "L'Auditor approva e l'Edge Case Hunter trova il buco: entrambi hanno ragione", "Rallentare qui: devono leggere le due risposte e sentire il danno", "Il danno si vede alla slide dopo, in due righe: non anticiparlo troppo", "Non dire «l'AI ha trovato il bug»: l'ha trovato un contesto diverso"]}
     </script>
   </div>
 
@@ -2485,33 +2489,33 @@ body.editing [contenteditable="true"]:focus {
       <div class="term-body"><span class="term-ag">💻 Code review completa. Findings scritti in § Review Findings della story.</span>
 <span class="term-ag">   <span class="sev sev-decision">decision-needed 1</span><span class="sev sev-patch">patch 2</span><span class="sev sev-defer">defer 1</span><span class="sev sev-dismiss">dismiss 3</span></span>
 
-<span class="term-ag">- [ ] <span class="term-code">[Review][Patch]</span> il rilascio opera sulla serie, non sull’occorrenza</span>
-<span class="term-ag">      <span class="term-file">[LiberazioneService.java:57]</span></span>
-<span class="term-del">-   outlook.annulla(prenotazione.idEventoGraph());</span>
-<span class="term-add">+   outlook.rilasciaSala(prenotazione);</span>
+<span class="term-ag">- [ ] <span class="term-code">[Review][Patch]</span> il display espone il titolo delle riunioni private</span>
+<span class="term-ag">      <span class="term-file">[LiberazioneService.java:66]</span></span>
+<span class="term-del">-   "Libera — nessun check-in per " + prenotazione.titolo()</span>
+<span class="term-add">+   TestoDisplay.rigaLibera(prenotazione)</span>
+
+<span class="term-dim">   Sullo schermo in corridoio, alle 9:40:</span>
+<span class="term-del">-   Libera — nessun check-in per «Colloquio di uscita — Marco Rossi»</span>
+<span class="term-add">+   Libera — nessun check-in per «Riunione riservata»</span>
 
 <span class="term-user">I test erano verdi e l’hai scritta tu. Come ti è sfuggito?</span>
 
-<span class="term-ag">💻 Verificavo <span class="term-code">AC3</span>: «la sala non risulta più occupata su Outlook».</span>
-<span class="term-ag">   La DELETE lo fa. E il metodo l’ho riusato perché me lo dice il progetto:</span>
-<span class="term-ag">   D2, verso Graph si passa da lì. <span class="term-code">Quello che non ho letto è E4</span>,</span>
-<span class="term-ag">   sessanta righe più su nello stesso documento.</span>
+<span class="term-ag">💻 Verificavo <span class="term-code">AC3</span>: «il display dice che la sala è libera e perché».</span>
+<span class="term-ag">   Il testo lo dice. E l’ho scritto lì perché aggiungere un metodo a una</span>
+<span class="term-ag">   classe di formattazione per una stringa sola mi pareva sproporzionato.</span>
+<span class="term-ag">   <span class="term-code">Quella non era una classe di formattazione.</span></span>
 
 <span class="term-hl">   Corretto rispetto agli AC. Sbagliato rispetto al progetto.</span>
 
-<span class="term-ag">💻 <span class="term-code">[Decision]</span> Rilasciare fa partire una notifica di Outlook.</span>
-<span class="term-ag">   <span class="term-file">project-context.md</span> vieta le comunicazioni automatiche che nominano</span>
-<span class="term-ag">   una persona. Al limite della regola: <span class="term-code">decidi tu</span>.</span>
-
-<span class="term-hl olive">💻 Applicate. <span class="term-code">15 test verdi</span>, 4 nuovi, tutti su occorrenze. Story → <span class="term-code">done</span>.</span>
+<span class="term-hl olive">💻 Applicate. <span class="term-code">15 test verdi</span>, 4 nuovi, 3 su riunioni private. Story → <span class="term-code">done</span>.</span>
 </div>
     </div>
     <div class="term-take anim-4">
       <span class="tk-label">La tesi</span>
-      <span>Nella stessa review: <strong>spec soddisfatta</strong> e la serie cancellata. Non è una contraddizione, è la definizione del problema. E guardate il <strong>decision-needed</strong>: si ferma su <em>la regola che avete scritto voi sei slide fa</em>.</span>
+      <span>Nella stessa review: <strong>spec soddisfatta</strong> e un colloquio su uno schermo in corridoio. Non è una contraddizione, è la definizione del problema. E nessuno ha scritto codice sciatto: quella funzione <strong>sapeva una cosa</strong>, e il suo nome non lo diceva.</span>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — corretto per la story", "script": "Il triage non è una lista di gravità: sono quattro caselle. Una cosa da decidere insieme a me, due patch, una rinviata, tre buttate come rumore. E finiscono scritte dentro la story, con file e riga, non in una chat. Poi le faccio la domanda cattiva: i test erano verdi e l'hai scritta tu, come ti è sfuggito? La risposta è la cosa più istruttiva della giornata, e non è quella che vi aspettate. Stava verificando il criterio tre — la sala non risulta più occupata su Outlook — e la cancellazione lo ottiene. E il metodo l'ha riusato perché glielo dice l'architettura: verso Graph si passa da quel client, e il client si riusa invece di riscriverlo. Ha letto il capitolo giusto e ha fatto la cosa giusta. Quello che non ha letto è un altro capitolo dello stesso documento, sessanta righe più su. Notate cosa non è successo: nessuno ha scritto codice sciatto. Corretto rispetto ai criteri di accettazione, sbagliato rispetto al progetto. E l'ultima riga prima di chiudere: il decision-needed. Per rilasciare la sala Outlook manda una notifica, e la review si ferma perché quella notifica sfiora la regola che abbiamo scritto insieme sei slide fa. Non la prende da sola. Quella regola l'avete scritta voi, venti minuti prima, e adesso è quella che ferma lo strumento.", "notes": ["Il triage è in quattro caselle, non in severità: decision-needed, patch, defer, dismiss", "I findings finiscono scritti nella story, col percorso e la riga", "La domanda cattiva: come ti è sfuggito, visto che l'hai scritta tu", "La risposta chiave: ha riusato codice esistente perché glielo diceva il progetto", "Nessuno ha scritto codice sciatto: il difetto è di contesto, non di qualità", "Corretto per gli AC, sbagliato per il progetto: è la tesi del talk", "Il decision-needed richiama la regola della slide 28: è il cerchio che si chiude", "Senza review il bug esce il martedì mattina come «Outlook ha cancellato le riunioni»", "Le patch diventano quattro test, tutti su occorrenze: il buco si chiude"]}
+    {"title": "Demo — corretto per la story", "script": "Il triage non è una lista di gravità: sono quattro caselle. Una cosa da decidere insieme a me, due patch, una rinviata perché c'era già prima, tre buttate come rumore. E finiscono scritte dentro la story, con file e riga, non in una chat. Guardate le due righe in mezzo, che sono la cosa che vi porterete a casa: prima e dopo, sullo schermo in corridoio, alle nove e quaranta. Prima c'è scritto il titolo vero di un colloquio con nome e cognome. Dopo c'è scritto riunione riservata. Poi le faccio la domanda cattiva: i test erano verdi e l'hai scritta tu, come ti è sfuggito? La risposta è la cosa più istruttiva della giornata, e non è quella che vi aspettate. Stava verificando il criterio tre — il display dice che la sala è libera e perché — e il testo lo dice. E l'ha scritto lì perché aggiungere un metodo a una classe di formattazione per una stringa sola le sembrava sproporzionato. È un ragionamento che fate anche voi, ed è quasi sempre giusto. Solo che quella non era una classe di formattazione: era il posto dove stava un pezzo di conoscenza, e il nome non lo diceva. Corretto rispetto ai criteri di accettazione, sbagliato rispetto al progetto. E notate cosa non è successo: nessuno ha scritto codice sciatto.", "notes": ["Il triage è in quattro caselle, non in severità: decision-needed, patch, defer, dismiss", "Le due righe prima/dopo sono il centro della slide: farle leggere, non spiegarle", "La domanda cattiva: come ti è sfuggito, visto che l'hai scritta tu", "La risposta chiave: una decisione di stile ragionevole, non una svista", "«Quella non era una classe di formattazione» — dirla piano", "Nessuno ha scritto codice sciatto: il difetto è di contesto, non di qualità", "I test erano verdi onestamente: nessuna fixture è una riunione privata", "Senza review esce il primo giorno in cui una riunione privata non fa check-in", "Le patch diventano quattro test, tre su riunioni private: il buco si chiude"]}
     </script>
   </div>
 
@@ -2526,7 +2530,7 @@ body.editing [contenteditable="true"]:focus {
           <div class="pf-item" data-edit-key="s32-e2">Scrivere un tema invece di scegliere una voce: il menu esiste perché ogni voce è uno skill con un contesto suo</div>
           <div class="pf-item" data-edit-key="s32-e3">Approvare senza leggere l’artefatto: il checkpoint diventa un timbro</div>
           <div class="pf-item" data-edit-key="s32-e4">Correggere a voce e non nel documento: <strong>la correzione torna al giro dopo</strong></div>
-          <div class="pf-item" data-edit-key="s32-e12">Riusare un metodo che c’è già <strong>senza cercare perché era stato scritto così</strong></div>
+          <div class="pf-item" data-edit-key="s32-e12">Scrivere due righe invece di chiamare la funzione che c’era: <strong>il sapere sta dentro quella funzione</strong></div>
           <div class="pf-item" data-edit-key="s32-e5">Far girare la review nella stessa sessione che ha scritto il codice</div>
           <div class="pf-item" data-edit-key="s32-e6">Fermarsi al verdetto sugli AC: <strong>«spec soddisfatta» non vuol dire «codice giusto»</strong></div>
         </div>
@@ -2544,7 +2548,7 @@ body.editing [contenteditable="true"]:focus {
       </div>
     </div>
     <script type="application/json" class="slide-notes">
-    {"title": "Demo — pitfall e strategie", "script": "Riassumo quello che avete appena visto, perché è la parte che vi serve lunedì. A sinistra i modi di sprecare il framework: scrivere un tema invece di scegliere una voce, approvare senza leggere, correggere a voce, riusare un metodo senza cercare perché era stato scritto così, far girare la review nella stessa sessione che ha scritto il codice, e l'ultimo che avete appena visto in azione — fermarsi al verdetto sugli AC. A destra le contromisure. Se ne portate a casa una sola, prendete la terza: ogni correzione diventa una riga scritta, col motivo. È quella che trasforma il vostro tempo in memoria del progetto invece che in tempo perso. E se lavorate su qualcosa che esiste già, cioè tutti, guardate anche l'ultima: il primo giro non è scrivere codice, è documentare quello che c'è. Quello che non è scritto, per un agente non esiste — e a essere onesti, neanche per voi fra sei mesi.", "notes": ["Sei pitfall e sei contromisure, in parallelo", "Il pitfall del timbro è il più frequente in azienda", "Il quarto è quello della demo: riusare era giusto, non cercare il perché no", "L'ultimo pitfall è quello appena visto: spec soddisfatta non basta", "La correzione scritta è la regola che rende il setup migliore nel tempo", "L'ultima strategia è la più utile per chi lavora su brownfield: DP prima di tutto", "Se devi tagliare, questa slide è quella che il pubblico fotografa"]}
+    {"title": "Demo — pitfall e strategie", "script": "Riassumo quello che avete appena visto, perché è la parte che vi serve lunedì. A sinistra i modi di sprecare il framework: scrivere un tema invece di scegliere una voce, approvare senza leggere, correggere a voce, scrivere due righe invece di chiamare la funzione che c'era, far girare la review nella stessa sessione che ha scritto il codice, e l'ultimo che avete appena visto in azione — fermarsi al verdetto sugli AC. Sul quarto mi fermo un secondo, perché sembra un consiglio di stile e non lo è: quella funzione lì sapeva una cosa che chi la chiamava non era tenuto a sapere. Riscriverla a mano non è codice duplicato, è conoscenza buttata. A destra le contromisure. Se ne portate a casa una sola, prendete la terza: ogni correzione diventa una riga scritta, col motivo. È quella che trasforma il vostro tempo in memoria del progetto invece che in tempo perso. E se lavorate su qualcosa che esiste già, cioè tutti, guardate anche l'ultima: il primo giro non è scrivere codice, è documentare quello che c'è. Quello che non è scritto, per un agente non esiste — e a essere onesti, neanche per voi fra sei mesi.", "notes": ["Sei pitfall e sei contromisure, in parallelo", "Il pitfall del timbro è il più frequente in azienda", "Il quarto è quello della demo: non è stile, è conoscenza buttata", "L'ultimo pitfall è quello appena visto: spec soddisfatta non basta", "La correzione scritta è la regola che rende il setup migliore nel tempo", "L'ultima strategia è la più utile per chi lavora su brownfield: DP prima di tutto", "Se devi tagliare, questa slide è quella che il pubblico fotografa"]}
     </script>
   </div>
 
@@ -2940,7 +2944,7 @@ var editor = {
   // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
   // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
   // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v22',
+  storageKey: 'oltre-il-vibe-coding-edits-v23',
   fields: [],
 
   init: function() {
