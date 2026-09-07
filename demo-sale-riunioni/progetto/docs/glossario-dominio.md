@@ -6,7 +6,7 @@ Revisione umana: Giulio, 2026-08-27
 > Sta in `docs/`, che è il `project_knowledge` configurato in
 > `_bmad/bmm/config.yaml`. Gli agenti lo trovano da soli.
 
-Nove parole. Se una discussione si impantana, quasi sempre è perché due persone
+Undici parole. Se una discussione si impantana, quasi sempre è perché due persone
 usano una di queste in due modi diversi.
 
 ## Sala
@@ -26,7 +26,10 @@ stesso nome.
 ## Prenotazione
 
 L'associazione fra una sala, un intervallo di fasce contigue e la persona che l'ha
-richiesta. Ha uno stato, e lo stato è il cuore del dominio:
+richiesta. **Da noi è uno specchio**: l'originale è un evento sul calendario della
+sala, su Outlook. Noi lo copiamo per poterlo mostrare e contare.
+
+Ha uno stato, e lo stato è il cuore del dominio:
 
 ```mermaid
 stateDiagram-v2
@@ -46,6 +49,26 @@ comportamento virtuoso, `no_show` è il problema che stiamo misurando, `forzata`
 un'eccezione con un responsabile. Contarli insieme farebbe sparire l'unico numero
 che ci interessa.
 
+## Serie
+
+Una prenotazione ricorrente, così come la crea Outlook: una regola («ogni martedì
+alle 9:30») e non un appuntamento. Da sola non occupa nessuna fascia. Occupa
+attraverso le sue occorrenze.
+
+## Occorrenza
+
+La singola ripetizione di una serie. È quella che occupa la sala martedì 15 alle
+9:30, ed è quella che il display mostra.
+
+**Le occorrenze sono il 70% delle prenotazioni.** Quando qualcuno dice
+«prenotazione» in una riunione, nella maggioranza dei casi sta parlando di
+un'occorrenza — e le occorrenze si comportano diversamente dalle singole in due
+punti: hanno una serie alle spalle che sopravvive loro, e sul database condividono
+con la serie la chiave di sincronizzazione (`architecture.md` § E4).
+
+Non diciamo mai «ricorrenza» per intendere l'occorrenza: la ricorrenza è la
+regola, l'occorrenza è il singolo appuntamento.
+
 ## Check-in
 
 La conferma che qualcuno è davvero in sala. Si fa dall'inizio della prenotazione e
@@ -64,8 +87,11 @@ finita prima. Misuriamo il no-show perché è quello che possiamo osservare.
 ## Liberazione
 
 Il passaggio automatico da `attiva` a `no_show`, con la sala che torna prenotabile
-per le fasce residue. Non è una cancellazione: la prenotazione resta, con il suo
-stato, perché serve a contare.
+per le fasce residue — **anche su Outlook**, altrimenti l'abbiamo liberata solo
+per noi e chi cerca una sala dal calendario continua a vederla occupata.
+
+Non è una cancellazione: la nostra riga resta, con il suo stato, perché serve a
+contare.
 
 ## Disdetta
 
