@@ -26,14 +26,14 @@ In attesa. Rispondi con un numero, un codice o una descrizione.
 
 ---
 
-**giulio** — CR sulla 1.1.
+**giulio** — CR sulla 1.2.
 
 💻 `CR`. Sessione nuova: non riuso il ragionamento con cui l'ho implementata.
 
 Contesto raccolto:
 
-- diff — 7 file, `git diff main...HEAD`
-- spec — `1-1-ricerca-e-prenotazione-di-una-sala.md`
+- diff — 8 file, `git diff main...HEAD`
+- spec — `1-2-liberazione-automatica-della-sala.md`
 - context docs — `project-context.md`, `architecture.md`
 
 Modalità `full` (c'è la spec). Tre reviewer in parallelo, e **ricevono contesto
@@ -56,79 +56,92 @@ Findings scritti nella sezione **Review Findings** della story.
 
 ---
 
-### `decision-needed` · fonte: `auditor`
-
-**AC1 non determina l'ordine a parità di capienza.**
-
-`RicercaDisponibilita.java:41` — `ORDER BY s.capienza ASC`
-
-L'AC1 dice «ordinate per capienza crescente». Con due sale da 8 posti l'ordine è
-quello che restituisce Postgres, che non è stabile fra due chiamate identiche.
-L'utente che ricarica vede le sale scambiate.
-
-Non lo patcho da solo: il criterio di spareggio è una scelta di prodotto.
-
-1. Nome della sala (alfabetico) — prevedibile, ignora dove sei
-2. Piano dell'utente prima — utile, ma serve il piano nel profilo
-3. Lasciare indeterminato e togliere «ordinate» dall'AC1
-
----
-
 ### `patch` · fonte: `blind+edge`
 
-**La ricerca enumera per esclusione: `no_show` continua a occupare la sala.**
+**Il rilascio opera sulla serie, non sull'occorrenza.**
 
-`RicercaDisponibilita.java:34`
+`LiberazioneService.java:57`
 
 ```diff
--   AND p.stato <> 'disdetta'
-+   AND p.stato = 'attiva'
+-   outlook.annulla(prenotazione.idEventoGraph());
++   outlook.rilasciaSala(prenotazione);
 ```
 
-Il **Blind Hunter**, che vede solo il diff, l'ha segnalato come forma fragile:
-un predicato per esclusione resta corretto solo finché nessuno aggiunge uno
-stato.
+Il **Blind Hunter**, che vede solo il diff, l'ha segnalato come forma sospetta:
+un identificativo che arriva da una riga di database e finisce dritto in una
+`DELETE`, senza che nessuno guardi di che tipo sia quella riga.
 
 L'**Edge Case Hunter**, che la spec non ce l'ha ma il progetto sì, è andato a
-leggere e ha trovato che lo stato aggiunto c'è già: `architecture.md` § D4
-elenca `attiva | disdetta | no_show`, e `StatoPrenotazione` lo ha nell'enum.
+leggere cosa c'è dentro quel campo. `architecture.md` § E4:
 
-Conseguenza: una prenotazione decaduta per no-show passa il filtro e **continua a
-occupare la sala**. È la funzionalità per cui il progetto esiste, nella query
-principale.
+| `tipo` | cosa c'è in `id_evento_graph` |
+|---|---|
+| `SINGOLA` | l'id dell'evento |
+| `SERIE` | l'id della serie |
+| `OCCORRENZA` | **l'id della serie** |
 
-L'**Acceptance Auditor** non l'ha segnalato, e ha ragione lui: rispetto agli AC
-della 1.1 quel predicato è corretto.
+Stessa cosa detta dallo schema (`V3__sincronizzazione.sql`, indice unico su
+`(id_evento_graph, inizio)`) e dal commento in `MappaturaEventoGraph`.
+
+Conseguenza: la prima occorrenza non usata di una serie fa partire una `DELETE`
+sull'id della serie. **Sparisce la serie intera** — tutte le occorrenze, passate e
+future, dai calendari di tutti i partecipanti. Su Exchange non si annulla.
+
+Le occorrenze sono il 70% delle prenotazioni di questo sistema.
+
+L'**Acceptance Auditor** non l'ha segnalato, e ha ragione lui: rispetto ad AC3 —
+«la sala non risulta più occupata su Outlook» — quel codice fa esattamente quello
+che c'è scritto.
 
 ---
 
-### `patch` · fonte: `blind+edge`
+### `decision-needed` · fonte: `edge+auditor`
 
-**La traduzione dell'errore è troppo larga.**
+**Rilasciare la sala fa partire una notifica che sfiora una regola di prodotto.**
 
-`PrenotazioneService.java:78`
+`PrenotazioneOutlookClient.java:71`
 
-```java
-} catch (DataIntegrityViolationException e) {
-    throw new SalaGiaOccupataException(salaId, periodo);
-}
-```
+Togliere la sala da un evento fa mandare a Exchange un messaggio all'organizzatore:
+«la sala ha rifiutato l'invito». Non è sopprimibile, non la mandiamo noi.
 
-Qualunque vincolo violato diventa «sala occupata». `architecture.md` § D3 lo
-vieta esplicitamente: «non si intercetta genericamente `DataIntegrityViolation`:
-si verifica il nome del vincolo».
+`project-context.md` § Regole di prodotto: *nessuna comunicazione automatica che
+nomini una persona*. Questa non nomina nessuno, ma arriva a una persona sola e
+per un motivo che la riguarda.
 
-Fix: controllare `prenotazione_no_overlap`, rilanciare il resto.
+Non lo decido io: è dove passa il confine di quella regola, e il confine l'hai
+tirato tu.
+
+1. Si rilascia, e la notifica si accetta
+2. Si marca `no_show` solo da noi, senza toccare Outlook
+3. Si rilascia e si prova a sopprimere la notifica (non risulta possibile con i
+   permessi che abbiamo)
+
+---
+
+### `patch` · fonte: `blind`
+
+**La scrittura su Graph viene prima del cambio di stato.**
+
+`LiberazioneService.java:55`
+
+Se il commit fallisce dopo una scrittura andata a buon fine, la sala risulta
+rilasciata su Outlook e ancora `attiva` da noi. Il giro dopo il job ci riprova
+sopra: due scritture per la stessa prenotazione, contro AC4.
+
+Fix: invertire le due righe.
 
 ---
 
 ### `defer` · fonte: `edge`
 
-**`PrenotazioneController` non mappa il timeout del database.**
+**Non esiste una sola fixture di tipo `OCCORRENZA` in tutta la suite.**
 
-`PrenotazioneController.java:52` — mappa 409 e 422, ogni altra eccezione esce
-come 500 senza corpo. Pre-esistente allo scaffold, non introdotto da questa
-story. Registrato in `deferred-work.md`.
+Tutte le prenotazioni di test sono singole: le fixture sono del 2022 e le serie
+sono arrivate nel 2024. Pre-esistente a questa story — `architecture.md`
+§ Strategia di test lo dichiara già come il buco più grosso.
+
+È anche il motivo per cui il primo finding è arrivato fino a qui invece di essere
+un test rosso ieri. Registrato in `deferred-work.md`.
 
 ---
 
@@ -136,22 +149,31 @@ story. Registrato in `deferred-work.md`.
 
 Senza contesto sono ragionevoli, col contesto no:
 
-- «manca la validazione null su `salaId`» — c'è, `@NotNull` sul DTO a monte
-- «la query non ha un indice sul filtro temporale» — `V1__sale_e_prenotazioni.sql`
-  crea l'indice GiST col vincolo di esclusione
-- «4 ore è un magic number» — è l'AC4, con la costante `DURATA_MASSIMA`
+- «`Clock` iniettato senza motivo» — serve a rendere testabile la finestra dei 10
+  minuti
+- «10 minuti è un magic number» — è l'AC1, con la costante `ATTESA_CHECK_IN`
+- «manca il controllo di null su `idEventoGraph`» — la colonna è `NOT NULL` dal 2022
 
 Il Blind Hunter costa tre falsi positivi. Li paga volentieri: è lo stesso
 reviewer che ha aperto il finding grosso.
 
 ---
 
-**giulio** — Il secondo è grosso. Come ti è sfuggito mentre implementavi?
+**giulio** — Il primo è grosso. Come ti è sfuggito mentre implementavi?
 
-💻 Verificavo `AC1`: «solo le sale libere». Il predicato lo fa.
+💻 Verificavo `AC3`: «la sala non risulta più occupata su Outlook». La `DELETE`
+lo ottiene.
 
-I test della 1.1 non seminano `no_show` — quello stato nasce nella 1.2. Con solo
-prenotazioni `attiva` nel database i due filtri danno lo stesso risultato.
+E il metodo l'ho riusato perché me lo dice il progetto: `architecture.md` § D2
+dice che ogni scrittura verso Graph passa da `PrenotazioneOutlookClient` e che il
+client si riusa, non si riscrive. L'ho letto e l'ho fatto.
+
+Quello che non ho letto è il capitolo E4, sessanta righe più su nello stesso
+documento, che dice cosa contiene il campo che stavo passando.
+
+I test erano verdi, e lo erano onestamente: nella suite non esiste una fixture di
+tipo `OCCORRENZA`. Con sole prenotazioni singole i due percorsi fanno la stessa
+cosa.
 
 Corretto rispetto agli AC. Sbagliato rispetto al progetto.
 
@@ -159,19 +181,29 @@ Corretto rispetto agli AC. Sbagliato rispetto al progetto.
 
 **giulio** — E se non avessimo fatto la review?
 
-💻 Il difetto sarebbe emerso nella 1.2 come «la liberazione non funziona».
-Avremmo cercato nel job, che era corretto. Il difetto stava nella query della
-story precedente, già approvata e chiusa.
+💻 Sarebbe uscito il martedì mattina. Una serie che nessuno usa più viene
+liberata alle 9:40, e insieme all'occorrenza sparisce la ricorrenza: allo
+stand-up della settimana dopo non si presenta nessuno, perché l'invito non c'è
+più nel calendario di nessuno.
+
+Nessuno lo collegherebbe a noi. La segnalazione arriverebbe come «Outlook ha
+cancellato le riunioni», e il codice da cui parte è un job schedulato che gira
+di notte su un'altra funzionalità.
+
+E non si torna indietro: gli eventi cancellati su Exchange non si recuperano da
+qui.
 
 ---
 
-**giulio** — Sul `decision-needed` prendi l'opzione 1, nome della sala. Non
-abbiamo il piano nel profilo e non voglio aprire quel fronte adesso.
+**giulio** — Sul `decision-needed` prendi la 1. La notifica riguarda la sala, non
+la persona, e senza quella l'organizzatore scopre di non avere più la sala
+entrando in riunione.
 
-💻 Registrato. `ORDER BY s.capienza ASC, s.nome ASC`. L'item passa da
-`decision-needed` a `patch`.
+💻 Registrato nella story, col motivo e con l'alternativa scartata: la 2
+renderebbe la liberazione invisibile a chi cerca una sala dal calendario, cioè
+quasi tutti. L'item passa da `decision-needed` a `patch`.
 
-**Come vuoi gestire le 3 patch?**
+**Come vuoi gestire le 2 patch?**
 
 1. **Applicale tutte** — le sistemo adesso, senza conferma una per una
 2. **Lasciale come action item** — sono già scritte nella story
@@ -183,28 +215,30 @@ abbiamo il piano nel profilo e non voglio aprire quel fronte adesso.
 
 💻 Applicate.
 
-- `RicercaDisponibilita.java:34` — `stato = 'attiva'`
-- `RicercaDisponibilita.java:41` — spareggio su `s.nome`
-- `PrenotazioneService.java:78` — verifica del nome del vincolo
+- `LiberazioneService.java:57` — `outlook.rilasciaSala(prenotazione)`
+- `LiberazioneService.java:55` — stato prima, scrittura su Graph dopo
+- `PrenotazioneOutlookClient` — aggiunto `rilasciaSala()`, che sulle occorrenze
+  risolve l'id vero prima di scrivere
 
-Test nuovi: 3.
+Test nuovi: 4, e tutti e quattro partono da una prenotazione di tipo
+`OCCORRENZA`.
 
-- `ricercaEscludeSalaConPrenotazioneNoShow` — semina una `no_show`, verifica che
-  la sala risulti libera
-- `ordinamentoStabileAParitaDiCapienza` — due chiamate, stesso ordine
-- `vincoloDiversoNonDiventaSalaOccupata` — viola un `CHECK`, si aspetta l'errore
-  vero
+- `rilascioSuOccorrenzaNonToccaLaSerie` — verifica che la chiamata a Graph non
+  usi l'id della serie
+- `rilascioSuOccorrenzaRisolveIdIstanza`
+- `rilascioSuSingolaRestaInvariato` — la strada vecchia non cambia comportamento
+- `statoCambiaPrimaDellaScrittura` — commit fallito, nessuna doppia scrittura
 
-`./mvnw verify` — **19 test, 0 failure** (16 preesistenti invariati + 3 nuovi).
+`./mvnw verify` — **15 test, 0 failure** (11 preesistenti invariati + 4 nuovi).
 
 Patch spuntate nella story. Status → `done`.
 
-✅ `sprint-status.yaml` aggiornato: `1-1-ricerca-e-prenotazione` → `done`.
+✅ `sprint-status.yaml` aggiornato: `1-2-liberazione-automatica-della-sala` → `done`.
 
 > **Review Complete!**
 >
 > **Story Status:** `done`
-> **Issues Fixed:** 3
+> **Issues Fixed:** 2
 > **Action Items Created:** 0
 > **Deferred:** 1
 > **Dismissed:** 3
@@ -226,17 +260,20 @@ Patch spuntate nella story. Status → `done`.
 - **I tre reviewer ricevono contesto diverso apposta.** È la riga che fa capire
   tutto: l'asimmetria è progettata, non un caso
 - **Il verdetto contraddittorio**: l'Acceptance Auditor dice «spec soddisfatta» e
-  nella stessa review escono due patch. Non è un bug del tool, è la definizione
-  del problema che il talk racconta
+  nella stessa review esce il finding che cancella le riunioni di tutti. Non è un
+  bug del tool, è la definizione del problema che il talk racconta
 - Il finding grosso è `blind+edge`, **due layer deduplicati**: uno vede la forma
-  fragile, l'altro va a leggere il progetto e trova che lo stato esiste già
+  sospetta, l'altro va a leggere il progetto e trova cosa c'e' dentro quel campo
+- **La risposta a «come ti e' sfuggito»**: il dev ha riusato un metodo che
+  c'era gia', perche' glielo diceva l'architettura. Riusare era la cosa giusta.
+  Il difetto non e' nel codice scritto, e' nel contesto mancante
 - **Il triage è in quattro caselle**, non in severità: `decision-needed`,
   `patch`, `defer`, `dismiss`. Il `decision-needed` è quello che si ferma e
-  aspetta te, e non è un caso che sia l'unico che il tool non tocca da solo
+  aspetta te, e qui si ferma **su una regola che hai scritto tu sei slide prima**
 - I tre `dismiss` del Blind Hunter: **il costo del contesto zero**, pagato
   volentieri
-- La risposta a «come ti è sfuggito» — spiega perché il checkpoint esiste
-- Le patch chiuse diventano tre test: la correzione è permanente
+- Le patch chiuse diventano quattro test, tutti su occorrenze: la correzione è
+  permanente e chiude anche il buco che l'aveva lasciata passare
 
 > **Se hai tempo per una sola chat, usa questa.** È l'unica che mostra il processo
 > mentre intercetta qualcosa, che è la tesi del talk.
