@@ -96,7 +96,7 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 | 18-22 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
 | 23 | i cinque insieme, e la catena di artefatti che si passano |
 | 24 | il diagramma del loop coi checkpoint umani |
-| 25 | il caso della demo: un servizio del 2022, il 41%, il 70% di ricorrenze |
+| 25 | il caso della demo: un servizio del 2022, il 41%, i sei display in corridoio |
 | 26-32 | **la demo**, sette momenti: menu · checkpoint · **contesto** · story · artefatti · review · verdetto |
 | 33 | pitfall e strategie, la slide che il pubblico fotografa |
 
@@ -259,14 +259,14 @@ salienti sono già selezionati.
 
 | Slide | Momento | Cosa deve arrivare |
 |---|---|---|
-| 25 | il caso | **brownfield**: il servizio c'è dal 2022, arriva una feature. Il 41% e il 70% |
+| 25 | il caso | **brownfield**: il servizio c'è dal 2022, arriva una feature. Il 41% e i sei display |
 | 26 | attivazione e menu | tre colonne, e la terza è **lo skill che parte**: `CB` → `bmad-product-brief` |
-| 27 | la feature rimandata al problema | «quella che mi hai dato non è un problema, è già una soluzione». Poi il bivio, e il 70% che nessuno cercava |
+| 27 | la feature rimandata al problema | «quella che mi hai dato non è un problema, è già una soluzione». Poi il bivio, e la decisione di **scrivere fuori dal servizio** |
 | 28 | la decisione sale nel contesto | la leva punitiva tolta col motivo scritto, poi party mode: la regola esce dal brief ed entra in `project-context.md` |
-| 29 | la story è un contratto | AC numerati, task che citano l'AC — e il vincolo E4 piantato nelle Dev Notes |
-| 30 | cosa resta dopo | `DS`, il **riuso del client** seminato di sfuggita, la definition of done, lo stato in `sprint-status.yaml` |
-| 31 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova la serie cancellata |
-| 32 | corretto per la story | il triage in quattro bucket, il diff, «come ti è sfuggito?» e il decision-needed che richiama la 28 |
+| 29 | la story è un contratto | AC numerati, task che citano l'AC — e il vincolo E3 sul display piantato nelle Dev Notes |
+| 30 | cosa resta dopo | `DS`, il testo del display **scritto a mano** e seminato di sfuggita, la definition of done, lo stato in `sprint-status.yaml` |
+| 31 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova il titolo di un colloquio sullo schermo |
+| 32 | corretto per la story | il triage in quattro bucket, il **prima/dopo sullo schermo in corridoio**, e «come ti è sfuggito?» |
 | 33 | pitfall e strategie | sei errori e sei contromisure, in parallelo |
 
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
@@ -279,10 +279,10 @@ versione precedente spendeva quattro slide sulla fase di analisi e zero su `crea
 mezzo.
 
 **Se devi tagliare**: tieni 29, 31, 32 e 33. La 29 sembra la più sacrificabile e non lo è:
-è quella che pianta il vincolo sulle occorrenze, e senza di lei la 31 non ha niente da
+è quella che pianta il vincolo sul display, e senza di lei la 31 non ha niente da
 raccogliere. Le 26, 27, 28 e 30 si raccontano a voce in un minuto — la 28 è la prima a
 cadere, e quello che perdi è tre cose: la prova nei `persistent_facts`, il ponte verso il
-capitolo 04, e il richiamo del decision-needed alla 32.
+capitolo 04, e la riga di Winston che nomina i display.
 
 **Il caso è brownfield ed è una scelta.** La versione precedente costruiva da zero un
 sistema di prenotazione, e in sala faceva partire la domanda sbagliata («ma perché non usate
@@ -290,6 +290,13 @@ Outlook?»). Adesso le sale si prenotano su Outlook come sempre, il servizio esi
 quello che si aggiunge è una feature — cioè la situazione in cui è il pubblico lunedì
 mattina. Ne guadagna anche il capitolo 04: un `project-context.md` solo basta molto meno
 quando il codice ha quattro anni e nessun autore reperibile.
+
+**E il difetto che la review trova non ha premesse.** Alle 9:40, sullo schermo appeso in
+corridoio, compare il titolo vero di un colloquio invece di «Riunione riservata». Due righe,
+prima e dopo, e non c'è niente da spiegare a nessuno. È il criterio con cui il caso è stato
+scelto, dopo che una versione precedente — costruita su come Outlook rappresenta le riunioni
+ricorrenti — è stata buttata proprio perché per far capire il danno serviva mezzo minuto di
+premessa.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
 classe **`.term-hl`** per la riga su cui deve cadere l'occhio (terracotta) o `.term-hl.olive`

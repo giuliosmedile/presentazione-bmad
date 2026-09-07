@@ -134,7 +134,7 @@ decorative, 2.35, identiche al deck di riferimento.
 ### 9. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v22`), altrimenti vecchi testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v23`), altrimenti vecchi testi
 salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
 
 ---
@@ -258,11 +258,17 @@ ovvio dal titolo. Trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
 - **Il caso è brownfield, e non è un dettaglio di colore.** Il servizio esiste dal 2022, le
   sale si prenotano su Outlook, BMAD entra su un codice che ha gia quattro anni. Se tocchi
   il materiale della demo, questa premessa regge tutto: gli artefatti di planning sono
-  *ricostruiti leggendo il codice*, e il bug finale nasce dal riuso corretto di un metodo
-  scritto nel 2023. Il pezzo che non si tocca e' `architecture.md` § E4 — per le occorrenze
-  di serie `id_evento_graph` contiene l'id della serie — perche' e' piantato in tre posti
-  indipendenti (architettura, migrazione `V3`, commento in `MappaturaEventoGraph`) ed e'
-  quello che la code review raccoglie alla slide 32
+  *ricostruiti leggendo il codice*, e il difetto finale nasce da due righe scritte a mano
+  invece di una chiamata a una funzione che c'era gia
+- **Il vincolo che non si tocca e' `architecture.md` § E3**: il display e' un cartello
+  appeso in corridoio, e dal 2022 esiste `TestoDisplay` che per le riunioni marcate
+  `privato` scrive «Riunione riservata» invece del titolo. E' piantato in tre posti
+  indipendenti (architettura, migrazione `V3__eventi_privati.sql`, commento in
+  `TestoDisplay.java`) ed e' quello che la code review raccoglie alla slide 32.
+  **Il criterio con cui e' stato scelto**: zero premesse. Un caso che ha bisogno di una
+  frase di spiegazione per far capire il danno e' un caso sbagliato — il precedente,
+  sulle ricorrenze di Outlook, e' stato buttato per questo. Se un giorno lo cambi ancora,
+  il test e' quello: il danno si deve vedere in due righe sullo schermo
 - Quando un contenuto non sta in una slide, se ne fanno due invece di comprimere
 - Verifica misurando, non a occhio: le regressioni di layout qui si vedono solo coi numeri
 
