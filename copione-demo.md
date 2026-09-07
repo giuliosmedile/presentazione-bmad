@@ -12,10 +12,10 @@ Il dominio non va spiegato — in sala lo capiscono prima che tu finisca la fras
 tutto il tempo se lo prende il processo invece del contesto.
 
 **Non è greenfield, ed è la prima cosa da dire.** Il servizio esiste dal 2022: legge i
-calendari delle sale da Outlook, accende i display fuori dalle porte, tiene la pagina «sala
-libera adesso». Le sale si prenotano su Outlook e continueranno a prenotarsi lì. Quello che
-arriva è una feature nuova su un codice che ha quattro anni e nessun autore reperibile —
-cioè la situazione in cui è il pubblico lunedì mattina.
+calendari delle sale da Outlook, accende i sei display fuori dalle porte, tiene la pagina
+«sala libera adesso». Le sale si prenotano su Outlook e continueranno a prenotarsi lì.
+Quello che arriva è una feature nuova su un codice che ha quattro anni e nessun autore
+reperibile — cioè la situazione in cui è il pubblico lunedì mattina.
 
 **La demo percorre il loop della slide 24 invece di raccontarlo.** Nove slide in ordine di
 tempo: parli a un agente, fissi quello che avete deciso, produci una story, la implementi,
@@ -41,8 +41,8 @@ rimanda indietro una feature invece di partire a scriverla, vedono una decisione
 voce finire in un file che tutti gli agenti leggono, e vedono dove finisce il lavoro quando
 chiudi il portatile.
 
-La seconda (31-32) è il motivo per cui la demo esiste. È il processo che becca un bug che
-nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì dimostri che
+La seconda (31-32) è il motivo per cui la demo esiste. È il processo che becca un difetto
+che nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì dimostri che
 l'ordine serve a qualcosa.
 
 **Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 29 non
@@ -53,15 +53,19 @@ fortuna.
 
 ## Prima di partire
 
-Due cose da tenere a mente per tutta la demo.
+Tre cose da tenere a mente per tutta la demo.
 
 **Non stai facendo vedere un tool che scrive codice.** Quello lo fanno già tutti. Stai
 facendo vedere un processo che si accorge di qualcosa. Ogni volta che hai un dubbio su cosa
 dire, torna lì.
 
-**E il bug non nasce da codice scritto male.** Nasce da codice riusato bene senza sapere
-perché era stato scritto così. Se il pubblico esce pensando «l'agente ha sbagliato», hai
-perso il punto: l'agente ha fatto quello che avrebbero fatto loro.
+**Il difetto non nasce da codice scritto male.** Nasce da due righe scritte a mano invece
+che da una chiamata a una funzione che c'era già — con una motivazione che darebbe chiunque.
+Se il pubblico esce pensando «l'agente ha sbagliato», hai perso il punto.
+
+**Non usare mai parole che il pubblico deve imparare.** Non serve nessun gergo: c'è uno
+schermo appeso in corridoio, e ci finisce sopra il titolo di un colloquio. Se ti senti in
+procinto di spiegare un meccanismo, fermati — questa demo non ne ha uno da spiegare.
 
 Poi dillo subito che il caso è ricostruito. Costa mezza frase e ti toglie di mezzo l'unica
 obiezione che potrebbe farti perdere la sala a metà. Il caso è finto; **le meccaniche che
@@ -72,14 +76,15 @@ nostro.
 
 ## Slide 25 — Il caso
 
-*Sullo schermo: tre numeri grandi. 2022, 41%, 70%.*
+*Sullo schermo: tre numeri grandi. 2022, 41%, 6.*
 
 > Un giro completo su un caso piccolo. Sale riunioni: il dominio non ve lo devo spiegare.
 >
 > Ma attenzione a cosa **non** stiamo facendo. Non costruiamo un sistema di prenotazione: le
 > sale si prenotano su Outlook, come da voi. Quello che esiste è un servizio interno, in
-> piedi dal 2022, che legge i calendari delle sale e accende i display fuori dalle porte.
-> Quattro anni, due sviluppatori part-time, nessuno degli autori originali ancora in azienda.
+> piedi dal 2022, che legge i calendari delle sale, accende i sei display fuori dalle porte
+> e manda un report mensile al facility. Quattro anni, due sviluppatori part-time, nessuno
+> degli autori originali ancora in azienda.
 >
 > Adesso arriva una richiesta: se nessuno fa check-in entro dieci minuti, la sala torna
 > libera. **Una feature nuova su un codice che c'è già.** Che è la situazione in cui siete
@@ -88,14 +93,15 @@ nostro.
 > Il quarantuno per cento è il numero che giustifica il progetto: tre giri a piedi, in giorni
 > diversi, quattro sale su dieci risultavano prenotate e dentro non c'era nessuno.
 >
-> Il settanta per cento è quello che ve lo farà ricordare. Tenetelo lì.
+> Il sei — quello che sembra il numero inutile dei tre — è quello che ve lo farà ricordare.
+> Sei schermi appesi nei corridoi, uno per sala, senza login. Li legge chiunque passi.
 >
 > Il caso è ricostruito, non è il log di una sessione vera. Le meccaniche che vedete — i
 > menu, la review, gli stati — sono quelle vere, prese da un'installazione che gira su un
 > progetto nostro.
 
-**Non spiegare adesso perché conta il 70%.** Si paga da solo alla 31, e se lo anticipi qui
-la 31 diventa una conferma invece che una scoperta.
+**Non spiegare adesso perché contano i display.** Si pagano da soli alla 31, e se lo
+anticipi qui la 31 diventa una conferma invece che una scoperta.
 
 ---
 
@@ -125,7 +131,7 @@ altri agenti leggeranno.
 
 ## Slide 27 — Ti ho chiesto una feature. Lei chiede il problema
 
-*Sullo schermo: il bivio in mezzo, e in fondo il blocco verde oliva col 70%.*
+*Sullo schermo: il bivio in mezzo, e in fondo il blocco verde oliva.*
 
 Venti secondi in più qui.
 
@@ -148,45 +154,49 @@ Venti secondi in più qui.
 >
 > *[indica il blocco verde]*
 >
-> Ma la riga che conta è l'ultima, ed è un dato che nessuno stava cercando. Il settanta per
-> cento delle prenotazioni sono occorrenze di serie ricorrenti. Non stiamo liberando
-> riunioni: stiamo liberando **ripetizioni di riunioni** decise una volta e mai più guardate.
+> E poi fa una cosa che non le avevo chiesto. Mi dice che perché la funzione serva a
+> qualcosa, la sala deve tornare libera **anche su Outlook** — quasi tutti cercano una sala
+> dal calendario, e se la libero solo nel nostro database la vediamo libera noi e nessun
+> altro.
 >
-> Tenetevelo lì.
+> Ma questo vuol dire che da domani il servizio **smette di leggere e comincia a scrivere**.
+> Fino a oggi copiava calendari e li mostrava. Da domani mette le mani sul calendario delle
+> persone e sugli schermi appesi in corridoio.
+>
+> Non è un dettaglio tecnico: cambia il rischio di tutto il progetto. E infatti si ferma e me
+> lo chiede.
 
 ---
 
 ## Slide 28 — La decisione sale nel contesto
 
-*Sullo schermo: la rimozione in alto, poi party mode con due agenti, e in fondo il riquadro
+*Sullo schermo: la conferma in alto, poi party mode con due agenti, e in fondo il riquadro
 verde con la riga scritta in `project-context.md`.*
 
-**Due gesti in una slide.** Il primo è la correzione scritta; il secondo è la stessa
-correzione promossa a regola di tutti. Non correre sul secondo: è quello che torna alla 32.
+**È una slide corta ma non correrci sopra**, e in particolare non correre su Winston: è la
+riga che pianta tutto il finale.
 
-> Il brief è pronto, e dentro ci sono due leve per far scendere il numero: una mail al
-> responsabile dopo tre no-show, e una classifica dei reparti. I dati ci sono, la logica
-> funziona.
+> Decido: si scrive anche su Outlook. Altrimenti abbiamo liberato una sala che nessuno riesce
+> a prendere.
 >
-> Le dico di toglierle. Le toglie. Poi mi chiede perché — e dice anche perché me lo chiede:
-> *se la ragione resta qui dentro, al prossimo giro te le ripropongo.*
->
-> Glielo spiego: qui una misura pubblica sul singolo diventa una gara al contrario, e la
-> gente smette di prenotare col proprio nome. Prenotano col nome del collega, o non prenotano
-> e occupano la sala lo stesso. **Il primo effetto è che il quarantuno per cento smette di
-> essere misurabile** — cioè perdiamo il numero su cui si regge tutto il progetto.
->
-> Se lo scrive nel brief, col motivo per esteso.
->
-> E poi fa una cosa che non le ho chiesto: mi dice che il motivo l'ha scritto **nel brief**,
-> e che il brief descrive *questo* prodotto. Il prossimo documento non lo legge.
+> E Mary fa una cosa che non le ho chiesto. Mi dice che quella decisione l'ha scritta **nel
+> brief**, e che il brief descrive *questo* prodotto. Il prossimo documento non lo legge.
 >
 > Allora apro party mode e mi tiro dentro John e Winston insieme. Party mode non è una trovata
 > scenica: ognuno dei due è un subagente vero, con la sua testa. Se sono d'accordo, sono
 > d'accordo davvero.
 >
-> John decide il posto: `project-context.md`. Winston ci vede subito il riflesso tecnico —
-> niente endpoint che espone il conteggio per persona — e se lo porta in architettura.
+> John decide il posto: `project-context.md`. E insiste per scriverci accanto il motivo, non
+> solo la regola — un divieto senza motivo lo aggira il primo che ha una buona idea.
+>
+> *[rallenta]*
+>
+> Poi parla Winston, ed è la riga che vi chiedo di sentire. Dice: «scrivere fuori», qui, vuol
+> dire **due** superfici e non una. Il calendario delle persone, e i sei display appesi in
+> corridoio.
+>
+> E aggiunge una cosa che non gli ho chiesto: sui display il progetto ha già una regola, dal
+> 2022. Non l'ha scritta lui. Se l'è trovata leggendo il codice.
 >
 > *[indica la riga grigia in fondo]*
 >
@@ -196,8 +206,6 @@ correzione promossa a regola di tutti. Non correre sul secondo: è quello che to
 >
 > Quella regola dalla prossima attivazione ce l'hanno tutti, senza che io la ripeta. Anche
 > Amelia, che quando l'abbiamo decisa non era nemmeno nella stanza.
->
-> **Tenetela a mente, perché torna alla fine della demo da sola.**
 
 **Se qualcuno chiede se è vero**: sì, ed è verificabile. In
 `.claude/skills/bmad-agent-*/customize.toml` c'è la riga
@@ -238,11 +246,14 @@ mostri, e una di queste — `architecture.md` — è il file su cui poggia tutto
 > Non è un ticket con due righe. Criteri di accettazione numerati, e ogni task dice quale
 > criterio soddisfa. Le note tecniche citano la fonte: percorso del file e sezione.
 >
+> Guardate il criterio tre, perché è quello su cui gira tutto: **il display deve dire che la
+> sala è libera e per quale motivo.**
+>
 > *[indica l'ultima riga, e leggila piano]*
 >
-> Nel database c'è una colonna con l'identificativo dell'evento Outlook. Per le riunioni
-> **ricorrenti**, quella colonna non contiene l'id di quella riunione: contiene l'id della
-> **serie**.
+> Il display non è una schermata dell'applicazione: è un cartello appeso in corridoio. E una
+> riunione, su Outlook, può essere marcata **privata**. Per il testo che ci finisce sopra c'è
+> una classe apposta, e non si usa il titolo grezzo.
 >
 > Sta scritto nell'architettura del progetto. E non sta nei criteri di accettazione di questa
 > story.
@@ -251,15 +262,16 @@ mostri, e una di queste — `architecture.md` — è il file su cui poggia tutto
 
 **Se qualcuno chiede perché non è un criterio di accettazione**, la risposta è buona e vale
 la pena darla: perché non è un requisito. Un AC descrive cosa deve fare la story per essere
-accettata, e nessuno ha chiesto niente sulle serie. Un AC che dice «non cancellare la serie»
-sarebbe un vincolo di progetto travestito da requisito.
+accettata, e nessuno ha chiesto niente sulle riunioni private. Sarebbe un vincolo di
+progetto travestito da requisito — vale per tutto quello che il sistema mostra, non per
+questa story.
 
 ---
 
 ## Slide 30 — Cosa resta dopo
 
-*Sullo schermo: l'esecuzione di `DS`, il riuso del client, la definition of done, il
-passaggio di stato in fondo.*
+*Sullo schermo: l'esecuzione di `DS`, la riga del display scritta a mano, la definition of
+done, il passaggio di stato in fondo.*
 
 > `DS`, dev-story. Implementa un task per volta. Guardate come parla: task, criterio, file,
 > riga, test. Ogni riga è verificabile. Non è uno stile: nella configurazione dell'agente c'è
@@ -267,11 +279,14 @@ passaggio di stato in fondo.*
 >
 > *[indica il task 5, senza calcare]*
 >
-> Guardate il task cinque, perché fra due slide ci torniamo. Per rilasciare la sala su Outlook
-> **riusa un metodo che c'era già**, e lo fa perché glielo dice l'architettura: verso Graph si
-> passa da quel client, e il client si riusa invece di riscriverlo.
+> Guardate il task cinque, perché fra due slide ci torniamo. Deve scrivere la riga del
+> display, e la scrive lì dove sta lavorando: «Libera, nessun check-in per», più il titolo
+> della riunione.
 >
-> È la cosa giusta da fare. È quello che avreste fatto anche voi.
+> E dice anche perché non l'ha messa nella classe dei testi: quelli hanno una forma diversa,
+> e aggiungere un metodo per una stringa sola le sembrava sproporzionato.
+>
+> È un ragionamento onesto. È quello che avreste fatto anche voi.
 >
 > Alla fine passa una definition of done. Non decide lei quando ha finito: è una lista da
 > spuntare.
@@ -283,12 +298,10 @@ passaggio di stato in fondo.*
 > diffa, passa in review come qualunque altro file.
 >
 > Ultima riga: lo stato non è nella mia testa né nella vostra. Sta in `sprint-status.yaml`, e
-> a muoverlo è il workflow. Backlog, pronta per lo sviluppo, in lavorazione, in review,
-> chiusa.
+> a muoverlo è il workflow.
 
-**Il riuso del client va letto, non sottolineato.** Se lo annunci come indizio, il pubblico
-capisce che c'è una trappola e la 31 perde la sorpresa. Leggilo come una cosa normale, perché
-lo è.
+**Il task 5 va letto, non sottolineato.** Se lo annunci come indizio, il pubblico capisce
+che c'è una trappola e la 31 perde la sorpresa. Leggilo come una cosa normale, perché lo è.
 
 ---
 
@@ -313,63 +326,62 @@ Da qui rallenta.
 > soddisfatta**. Criteri verificati, task spuntati, perimetro rispettato.
 >
 > *[blocco arancione]* L'Edge Case Hunter, che la specifica non ce l'ha e il progetto sì, è
-> andato a leggersi l'architettura e ha trovato cosa c'è dentro quel campo. Per le riunioni
-> ricorrenti non è l'id di quella riunione: è l'id della serie.
+> andato a leggersi l'architettura. E ha trovato che quel titolo lì non si può stampare così:
+> il display è un cartello appeso in corridoio, una riunione su Outlook può essere marcata
+> privata, e dal 2022 c'è una classe che per quelle scrive «Riunione riservata» al posto del
+> titolo.
 >
-> Quindi quella riga non libera una sala. **Cancella la serie intera.** Tutte le occorrenze,
-> passate e future, dal calendario di tutti i partecipanti. E su Exchange non si annulla.
+> Quella classe non è stata usata.
 >
-> Le ricorrenti sono il settanta per cento delle prenotazioni di questo sistema.
+> Quindi alle nove e quaranta, sullo schermo davanti alla sala, compare il titolo vero di una
+> riunione privata. E in corridoio ci passa chiunque.
 
 *Fermati. Hanno appena visto due risposte opposte, e hanno ragione tutte e due.*
 
-**Se vuoi il colpo in più**, aggiungi una frase sola: *il martedì mattina allo stand-up non
-si presenta nessuno, perché l'invito non c'è più nel calendario di nessuno.* È il momento in
-cui anche chi non scrive codice sente il danno.
+**Non descrivere il danno più di così.** Alla slide dopo si vede scritto, e vedere le due
+righe fa più effetto di qualunque frase tu possa dire adesso.
 
 ---
 
 ## Slide 32 — Corretto per la story, sbagliato per il progetto
 
-*Sullo schermo: il triage in quattro caselle, il diff, la domanda, e il decision-needed.*
+*Sullo schermo: il triage in quattro caselle, il diff, il prima/dopo sullo schermo, la
+domanda.*
 
 > Il triage non è una lista di gravità: sono quattro caselle. Una cosa da decidere insieme a
 > me, due patch, una rinviata perché c'era già prima, tre buttate come rumore. E finiscono
 > scritte dentro la story, con file e riga, non in una chat.
 >
+> *[indica le due righe in mezzo, e lascia il silenzio]*
+>
+> Queste due righe sono quello che vi portate a casa. Cosa c'era scritto sullo schermo in
+> corridoio alle nove e quaranta, e cosa c'è scritto adesso.
+>
 > Domanda: i test erano verdi e l'hai scritta tu. Come ti è sfuggito?
 >
 > La risposta è la cosa più istruttiva della giornata, e non è quella che vi aspettate.
 >
-> Stava verificando il criterio tre — «la sala non risulta più occupata su Outlook» — e la
-> cancellazione lo ottiene. E il metodo l'ha riusato perché glielo dice l'architettura: verso
-> Graph si passa da quel client, e il client si riusa invece di riscriverlo.
+> Stava verificando il criterio tre — «il display dice che la sala è libera e perché» — e il
+> testo lo dice. E l'ha scritto lì perché aggiungere un metodo a una classe di formattazione
+> per una stringa sola le sembrava sproporzionato.
 >
-> **Ha letto il capitolo giusto e ha fatto la cosa giusta.** Quello che non ha letto è un
-> altro capitolo dello stesso documento, sessanta righe più su.
+> È un ragionamento che fate anche voi, ed è quasi sempre giusto. Solo che **quella non era
+> una classe di formattazione**: era il posto dove stava un pezzo di conoscenza, e il nome
+> non lo diceva.
 >
-> I test erano verdi onestamente: in tutta la suite non esiste una prenotazione ricorrente.
-> Le fixture sono del 2022, quando le serie non c'erano ancora.
+> I test erano verdi onestamente: in tutta la suite non esiste una riunione privata. Le
+> fixture sono del 2022, e su una riunione normale il metodo giusto e quello sbagliato
+> restituiscono la stessa identica stringa.
 >
 > *[indica la riga evidenziata]*
 >
 > Corretto rispetto ai criteri di accettazione. Sbagliato rispetto al progetto. E notate cosa
 > **non** è successo: nessuno ha scritto codice sciatto.
->
-> *[indica il decision-needed]*
->
-> Ultima cosa, ed è quella che mi ha sorpreso di più. Per rilasciare la sala, Outlook manda
-> una notifica all'organizzatore. E la review si ferma — perché quella notifica sfiora la
-> regola che abbiamo scritto insieme quattro slide fa.
->
-> Non la decide da sola. Aspetta me.
->
-> Quella regola l'ho scritta io, venti minuti prima, in una conversazione su tutt'altro. Ed è
-> quella che adesso ferma lo strumento.
 
-**Se qualcuno chiede cosa succede senza la review**: il bug esce il martedì mattina, e la
-segnalazione arriva come «Outlook ha cancellato le riunioni». Nessuno lo collega a un job
-schedulato che gira di notte su un'altra funzionalità.
+**Se qualcuno chiede cosa succede senza la review**: esce il primo giorno in cui una riunione
+privata non fa check-in — statisticamente entro la settimana. E non lo scopriamo noi: lo
+scopre qualcuno che passa in corridoio. Nel progetto era già andata così nel 2022, ed è per
+quello che quella classe esiste.
 
 ---
 
@@ -384,8 +396,9 @@ schedulato che gira di notte su un'altra funzionalità.
 > Approvare senza leggere: il checkpoint diventa un timbro. Peggio che non averlo, perché vi
 > dà l'impressione di aver controllato.
 >
-> Riusare un metodo che c'è già senza cercare perché era stato scritto così. L'avete appena
-> visto: riusare era la cosa giusta, non cercare il perché no.
+> Scrivere due righe invece di chiamare la funzione che c'era. Sembra un consiglio di stile e
+> non lo è: quella funzione **sapeva una cosa** che chi la chiamava non era tenuto a sapere.
+> Riscriverla a mano non è codice duplicato, è conoscenza buttata.
 >
 > Fermarsi al verdetto sui criteri di accettazione. «Spec soddisfatta» non vuol dire «codice
 > giusto», e avete appena visto perché.
@@ -408,23 +421,23 @@ schedulato che gira di notte su un'altra funzionalità.
 | 5 min | salti la 26 e la 30, le racconti a voce mentre passi |
 | 3 min | **solo 29, 31, 32**. Il caso lo riassumi in una frase entrando |
 
-Il taglio da non fare mai è la 32: senza quella, la 31 resta un bug trovato per fortuna.
+Il taglio da non fare mai è la 32: senza quella, la 31 resta un difetto trovato per fortuna.
 
 E **nella versione da 3 minuti la 29 resta**, anche se sembra la più sacrificabile: è quella
-che pianta il vincolo sulle occorrenze. Senza, la 31 non ha niente da raccogliere e il
-pubblico deve fidarsi sulla parola.
+che pianta il vincolo sui display. Senza, la 31 non ha niente da raccogliere e il pubblico
+deve fidarsi sulla parola.
 
 Nella 29 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa una riga sola
 — «in mezzo John ha fatto le epiche e Winston l'architettura, con i loro checkpoint» — ma
 `architecture.md` va nominato comunque.
 
 **La 28 è la prima a cadere sotto i 5 minuti**, ed è una perdita vera: perdi la prova (la
-riga nei `persistent_facts`), il ponte verso il capitolo 04, e il richiamo del
-decision-needed alla 32. Se la tagli, alla 32 di' solo «si ferma su una regola di prodotto»
-senza spiegare da dove viene, altrimenti apri una parentesi che non chiudi.
+riga nei `persistent_facts`), il ponte verso il capitolo 04, e soprattutto la riga di Winston
+che nomina i display. Se la tagli, quella riga va detta comunque entrando nella 29: «e nel
+progetto c'è già una regola sui display, dal 2022, che nessuno di loro ha scritto».
 
-Se salti la 30, il riuso del client va detto a voce entrando nella 31: senza, la risposta
-di Amelia alla 32 non ha appiglio.
+Se salti la 30, il fatto che il dev abbia scritto il testo a mano va detto a voce entrando
+nella 31: senza, la risposta di Amelia alla 32 non ha appiglio.
 
 ---
 
@@ -442,14 +455,20 @@ il finding grosso: non ha la specifica che gli dice che va tutto bene.
 
 **«Ma un test non l'avrebbe preso?»**
 No, e il motivo è la parte utile della risposta: in tutta la suite non esiste una fixture di
-prenotazione ricorrente. Le fixture sono del 2022, le serie sono arrivate nel 2024, e nessuno
-è tornato indietro a guardarle. È il genere di buco che c'è in ogni codebase con qualche anno
-addosso — e infatti la review lo classifica come `defer`, cioè «vero, ma non l'hai rotto tu».
+riunione privata. E su una riunione normale il metodo giusto e quello sbagliato restituiscono
+la stessa identica stringa — quindi anche stringendo il test, resta verde. È il genere di
+buco che c'è in ogni codebase con qualche anno addosso, e infatti la review lo classifica
+come `defer`: vero, ma non l'hai rotto tu.
+
+**«E il linter? Un'analisi statica non lo prende?»**
+No. `titolo()` è un metodo pubblico legittimo, usato correttamente in mezzo al progetto per
+la sincronizzazione e i log. Non c'è niente da segnalare a livello di codice: la differenza
+sta in *dove finisce* quella stringa, e quello lo sa solo chi ha letto il progetto.
 
 **«Quanto costa in token?»**
 Più di una chat secca: i passaggi sono più d'uno, ogni agente si carica il contesto, e la
 review ne fa partire tre in parallelo. Il paragone onesto non è con la chat: è con il costo
-di trovare quel bug in produzione.
+di trovare quel difetto quando lo trova qualcuno in corridoio.
 
 **«E il codice che esce dall'azienda?»**
 Sappi in anticipo qual è la policy interna e cita quella. Se non c'è, dillo che non c'è: è
@@ -469,15 +488,17 @@ su tutto il diff.
 ## Cose da non dire
 
 - **Non dire che è una sessione reale.** Mai, nemmeno per sbaglio, nemmeno per fare colpo.
-- **Non dire «l'agente ha sbagliato».** Non ha sbagliato: ha riusato codice esistente perché
-  il progetto gli dice di riusarlo, e il codice riusato faceva quello che l'AC chiedeva. Se
-  lo presenti come un errore del tool, il pubblico conclude «basta un modello migliore» e hai
+- **Non dire «l'agente ha sbagliato».** Non ha sbagliato: ha preso una decisione di stile che
+  prenderebbe chiunque, e il codice che ne è uscito faceva quello che l'AC chiedeva. Se lo
+  presenti come un errore del tool, il pubblico conclude «basta un modello migliore» e hai
   perso la tesi.
+- **Non spiegare il meccanismo del display.** Non ce n'è uno da spiegare: c'è uno schermo in
+  corridoio e ci finisce sopra un titolo. Se ti senti spiegare, ti stai perdendo.
 - **Non promettere numeri di produttività.** Non ne hai, e in sala c'è sempre qualcuno che
   quei numeri li ha visti smontare.
-- **Non aprire la story 1.3.** Si ferma su una domanda aperta — a chi mandare l'avviso, se
-  l'organizzatore della serie l'ha creata tre anni fa. È interessante ma è un'altra
-  conversazione, e ti mangia tre minuti.
+- **Non aprire la story 1.3.** Si ferma su una domanda aperta — cosa scrive l'avviso, visto
+  che una mail si può inoltrare. È interessante ma è un'altra conversazione, e ti mangia tre
+  minuti.
 - **Non dire «l'AI ha trovato il bug».** L'ha trovato un reviewer che aveva il progetto e non
   aveva la specifica. È una differenza che questo pubblico coglie, e ti fa guadagnare credito.
 - **Non dire che l'Acceptance Auditor ha sbagliato.** Non ha sbagliato: rispetto agli AC quel
@@ -494,6 +515,8 @@ preso dall'installazione vera.
 Le due chat da cui viene questa demo sono `chat/01-mary-analyst.md` e
 `chat/09-amelia-code-review.md`. La story con i Review Findings nella sintassi vera è
 `progetto/_bmad-output/implementation-artifacts/1-2-liberazione-automatica-della-sala.md`,
-e il vincolo che regge il finale sta in `planning-artifacts/architecture.md` § E4.
+e il vincolo che regge il finale sta in `planning-artifacts/architecture.md` § E3 — più il
+codice vero in `src/main/java/it/azienda/saleriunioni/display/TestoDisplay.java`, che si può
+aprire in sala in dieci secondi e si spiega da solo.
 
 Se qualcuno in sala vuole vedere i file veri dopo il talk, sono navigabili così come sono.
