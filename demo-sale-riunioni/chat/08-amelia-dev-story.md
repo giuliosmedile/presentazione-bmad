@@ -5,73 +5,72 @@
 
 ---
 
-**giulio** — DS sulla 1.1.
+**giulio** — DS sulla 1.2.
 
-💻 `DS`. Leggo `1-1-ricerca-e-prenotazione-di-una-sala.md`. Cinque AC, sette task.
+💻 `DS`. Leggo `1-2-liberazione-automatica-della-sala.md`. Cinque AC, sei task.
 Eseguo in ordine, non salto.
 
 ---
 
-💻 Task 1 — migrazione.
+💻 Task 1 — il job.
 
-`src/main/resources/db/migration/V1__sale_e_prenotazioni.sql`
+`src/main/java/it/azienda/saleriunioni/liberazione/LiberazioneJob.java`
 
-```sql
-CREATE EXTENSION IF NOT EXISTS btree_gist;
+Ogni minuto, con `@SchedulerLock`: in cluster l'applicazione gira su tre repliche
+e senza lock il job partirebbe tre volte. L'idempotenza di AC4 lo renderebbe
+innocuo, ma tre volte innocuo sono comunque tre scritture verso Graph.
 
-CREATE TABLE prenotazione (
-    id          uuid PRIMARY KEY,
-    sala_id     uuid NOT NULL REFERENCES sala(id),
-    periodo     tstzrange NOT NULL,
-    stato       text NOT NULL,
-    prenotante  text NOT NULL,
-    CONSTRAINT prenotazione_no_overlap
-      EXCLUDE USING gist (sala_id WITH =, periodo WITH &&)
-      WHERE (stato = 'attiva')
-);
-```
-
-Task 1 ✅. AC 1, 2, 3 coperti a livello di schema.
+Task 1 ✅.
 
 ---
 
-💻 Task 2-5 — dominio, ricerca, service, controller. Test rossi prima, poi verdi.
+💻 Task 2-4 — selezione, transizione, rilascio della sala. Test rossi prima, poi
+verdi.
 
-`PrenotazioneServiceTest`: 5 test, uno per AC, nomi come da convenzione
-(`prenotazione_rifiutata_se_sala_gia_occupata`, `durata_massima_superata_rifiutata`…).
+`LiberazioneServiceTest`: 5 test, uno per AC, nomi come da convenzione
+(`sala_liberata_se_nessun_check_in_entro_dieci_minuti`,
+`prenotazione_con_check_in_mai_toccata`…).
 
-Tutti verdi tranne AC 3.
+Per il rilascio ho riusato `PrenotazioneOutlookClient.annulla()`: c'era già, e
+`architecture.md` § D2 dice che verso Graph si passa da lì e che il client si
+riusa invece di riscriverlo.
+
+Tutti verdi tranne AC 4.
 
 ---
 
-**giulio** — Perché AC 3 no?
+**giulio** — Perché AC 4 no?
 
-💻 Perché con un thread solo non è testabile. Le due transazioni concorrenti non
-si sovrappongono mai se le eseguo in sequenza: il test passa sempre, e passerebbe
-anche senza il vincolo.
+💻 Perché con una sola esecuzione non è testabile. Il test lanciava il job una
+volta e verificava il risultato: sarebbe passato anche senza `@SchedulerLock` e
+anche con l'ordine delle operazioni sbagliato. Non stavo testando l'idempotenza,
+stavo testando che il job funziona.
 
-Riscritto con due thread e una `CountDownLatch` che le fa partire insieme.
+Riscritto: due esecuzioni con lo stesso `Clock` fisso, e la verifica non è sul
+risultato finale ma sul **numero di chiamate a Graph**. Deve essere uno.
 
-Su H2 passava comunque — H2 non ha `EXCLUDE USING gist`, quindi non stavo
-testando niente. Spostato su Testcontainers con Postgres reale, come da strategia
-di test in `architecture.md`.
+E lì ho trovato un secondo problema, nello stub: lo stub di WireMock rispondeva
+`200` a qualunque `DELETE` su qualunque URL. Il test verificava che una chiamata
+partisse, non quale. Stretto lo stub sull'URL esatto dell'evento.
 
-Adesso è verde e fallisce se tolgo il vincolo. Prima non falliva.
+Adesso è verde e fallisce se tolgo il lock. Prima non falliva.
 
 ---
 
 **giulio** — Questa è la differenza fra un test e un test che serve.
 
-💻 `PrenotazioneConcorrenzaTest`. 16 test verdi in totale.
+💻 `LiberazioneIdempotenzaTest`. 11 test verdi in totale.
 
-Un punto da segnalare: l'**ordinamento per capienza crescente** non è nel PRD, è
-nella spec UX. L'ho implementato come da spec UX. Segnalo perché il PRD dovrebbe
-citarlo: se qualcuno legge solo quello, non sa che l'ordine è una scelta e non un
-caso.
+Due punti da segnalare, e su nessuno dei due decido io.
 
-Secondo punto: durata massima 4 ore implementata come costante di dominio, non
-come proprietà di configurazione. Se deve diventare configurabile è una decisione
-di PRD, non mia.
+Il primo: AC 5 dice che la transizione locale resta se Graph fallisce. Sembra un
+errore a chi legge il codice, e non lo è: è la scelta di D1, riconciliazione al
+giro di sincronizzazione. L'ho scritto nelle Completion Notes perché in review
+verrà sollevato.
+
+Il secondo: i 10 minuti sono una costante di dominio, non una proprietà di
+configurazione. Se il facility manager vuole poterla cambiare senza rilascio è una
+decisione di PRD, non mia.
 
 ---
 
@@ -81,7 +80,7 @@ di PRD, non mia.
 
 ```
 ✓ tutti i task e subtask [x]      ✓ AC1-AC5 soddisfatti
-✓ 16 test, 0 failure              ✓ File List completa
+✓ 11 test, 0 failure              ✓ File List completa
 ✓ Dev Agent Record compilato      ✓ Change Log aggiornato
 ✓ solo le sezioni permesse toccate
 ```
@@ -90,12 +89,12 @@ Scritto **dentro la story**, non qui:
 
 - Agent Model Used: Amelia, skill `bmad-dev-story`
 - Completion Notes: quattro voci, incluse le due segnalazioni sopra
-- File List: 15 file, ognuno con nuovo/modificato
+- File List: 8 file, ognuno con nuovo/modificato
 - Change Log
 
 Status della story → `review`.
 
-✅ `sprint-status.yaml` aggiornato: `1-1-ricerca-e-prenotazione` → `review`.
+✅ `sprint-status.yaml` aggiornato: `1-2-liberazione-automatica-della-sala` → `review`.
 
 Non decido io quando è finita: la definition of done è una lista che devo
 passare, e lo stato lo muove il workflow, non la mia impressione.
@@ -108,13 +107,18 @@ passare, e lo stato lo muove il workflow, non la mia impressione.
 
 ## Cosa mostrare
 
-- Il **test che passava senza testare niente**: è il momento migliore della demo
-  perché è un errore che fa chiunque, umano compreso
-- H2 vs Postgres reale: il motivo per cui `architecture.md` imponeva Testcontainers
+- Il **test che passava senza testare niente**, due volte di fila: l'esecuzione
+  singola che non prova l'idempotenza, e lo stub che accettava qualunque URL. È
+  un errore che fa chiunque, umano compreso
+- E il seguito amaro: lo stub **stretto sull'URL giusto** resta verde lo stesso,
+  perché la fixture è una prenotazione singola. Il test è migliorato e non ha
+  trovato niente
+- Il riuso di `annulla()` motivato con l'architettura alla mano: la cosa giusta da
+  fare, e la strada per cui passa il bug
 - **La definition of done non è un'autovalutazione**: è una lista che il workflow
   impone, e lo stato lo muove `sprint-status.yaml`, non l'agente che dice «fatto»
-- Le due segnalazioni che Amelia fa **senza decidere da sola** (ordinamento nel
-  PRD, costante vs configurazione)
+- Le due segnalazioni che Amelia fa **senza decidere da sola** (errore Graph,
+  costante vs configurazione)
 - Il **Dev Agent Record** che si scrive da solo: è il «diario della story» della
   slide 15
 - La chiusura: passa a `CR` invece di auto-approvarsi
