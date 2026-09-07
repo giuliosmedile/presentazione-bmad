@@ -17,7 +17,7 @@ zero dipendenze a runtime tranne i font Google. Generato in origine con lo skill
 `html-slides` (plugin 0.9.4), ma ormai è divergente: **non rigenerarlo dallo skill**,
 si modifica a mano.
 
-Stato: `main`, working tree pulito, nessun remote.
+Stato: `main`, working tree pulito. C'e' un remote `origin`, ma il lavoro si fa in locale.
 
 ---
 
@@ -134,7 +134,7 @@ decorative, 2.35, identiche al deck di riferimento.
 ### 9. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v21`), altrimenti vecchi testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v22`), altrimenti vecchi testi
 salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
 
 ---
@@ -255,6 +255,14 @@ ovvio dal titolo. Trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
   `.claude/skills/bmad-*/` e guarda. `customize.toml` ha i menu e le voci degli agenti,
   `bmad-code-review/steps/` ha i tre reviewer e il triage in quattro bucket, e i file in
   `_bmad-output/` mostrano che forma hanno davvero gli artefatti
+- **Il caso è brownfield, e non è un dettaglio di colore.** Il servizio esiste dal 2022, le
+  sale si prenotano su Outlook, BMAD entra su un codice che ha gia quattro anni. Se tocchi
+  il materiale della demo, questa premessa regge tutto: gli artefatti di planning sono
+  *ricostruiti leggendo il codice*, e il bug finale nasce dal riuso corretto di un metodo
+  scritto nel 2023. Il pezzo che non si tocca e' `architecture.md` § E4 — per le occorrenze
+  di serie `id_evento_graph` contiene l'id della serie — perche' e' piantato in tre posti
+  indipendenti (architettura, migrazione `V3`, commento in `MappaturaEventoGraph`) ed e'
+  quello che la code review raccoglie alla slide 32
 - Quando un contenuto non sta in una slide, se ne fanno due invece di comprimere
 - Verifica misurando, non a occhio: le regressioni di layout qui si vedono solo coi numeri
 

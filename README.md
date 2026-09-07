@@ -96,7 +96,7 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 | 18-22 | un identikit a testa: Mary, John, Winston, Amelia, Sally |
 | 23 | i cinque insieme, e la catena di artefatti che si passano |
 | 24 | il diagramma del loop coi checkpoint umani |
-| 25 | il caso della demo: sei sale, il 41%, l'ipotesi |
+| 25 | il caso della demo: un servizio del 2022, il 41%, il 70% di ricorrenze |
 | 26-32 | **la demo**, sette momenti: menu · checkpoint · **contesto** · story · artefatti · review · verdetto |
 | 33 | pitfall e strategie, la slide che il pubblico fotografa |
 
@@ -112,9 +112,11 @@ di Mary a `create-story` senza dire chi avesse scritto `epics.md` e `architectur
 cosa si fosse deciso di costruire. Costava caro, perché `architecture.md` è il file su cui
 poggia tutto il finale (**31-32**).
 
-Adesso il buco lo chiudono due cose. La **28** è una slide nuova e mostra il gesto che
-mancava: la decisione presa a voce nel checkpoint della 27 viene tirata fuori dal brief e
-scritta in `project-context.md`, in party mode con John e Winston. Il resto del planning
+Adesso il buco lo chiudono due cose. La **28** mostra il gesto che mancava, e lo fa per
+intero: la correzione dell'umano viene scritta nel brief col motivo, e poi tirata fuori dal
+brief e promossa a regola di progetto in `project-context.md`, in party mode con John e
+Winston. La 27 resta libera di fare una cosa sola — rimandare la feature al problema che la
+giustifica. Il resto del planning
 (PRD, epiche, architettura) resta fuori scena, riassunto in tre righe grigie in cima al
 terminale della **29** — venti secondi parlati, non un momento in più. Il copione ha
 entrambe per esteso.
@@ -257,15 +259,15 @@ salienti sono già selezionati.
 
 | Slide | Momento | Cosa deve arrivare |
 |---|---|---|
-| 25 | il caso | sei sale, il 41%, l'ipotesi falsificabile |
+| 25 | il caso | **brownfield**: il servizio c'è dal 2022, arriva una feature. Il 41% e il 70% |
 | 26 | attivazione e menu | tre colonne, e la terza è **lo skill che parte**: `CB` → `bmad-product-brief` |
-| 27 | il checkpoint umano | il bivio, poi la classifica tolta e il motivo che **va scritto** |
-| 28 | la decisione sale nel contesto | party mode con John e Winston: la regola esce dal brief ed entra in `project-context.md` |
-| 29 | la story è un contratto | AC numerati, task che citano l'AC — e `no_show` piantato nelle Dev Notes |
-| 30 | cosa resta dopo | `DS`, la definition of done, e lo stato che si muove in `sprint-status.yaml` |
-| 31 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova il buco |
-| 32 | corretto per la story | il triage in quattro bucket, il diff, e «come ti è sfuggito?» |
-| 33 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
+| 27 | la feature rimandata al problema | «quella che mi hai dato non è un problema, è già una soluzione». Poi il bivio, e il 70% che nessuno cercava |
+| 28 | la decisione sale nel contesto | la leva punitiva tolta col motivo scritto, poi party mode: la regola esce dal brief ed entra in `project-context.md` |
+| 29 | la story è un contratto | AC numerati, task che citano l'AC — e il vincolo E4 piantato nelle Dev Notes |
+| 30 | cosa resta dopo | `DS`, il **riuso del client** seminato di sfuggita, la definition of done, lo stato in `sprint-status.yaml` |
+| 31 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova la serie cancellata |
+| 32 | corretto per la story | il triage in quattro bucket, il diff, «come ti è sfuggito?» e il decision-needed che richiama la 28 |
+| 33 | pitfall e strategie | sei errori e sei contromisure, in parallelo |
 
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
 parole vere, non appunti. Serve soprattutto per le 31-32, dove il ritmo conta.
@@ -277,9 +279,17 @@ versione precedente spendeva quattro slide sulla fase di analisi e zero su `crea
 mezzo.
 
 **Se devi tagliare**: tieni 29, 31, 32 e 33. La 29 sembra la più sacrificabile e non lo è:
-è quella che pianta `no_show` come vincolo di progetto, e senza di lei la 31 non ha niente
-da raccogliere. Le 26, 27, 28 e 30 si raccontano a voce in un minuto — la 28 è la prima a
-cadere, e quello che perdi è la prova nei `persistent_facts`.
+è quella che pianta il vincolo sulle occorrenze, e senza di lei la 31 non ha niente da
+raccogliere. Le 26, 27, 28 e 30 si raccontano a voce in un minuto — la 28 è la prima a
+cadere, e quello che perdi è tre cose: la prova nei `persistent_facts`, il ponte verso il
+capitolo 04, e il richiamo del decision-needed alla 32.
+
+**Il caso è brownfield ed è una scelta.** La versione precedente costruiva da zero un
+sistema di prenotazione, e in sala faceva partire la domanda sbagliata («ma perché non usate
+Outlook?»). Adesso le sale si prenotano su Outlook come sempre, il servizio esiste dal 2022 e
+quello che si aggiunge è una feature — cioè la situazione in cui è il pubblico lunedì
+mattina. Ne guadagna anche il capitolo 04: un `project-context.md` solo basta molto meno
+quando il codice ha quattro anni e nessun autore reperibile.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
 classe **`.term-hl`** per la riga su cui deve cadere l'occhio (terracotta) o `.term-hl.olive`
