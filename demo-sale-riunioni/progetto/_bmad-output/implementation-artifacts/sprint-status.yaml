@@ -1,5 +1,5 @@
 # generated: 2026-08-28T08:14:37Z
-# last_updated: 2026-08-30T00:00:00Z
+# last_updated: 2026-09-03T00:00:00Z
 # project: SaleRiunioni
 # project_key: NOKEY
 # tracking_system: file-system
@@ -37,25 +37,30 @@
 # PROJECT NOTES:
 # ==============
 # - Ordine story VINCOLANTE: 1.1 -> 1.2 -> 1.3 (solo dipendenze all'indietro).
-#   Senza prenotazioni non c'e' niente da liberare, e l'avviso ha senso solo dopo
-#   la liberazione. Motivazione estesa in sprint-plan-epic-1.md.
+#   Senza check-in non c'e' segnale su cui liberare, e l'avviso ha senso solo
+#   dopo la liberazione. Motivazione estesa in sprint-plan-epic-1.md.
 # - 1.4 e 1.5 sono ferme su R1 dell'implementation-readiness-report: manca la
 #   spec UX del pannello di amministrazione. Non promuoverle a ready-for-dev.
+# - Epic 2 nasce da un defer della review 1.2: la suite non ha fixture di tipo
+#   OCCORRENZA. Non e' lavoro nuovo, e' debito che avevamo gia'.
 # - Regole vincolanti per gli agenti: _bmad-output/project-context.md
 
 generated: 2026-08-28T08:14:37Z
-last_updated: 2026-08-30T00:00:00Z
+last_updated: 2026-09-03T00:00:00Z
 project: SaleRiunioni
 project_key: NOKEY
 tracking_system: file-system
 story_location: _bmad-output/implementation-artifacts
 
 development_status:
-  # Epic 1: Prenotazione affidabile e liberazione automatica delle sale
+  # Epic 1: Liberazione automatica delle sale non usate
   epic-1: in-progress
-  1-1-ricerca-e-prenotazione-di-una-sala: done
-  1-2-check-in-e-liberazione-automatica: in-progress
-  1-3-avviso-di-liberazione: backlog
+  1-1-check-in-dal-display: done
+  1-2-liberazione-automatica-della-sala: done
+  1-3-avviso-di-liberazione: in-progress
   1-4-pannello-amministrazione-sale: backlog
-  1-5-report-di-utilizzo: backlog
+  1-5-report-no-show-aggregato: backlog
   epic-1-retrospective: optional
+  # Epic 2: Debito sulla suite di test, aperto dal defer della review 1.2
+  epic-2: backlog
+  2-1-fixture-di-tipo-occorrenza: backlog

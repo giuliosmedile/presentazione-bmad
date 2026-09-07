@@ -8,40 +8,49 @@ Data: 2026-08-28 · Revisione umana: Giulio
 
 | # | Story | Perché qui | Blocca |
 |---|---|---|---|
-| 1 | 1.1 Ricerca e prenotazione | Senza prenotazioni non c'è niente da liberare. Porta anche il vincolo D3, che va messo prima di avere dati | 1.2 |
-| 2 | 1.2 Check-in e liberazione | È l'ipotesi del brief. Tutto il resto è contorno | 1.3 |
+| 1 | 1.1 Check-in dal display | È il segnale. Senza, la liberazione non ha su cosa decidere | 1.2 |
+| 2 | 1.2 Liberazione automatica | È l'ipotesi del brief. Tutto il resto è contorno | 1.3 |
 | 3 | 1.3 Avviso di liberazione | Ha senso solo dopo 1.2 | — |
-| — | 1.4, 1.5 | Fermate da R1 dell'IR: manca la spec UX | — |
+| — | 1.4, 1.5 | Fermate da R1 dell'IR: manca la spec UX del pannello | — |
 
 ## Vincoli tecnici che attraversano più story
 
-**D3 (vincolo di esclusione) va in 1.1.** Non è un dettaglio della prenotazione:
-è lo schema. Aggiungerlo in 1.2 vorrebbe dire migrare prenotazioni già inserite
-che potrebbero violarlo.
+**La 1.2 è la prima cosa che scrive su Outlook.** Fino a lì il servizio legge.
+Ogni scrittura passa da `PrenotazioneOutlookClient` (D2, e convenzione di
+`project-context.md`): non si apre una seconda strada verso Graph.
 
-**Testcontainers va in piedi in 1.1.** Il vincolo D3 non è testabile su H2. La
-prima story paga il costo dell'infrastruttura di test, le altre lo ereditano.
+**Il job va scritto idempotente dal primo commit.** Renderlo idempotente dopo
+significa riscriverlo. Vale per il job di liberazione (1.2) e per quello
+dell'avviso (1.3), che riusa la stessa selezione con una soglia diversa.
 
-**Il job di D4 va scritto idempotente dal primo commit.** Renderlo idempotente
-dopo significa riscriverlo.
+**Il perimetro dei permessi Graph non si tocca.** L'app ha `Calendars.ReadWrite`
+sulle sole sei caselle sala. Se una story ha bisogno di più, si ferma e si passa
+da IT security: non è una decisione di sprint.
 
 ## Rischi
 
 | Rischio | Dove morde | Mitigazione |
 |---|---|---|
-| Il vincolo `EXCLUDE` richiede `btree_gist`, che è un'estensione | 1.1, prima migrazione | Prima migrazione Flyway crea l'estensione. Se l'ambiente non lo permette, si scopre subito e non a metà epic |
-| Fusi orari sulle fasce | 1.1 e 1.2 | Tutto in UTC nel database, conversione solo in presentazione. Scritto nella story |
+| **Le occorrenze di serie sono il 70% delle righe e la suite non le copre** | 1.2, e ogni cosa che scrive su Graph | Nessuna, in questo sprint. È il rischio che accettiamo consapevolmente: la strategia di test in `architecture.md` lo dichiara. Chi implementa la 1.2 rilegga § E4 prima di scrivere |
 | Il job libera una prenotazione con check-in | 1.2 | NFR2. Test dedicato, non opzionale |
+| Il job gira su più repliche in cluster | 1.2 | `@SchedulerLock`. Deciso in pianificazione per non farlo scoprire a metà story |
+| Fusi orari sulle fasce | 1.1 e 1.2 | Tutto in UTC nel database, conversione solo in presentazione. Scritto nella story |
 
 ## Cosa NON è in questo sprint
 
-Le notifiche (1.3 dipende da 1.2 ma la mail vera si può stubbare), la vista
-calendario (tolta in UX), qualunque cosa dell'epic 2.
+L'invio vero delle notifiche (1.3 può stubbare), il pannello del facility
+manager, qualunque cosa dell'epic 2 — inclusa la 2.1, che pure sarebbe la cosa
+più utile da fare.
 
 ---
 
 **Nota del revisore umano (Giulio):** il piano iniziale metteva 1.3 in parallelo a
-1.2 «perché indipendenti». Non lo sono: una mail che annuncia una liberazione che
+1.2 «perché indipendenti». Non lo sono: un avviso che annuncia una liberazione che
 non esiste ancora è peggio del silenzio. Rimesse in sequenza. È scritto anche in
 `epics.md`, ma nel piano di sprint era rientrato — segno che quando un vincolo
 conta va ripetuto nel documento che verrà letto davvero.
+
+**Seconda nota, aggiunta dopo la review della 1.2 (2026-09-02):** la riga in
+grassetto nella tabella dei rischi c'era già, e l'ho letta io in pianificazione.
+Non è bastata a evitare il bug: è bastata a farlo trovare, perché il reviewer che
+legge il progetto trova anche questa. Un rischio scritto non è una mitigazione.
