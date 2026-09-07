@@ -1,36 +1,28 @@
--- Story 1.1 — schema di base per sale e prenotazioni.
--- Decisione D3 di architecture.md: la sovrapposizione è impedita dal database,
--- non dal codice applicativo. Due richieste concorrenti passerebbero entrambe
--- un controllo fatto con SELECT + INSERT.
-
-CREATE EXTENSION IF NOT EXISTS btree_gist;
+-- 2022 — schema iniziale. Lo specchio locale dei calendari delle sale.
+-- Le prenotazioni non nascono qui: arrivano da Graph. Questa tabella esiste per
+-- mostrarle sui display e per contarle.
 
 CREATE TABLE sala (
-    id       uuid PRIMARY KEY,
-    nome     text NOT NULL UNIQUE,
-    capienza int  NOT NULL CHECK (capienza > 0),
-    piano    int  NOT NULL
+    id            uuid PRIMARY KEY,
+    nome          text NOT NULL UNIQUE,
+    capienza      int  NOT NULL CHECK (capienza > 0),
+    piano         int  NOT NULL,
+    casella_graph text NOT NULL UNIQUE   -- la mailbox risorsa della sala
 );
 
 CREATE TABLE prenotazione (
-    id          uuid PRIMARY KEY,
-    sala_id     uuid      NOT NULL REFERENCES sala (id),
-    periodo     tstzrange NOT NULL,
-    stato       text      NOT NULL CHECK (stato IN ('attiva', 'conclusa', 'disdetta', 'no_show', 'forzata')),
-    prenotante  text      NOT NULL,
-    check_in_at timestamptz,
-    created_at  timestamptz NOT NULL DEFAULT now(),
-
-    -- Il filtro sullo stato è la parte che si dimentica: senza, una sala
-    -- liberata per no-show resterebbe bloccata per sempre, che è esattamente
-    -- il problema che l'applicazione esiste per risolvere.
-    CONSTRAINT prenotazione_no_overlap
-        EXCLUDE USING gist (sala_id WITH =, periodo WITH &&)
-        WHERE (stato = 'attiva')
+    id              uuid PRIMARY KEY,
+    sala_id         uuid      NOT NULL REFERENCES sala (id),
+    periodo         tstzrange NOT NULL,
+    stato           text      NOT NULL CHECK (stato IN ('attiva', 'conclusa', 'disdetta', 'no_show', 'forzata')),
+    organizzatore   text      NOT NULL,
+    id_evento_graph text      NOT NULL UNIQUE,
+    check_in_at     timestamptz,
+    created_at      timestamptz NOT NULL DEFAULT now()
 );
 
--- Traccia di ogni transizione di stato. Serve a FR7 (motivazione della
--- forzatura) e a contare i no-show. Decisione D2: audit, non event sourcing.
+-- Traccia di ogni transizione di stato. Serve alla motivazione della forzatura
+-- e a contare i no-show.
 CREATE TABLE prenotazione_evento (
     id              bigserial PRIMARY KEY,
     prenotazione_id uuid        NOT NULL REFERENCES prenotazione (id),

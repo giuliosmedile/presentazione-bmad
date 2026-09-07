@@ -6,11 +6,12 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Component;
 
 /**
- * Query di sola lettura per la ricerca delle sale disponibili (FR1).
+ * Query di sola lettura per la ricerca «sala libera adesso» della web app.
+ * Scritta nel 2022, mai più toccata.
  *
- * <p>Non passa dal service di scrittura: da architecture.md, sezione Struttura.
- * La ricerca è l'operazione più usata e la più semplice, farla transitare per il
- * dominio la complicherebbe senza comprare niente.
+ * <p>Legge lo specchio locale dei calendari, non Graph: interrogare Graph a ogni
+ * ricerca vorrebbe dire sei chiamate di rete per una pagina che si ricarica ogni
+ * dieci secondi.
  */
 @Component
 public class RicercaDisponibilita {
@@ -35,10 +36,6 @@ public class RicercaDisponibilita {
                         SELECT 1
                         FROM prenotazione p
                         WHERE p.sala_id = s.id
-                          -- Rilievo [media] della code review 1.1: qui c'era
-                          -- `p.stato <> 'disdetta'`. Una prenotazione in no_show
-                          -- avrebbe continuato a occupare la sala, cioè la
-                          -- liberazione automatica non avrebbe liberato niente.
                           AND p.stato = 'attiva'
                           AND p.periodo && tstzrange(:da, :a, '[)')
                   )
