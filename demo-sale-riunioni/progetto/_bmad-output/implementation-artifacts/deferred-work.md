@@ -11,14 +11,14 @@ guarda qui prima.
 
 ## Deferred from: code review of story-1.2 (2026-09-02)
 
-- **Nessuna fixture di tipo `OCCORRENZA` in tutta la suite.** Tutte le
-  prenotazioni di test sono singole: le fixture sono del 2022, quando le serie
-  non erano sincronizzate, e nessuno le ha più guardate quando nel 2024 sono
-  arrivate. È il motivo per cui il rilievo grosso della 1.2 — il rilascio che
-  operava sulla serie — è arrivato fino alla review invece di essere un test
-  rosso il giorno prima. Pre-esistente a questa story: `architecture.md`
-  § Strategia di test lo dichiarava già. **Promosso a story 2.1**, perché una
-  cosa così non sta in un file di lavoro rimandato.
+- **Nessuna fixture di riunione privata in tutta la suite.** Tutte le
+  prenotazioni di test hanno `privato = false`. È peggio di un buco normale:
+  su una riunione non privata il metodo giusto e quello sbagliato restituiscono
+  la stessa stringa, quindi il test verde non è una prova di niente. È il motivo
+  per cui il rilievo grosso della 1.2 — il titolo esposto sul display — è
+  arrivato fino alla review invece di essere un test rosso il giorno prima.
+  Pre-esistente a questa story: `architecture.md` § Strategia di test lo
+  dichiarava già. **Promosso a story 2.1.**
 
 ## Deferred from: sprint planning epic-1 (2026-08-28)
 

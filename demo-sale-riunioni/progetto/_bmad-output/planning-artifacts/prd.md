@@ -21,10 +21,8 @@ Questa sezione è la più importante del documento e va letta per prima.
 
 - Sale di sedi diverse da Milano
 - Prenotare dal servizio. Si prenota su Outlook, punto.
-- Toccare una serie ricorrente. Si agisce sulla singola occorrenza, mai sulla regola
+- Cancellare o modificare una riunione. Si toglie la sala, l'evento resta
 - Notifiche push. Solo mail, che c'è già
-- Statistiche per reparto o per persona (regola di prodotto, vedi
-  `project-context.md`)
 - Allargare i permessi Graph oltre le sei caselle sala
 
 Se una di queste rientra, rientra dopo aver misurato.
@@ -42,8 +40,8 @@ conferma la presenza con un tocco sul display, senza autenticarsi.
 la prenotazione passa a `no-show` e la sala torna prenotabile per le fasce residue.
 
 **FR4 — La sala torna libera anche su Outlook.** Una sala liberata deve risultare
-libera a chi la cerca dal calendario, non solo a chi guarda il display. Su una
-serie ricorrente questo vale per la singola occorrenza: la serie non si tocca.
+libera a chi la cerca dal calendario, non solo a chi guarda il display. Si toglie
+la sala dall'evento: l'evento resta nel calendario di chi l'ha creato.
 
 **FR5 — Avviso prima della liberazione.** Al minuto 8 parte un avviso a chi ha
 prenotato, con il link per fare check-in a distanza.
@@ -68,6 +66,9 @@ persona, mai per reparto sotto le dieci persone.
   sala. Il servizio ha i permessi per fare molto di più di quello che deve fare.
 - **NFR4** — Accessibilità: il display deve essere usabile con un tocco solo, da
   chiunque, senza istruzioni sullo schermo.
+- **NFR5** — Niente di quello che finisce su un display può contenere informazioni
+  che chi ha creato la riunione ha marcato come private. Il display sta in
+  corridoio e lo legge chiunque passi.
 
 ## Criteri di rilascio
 
@@ -75,8 +76,8 @@ L'epic 1 si considera rilasciabile quando:
 
 1. Una prenotazione senza check-in decade entro 11 minuti dall'inizio e la sala
    risulta libera sia sul display sia su Outlook
-2. Nessuna serie ricorrente è stata modificata dal sistema, verificato sui
-   calendari veri di una settimana
+2. Nessuna riunione è stata cancellata o modificata dal sistema oltre alla sala,
+   verificato sui calendari veri di una settimana
 3. Nessun test automatico rosso
 4. Il giro fisico di misura è stato rifatto una volta, per avere il valore di
    partenza
@@ -93,13 +94,12 @@ Il dettaglio delle story sta in `epics.md`.
 
 ---
 
-**Nota del revisore umano (Giulio):** la prima stesura aveva un FR «classifica dei
-no-show per reparto» — rientrato dal brief nonostante l'avessi tolto lì. L'ho
-ritolto e siamo andati oltre: la regola adesso sta in `project-context.md`, che
-ogni agente carica all'attivazione. Se sta solo nella mia testa, al prossimo giro
-torna; se sta solo nel brief, torna nel documento dopo.
+**Nota del revisore umano (Giulio):** FR4 l'ho aggiunto io. La prima versione
+diceva «la sala torna prenotabile» senza specificare dove, e dove è tutto il
+punto: se torna prenotabile solo da noi, chiunque cerchi una sala da Outlook
+continua a vederla occupata e non abbiamo liberato niente.
 
-FR4 l'ho aggiunto io. La prima versione diceva «la sala torna prenotabile» senza
-specificare dove, e dove è tutto il punto: se torna prenotabile solo da noi,
-chiunque cerchi una sala da Outlook continua a vederla occupata e non abbiamo
-liberato niente.
+Poi ho preteso che fosse scritta anche la contropartita, e adesso sta in
+`project-context.md`: da questa epic in avanti il servizio **scrive fuori da sé**.
+Non è una funzionalità in più, è un cambio di categoria di rischio, e voglio che
+lo legga anche chi arriva fra un anno.

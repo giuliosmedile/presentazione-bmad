@@ -41,8 +41,8 @@
 #   dopo la liberazione. Motivazione estesa in sprint-plan-epic-1.md.
 # - 1.4 e 1.5 sono ferme su R1 dell'implementation-readiness-report: manca la
 #   spec UX del pannello di amministrazione. Non promuoverle a ready-for-dev.
-# - Epic 2 nasce da un defer della review 1.2: la suite non ha fixture di tipo
-#   OCCORRENZA. Non e' lavoro nuovo, e' debito che avevamo gia'.
+# - Epic 2 nasce da un defer della review 1.2: la suite non ha nemmeno una
+#   fixture di riunione privata. Non e' lavoro nuovo, e' debito che avevamo gia'.
 # - Regole vincolanti per gli agenti: _bmad-output/project-context.md
 
 generated: 2026-08-28T08:14:37Z
@@ -63,4 +63,4 @@ development_status:
   epic-1-retrospective: optional
   # Epic 2: Debito sulla suite di test, aperto dal defer della review 1.2
   epic-2: backlog
-  2-1-fixture-di-tipo-occorrenza: backlog
+  2-1-fixture-di-riunione-privata: backlog

@@ -15,9 +15,10 @@ Data: 2026-08-28 · Revisione umana: Giulio
 
 ## Vincoli tecnici che attraversano più story
 
-**La 1.2 è la prima cosa che scrive su Outlook.** Fino a lì il servizio legge.
-Ogni scrittura passa da `PrenotazioneOutlookClient` (D2, e convenzione di
-`project-context.md`): non si apre una seconda strada verso Graph.
+**La 1.2 è la prima cosa che scrive fuori da sé.** Fino a lì il servizio legge.
+Da qui produce testo che finisce sul calendario delle persone e sugli schermi in
+corridoio. Ogni scrittura verso Graph passa da `PrenotazioneOutlookClient`; ogni
+testo destinato a un display passa da `TestoDisplay`.
 
 **Il job va scritto idempotente dal primo commit.** Renderlo idempotente dopo
 significa riscriverlo. Vale per il job di liberazione (1.2) e per quello
@@ -31,7 +32,7 @@ da IT security: non è una decisione di sprint.
 
 | Rischio | Dove morde | Mitigazione |
 |---|---|---|
-| **Le occorrenze di serie sono il 70% delle righe e la suite non le copre** | 1.2, e ogni cosa che scrive su Graph | Nessuna, in questo sprint. È il rischio che accettiamo consapevolmente: la strategia di test in `architecture.md` lo dichiara. Chi implementa la 1.2 rilegga § E4 prima di scrivere |
+| **Niente nella suite parte da una riunione privata, e la 1.2 scrive su schermi pubblici** | 1.2, e ogni testo che finisce su un display | Nessuna, in questo sprint. È il rischio che accettiamo consapevolmente: la strategia di test in `architecture.md` lo dichiara. Chi implementa la 1.2 rilegga § E3 prima di scrivere |
 | Il job libera una prenotazione con check-in | 1.2 | NFR2. Test dedicato, non opzionale |
 | Il job gira su più repliche in cluster | 1.2 | `@SchedulerLock`. Deciso in pianificazione per non farlo scoprire a metà story |
 | Fusi orari sulle fasce | 1.1 e 1.2 | Tutto in UTC nel database, conversione solo in presentazione. Scritto nella story |

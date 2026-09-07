@@ -31,10 +31,11 @@ dell'implementation readiness report.
 
 ### Il salto che c'è dentro la 1.2
 
-Fino alla 1.1 il servizio **legge** i calendari. Dalla 1.2 ci **scrive**. È un
-cambio di categoria, non una funzionalità in più: da lì in poi un nostro bug non
-sporca una nostra tabella, tocca il calendario delle persone. Vale la pena averlo
-scritto in un posto che si rilegge.
+Fino alla 1.1 il servizio **legge** i calendari. Dalla 1.2 **scrive fuori da sé**:
+sul calendario delle persone e sugli schermi appesi in corridoio. È un cambio di
+categoria, non una funzionalità in più — da lì in poi un nostro difetto non sporca
+una nostra tabella, lo vede qualcuno. Vale la pena averlo scritto in un posto che
+si rilegge.
 
 ## Epic 2 — Il debito che ci siamo trovati
 
@@ -42,12 +43,13 @@ Nata da un `defer` della code review sulla 1.2, non da un desiderio di prodotto.
 
 | Story | Titolo | Stato |
 |---|---|---|
-| 2.1 | Fixture di tipo `OCCORRENZA` in tutta la suite | backlog |
+| 2.1 | Fixture di riunione privata in tutta la suite | backlog |
 | 2.2 | Mappatura degli errori Graph nel display | backlog |
 
-2.1 è la più importante cosa non urgente di questo progetto. Le occorrenze sono
-il 70% delle prenotazioni e non c'è un solo test che parta da una: significa che
-la suite verde ci dice qualcosa sul 30% del traffico.
+2.1 è la più importante cosa non urgente di questo progetto. Non c'è un solo test
+che parta da una riunione marcata privata, e su una riunione normale il metodo
+giusto e quello sbagliato restituiscono la stessa stringa: vuol dire che la suite
+verde non dice niente sull'unico caso in cui la differenza conta.
 
 ## Epic 3 — Multi-sede
 

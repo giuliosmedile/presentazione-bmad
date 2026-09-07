@@ -61,9 +61,13 @@ cosa farà.
 l'orario esatto basta. Il PRD parla di minuto 8 e minuto 10, ma quelli sono
 numeri per chi implementa.
 
-**Il display non mostra il nome di chi ha prenotato.** Mostra il titolo della
-riunione. È la regola di prodotto in `project-context.md`, ed è anche buon senso:
-il display sta in corridoio e lo legge chiunque passi.
+**Il display non è una schermata: è un cartello.** Sta in corridoio, non ha login,
+e lo legge chiunque passi — compreso chi aspetta di essere ricevuto. Su cosa ci si
+può scrivere sopra non decido io: c'è già una regola nel progetto, dal 2022, e
+`architecture.md` § E3 racconta anche perché è nata. Io la eredito e la applico.
+
+In pratica, per questa story: il testo del display lo compone `TestoDisplay`, non
+chi lo mostra.
 
 ## Stati da progettare, non da improvvisare
 
@@ -108,8 +112,8 @@ Questo è un vincolo, non una nota.
 
 Tre vincoli che l'architettura deve reggere:
 
-1. La sala liberata deve risultare libera **anche su Outlook**, e sulle serie
-   ricorrenti questo vale per la singola occorrenza: la ricorrenza non si tocca
+1. La sala liberata deve risultare libera **anche su Outlook**: si toglie la sala
+   dall'evento, l'evento resta
 2. Il display deve poter accodare un tocco e inviarlo dopo, con l'ora del tocco
 3. La lista si aggiorna da sola mentre la guardo: la riga che compare non è un
    dettaglio estetico, è come si evita che due persone corrano sulla stessa sala

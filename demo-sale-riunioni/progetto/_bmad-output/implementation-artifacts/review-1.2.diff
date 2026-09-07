@@ -5,85 +5,103 @@ I bucket sono quelli veri del triage di bmad-code-review: decision-needed,
 patch, defer, dismiss. Non ci sono livelli di gravità.
 
 ════════════════════════════════════════════════════════════════════════
-[patch] Il rilascio operava sulla serie invece che sull'occorrenza
+[patch] Il testo del display esponeva il titolo delle riunioni private
 ════════════════════════════════════════════════════════════════════════
 
 --- a/src/main/java/it/azienda/saleriunioni/liberazione/LiberazioneService.java
 +++ b/src/main/java/it/azienda/saleriunioni/liberazione/LiberazioneService.java
-@@ -52,8 +52,10 @@ public class LiberazioneService {
+@@ -60,9 +60,9 @@ public class LiberazioneService {
      @Transactional
      void libera(Prenotazione prenotazione) {
--        outlook.annulla(prenotazione.idEventoGraph());
          repository.cambiaStato(
                  prenotazione, StatoPrenotazione.no_show, "liberazione automatica", "sistema");
-+        outlook.rilasciaSala(prenotazione);
+         outlook.rilasciaSala(prenotazione);
+-        display.aggiorna(
+-                prenotazione.salaId(),
+-                "Libera — nessun check-in per " + prenotazione.titolo());
++        display.aggiorna(prenotazione.salaId(), TestoDisplay.rigaLibera(prenotazione));
      }
  }
 
-Perché conta: `idEventoGraph()` per una riga di tipo `OCCORRENZA` contiene l'id
-**della serie** (architecture.md § E4, indice unico in V3__sincronizzazione.sql,
-commento in MappaturaEventoGraph). `annulla()` fa una DELETE su quell'id.
+Cosa cambia sullo schermo appeso in corridoio, alle 9:40:
 
-Effetto in produzione: la prima occorrenza di una serie che nessuno usa fa
-sparire la serie intera — tutte le occorrenze, passate e future, dai calendari di
-tutti i partecipanti. Su Exchange non si annulla. Il martedì mattina allo stand-up
-non si presenta nessuno perché l'invito non c'è più, e la causa è un job che
-gira di notte su un'altra funzionalità.
+    prima    Libera — nessun check-in per «Colloquio di uscita — Marco Rossi»
+    dopo     Libera — nessun check-in per «Riunione riservata»
 
-Le occorrenze sono il 70% delle prenotazioni.
+Perché conta: `titolo()` è il dato grezzo che arriva dallo specchio di Graph.
+Serve alla sincronizzazione e ai log interni, non è testo da mostrare. Le riunioni
+marcate private su Outlook hanno il titolo vero in quella colonna, e il display
+non è una schermata dell'applicazione: è un cartello acceso in un corridoio, senza
+login, che legge chiunque passi.
+
+Dal 2022 esiste `TestoDisplay`, e non per eleganza: nella prima versione il
+display mostrava il titolo di tutto, davanti alla sala grande è comparso il titolo
+di un colloquio con nome e cognome, e le Risorse Umane hanno aperto un caso.
+`architecture.md` § E3 racconta la storia; il commento sulla colonna nel database
+la ripete in due righe.
 
 Il codice era **corretto rispetto ai criteri di accettazione della 1.2**: AC3 dice
-«la sala non risulta più occupata su Outlook», e la DELETE lo ottiene. I test
-erano tutti verdi, e lo erano onestamente: nella suite non esiste una fixture di
-tipo `OCCORRENZA`.
+«il display mostra che la sala è libera e per quale motivo», e quella riga lo
+mostra. I test erano verdi e lo erano onestamente: nella suite non esiste una
+fixture con `privato = true`, e su una riunione normale i due percorsi producono
+la stessa identica stringa.
 
-Fonte `blind+edge`. Il Blind Hunter ha visto un id passato a una scrittura senza
-controllo del tipo; l'Edge Case Hunter è andato a leggere il progetto e ha
-trovato cosa c'è dentro quel campo. L'Acceptance Auditor, che aveva la spec, ha
-concluso «spec soddisfatta» — e non ha sbagliato.
+E il difetto non è una svista di stile. Il dev ha scritto la riga dentro il
+service perché aveva una forma diversa da quelle che c'erano già, e aggiungere un
+metodo a una classe di formattazione per una stringa sola sembrava sproporzionato.
+È un ragionamento che fa chiunque. Solo che quella classe non era una classe di
+formattazione: **era il posto dove stava un pezzo di conoscenza.**
+
+Fonte `blind+edge`. Il Blind Hunter ha visto una stringa costruita a mano dove
+tutto intorno passa da una classe dedicata; l'Edge Case Hunter è andato a leggere
+quella classe e ha trovato cosa fa e perché. L'Acceptance Auditor, che aveva la
+spec, ha concluso «spec soddisfatta» — e non ha sbagliato.
 
 ════════════════════════════════════════════════════════════════════════
 [patch] La scrittura su Graph veniva prima del cambio di stato
 ════════════════════════════════════════════════════════════════════════
 
-Stesso diff qui sopra: l'ordine delle due righe non è cosmetico.
+Stesso diff qui sopra: l'ordine delle righe non è cosmetico.
 
 Perché conta: se il commit falliva dopo una scrittura andata a buon fine, la sala
 risultava rilasciata su Outlook e ancora `attiva` da noi. Il giro successivo del
 job ci riprovava sopra — due scritture verso Graph per la stessa prenotazione,
-contro AC4. Fonte `blind`.
+contro AC5. Fonte `blind`.
 
 ════════════════════════════════════════════════════════════════════════
-[decision-needed] La notifica di Outlook tocca una regola di prodotto
+[decision-needed] Chi ha prenotato non sa di aver perso la sala
 ════════════════════════════════════════════════════════════════════════
 
 Nessun diff: la review si è fermata e ha chiesto.
 
-Rilasciare la sala fa partire da Exchange una notifica all'organizzatore («la sala
-ha rifiutato l'invito»). Non è sopprimibile: la manda Outlook, non noi.
+Il PRD prevede l'avviso **prima** della liberazione (FR5, story 1.3). Non dice
+niente su cosa succede dopo. Chi ha prenotato scopre di non avere più la sala
+entrandoci e trovandoci gente.
 
-`project-context.md` § Regole di prodotto vieta le comunicazioni automatiche che
-nominano una persona. Questa non nomina nessuno, ma arriva a una persona sola e
-per un motivo che la riguarda. È al limite della regola, e il limite lo tira
-l'umano.
+Mandare una mail «hai perso la sala» è una scelta di prodotto: c'è un modo di
+farla che è utile e uno che è umiliante, e il confine lo tira una persona.
 
-  Risoluzione (2026-09-02, Giulio): si rilascia, e la notifica va bene.
-  Riguarda la sala, non chi l'ha prenotata. Scartata l'alternativa «marcare
-  no_show solo da noi»: renderebbe la liberazione invisibile a chi cerca una
-  sala dal calendario, cioè quasi tutti.
+  Risoluzione (2026-09-02, Giulio): si avvisa, e solo chi ha prenotato.
+  Nessun altro destinatario, nemmeno i partecipanti. Scartata l'alternativa
+  «non avvisare»: scoprirlo entrando in riunione è il modo migliore per far
+  odiare la funzione a chi la subisce. Task aperto in 1.3.
 
 ════════════════════════════════════════════════════════════════════════
-[defer] Nessuna fixture di tipo OCCORRENZA in tutta la suite
+[defer] Nessuna fixture di riunione privata in tutta la suite
 ════════════════════════════════════════════════════════════════════════
+
+Tutte le prenotazioni di test hanno `privato = false`. Su una riunione normale
+`titolo()` e `TestoDisplay.titoloVisibile()` restituiscono la stessa stringa:
+qualunque confusione fra i due passa inosservata.
 
 Pre-esistente, non introdotto da questa story: `architecture.md` § Strategia di
-test lo dichiara già come il buco più grosso. È anche il motivo per cui il
-rilievo qui sopra è arrivato fino alla review invece di essere un test rosso.
+test lo dichiara già come il buco più grosso. È anche il motivo per cui il rilievo
+qui sopra è arrivato fino alla review invece di essere un test rosso.
 
 Registrato in `deferred-work.md`, promosso a story 2.1.
 
 ════════════════════════════════════════════════════════════════════════
 
-Dopo le correzioni: 15 test verdi (erano 11). I quattro nuovi partono tutti da
-prenotazioni di tipo `OCCORRENZA`, che nel 2022 non esistevano e nel 2026 sono la
-maggioranza delle righe.
+Dopo le correzioni: 15 test verdi (erano 11). Tre dei quattro nuovi partono da una
+riunione privata, che nel 2022 non esisteva come caso e da quattro anni gira in
+produzione tutti i giorni.
