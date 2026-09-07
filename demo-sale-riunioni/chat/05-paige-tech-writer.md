@@ -24,11 +24,22 @@ cartella dello skill. Nel menu vero la terza colonna mostra l'uno o l'altro._
 
 In attesa. Rispondi con un numero, un codice o una descrizione.
 
-Quando due persone litigano su una parola, di solito non stanno litigando sulla
-parola: stanno scoprendo che avevano in testa due prodotti diversi. Vale la pena
-scriverlo, ma solo se il documento poi lo legge qualcuno.
+Prima di tutto una nota di contesto: la settimana scorsa su questo repository
+abbiamo fatto girare `DP`, ed e' da li' che escono i documenti che gli altri
+stanno leggendo adesso. Il servizio ha quattro anni e non aveva niente di scritto:
+`DP` ha letto il codice, le migrazioni e la configurazione, e ne ha tirato fuori
+la struttura, i punti di integrazione e i pezzi di storia che si capiscono solo
+dalle date.
 
-Fammi un esempio del litigio.
+Non e' documentazione bella. E' documentazione che prima non c'era, e senza quella
+ogni agente che si attiva parte da zero.
+
+Detto questo, veniamo al litigio. Quando due persone litigano su una parola, di
+solito non stanno litigando sulla parola: stanno scoprendo che avevano in testa
+due prodotti diversi. Vale la pena scriverlo, ma solo se il documento poi lo legge
+qualcuno.
+
+Fammi un esempio.
 
 ---
 
@@ -56,8 +67,8 @@ Poi l'ho riletta e ti dico una cosa che vale contro me stessa: ventidue è
 esattamente il numero che avevo appena detto di non fare. C'erano dentro «utente»,
 «email», «pagina». Le ho tolte.
 
-**Nove voci**: sala, fascia, prenotazione, check-in, no-show, liberazione,
-disdetta, forzatura, capienza.
+**Undici voci**: sala, fascia, prenotazione, serie, occorrenza, check-in,
+no-show, liberazione, disdetta, forzatura, capienza.
 
 Su una in particolare mi sono fermata, ed è quella del vostro litigio:
 
@@ -66,6 +77,16 @@ Su una in particolare mi sono fermata, ed è quella del vostro litigio:
 > è finita prima. **Misuriamo il no-show perché è quello che possiamo osservare.**
 
 Quell'ultima riga è la distinzione che vi mancava in riunione.
+
+E due voci le ho aggiunte io senza che nessuno le chiedesse, perche' me le ha
+messe davanti `DP` guardando i dati: **serie** e **occorrenza**. La serie e' la
+regola, «ogni martedi alle 9:30», e da sola non occupa niente. L'occorrenza e' il
+singolo appuntamento, ed e' quella che occupa la sala.
+
+Le ho separate perche' in questo progetto sono il 70% delle prenotazioni e perche'
+in riunione le sentivo chiamare tutte e due «ricorrenza». Due cose diverse con lo
+stesso nome, su tre quarti dei dati, e' esattamente il tipo di ambiguita' che
+prima o poi qualcuno traduce in codice.
 
 ---
 
@@ -111,7 +132,11 @@ Se sta scritta qui, non ve lo chiede. Se non sta scritta, indovina.
 
 - Il litigio su «sala libera» che nasconde due prodotti diversi
 - La proposta di formato: solo le parole su cui **ci si può sbagliare**
-- L'agente che riduce il proprio output da 22 a 9 voci contro se stesso
+- L'agente che riduce il proprio output da 22 a 11 voci contro se stesso
+- **`DP` come primo gesto su un progetto che esiste gia'**: la documentazione non
+  c'era, e senza quella ogni agente riparte da zero
+- Serie e occorrenza separate perche' in riunione le chiamavano tutte e due
+  «ricorrenza»: due cose diverse con lo stesso nome, sul 70% dei dati
 - La riga «misuriamo il no-show perché è quello che possiamo osservare»
 - Il file in `docs/` che gli altri agenti trovano da soli — il **contesto di
   progetto** della slide 15, in pratica

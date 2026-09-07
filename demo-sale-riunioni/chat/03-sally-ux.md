@@ -39,24 +39,31 @@ per chi ha calma. Il contrario non è vero.
 
 **giulio** — Non ci avevo pensato in questi termini.
 
-🎨 È il motivo per cui insisto sulla scena invece che sui requisiti. Il PRD dice
-«FR1 ricerca sala». Vero, ma non dice che chi cerca ha una mano sola e trenta
-secondi.
+🎨 È il motivo per cui insisto sulla scena invece che sui requisiti.
+
+E qui c'è una cosa che mi aiuta: **la schermata di ricerca esiste già dal 2022** e
+funziona. Non ho da disegnare un prodotto, ho da disegnare due gesti nuovi dentro
+un prodotto che le persone conoscono. È una fortuna, non un limite: quello che
+disegno non deve essere imparato.
 
 Vado con `CU`. Tre decisioni che discendono direttamente dalla scena:
 
-**Una schermata sola.** Nessun wizard. Cercare e prenotare sono lo stesso gesto.
+**Il display ha un bottone solo.** «Sono qui». Niente login, niente scelta di
+chi sei, niente conferma. Chi è in sala ha già la sala: chiedergli le credenziali
+su un tablet appeso al muro è un attrito che fa fallire la funzione. Se il
+check-in è scomodo nessuno lo fa, e noi liberiamo sale piene di gente.
 
-**I default fanno il lavoro.** Quando: adesso. Per quanto: un'ora. Quante persone:
-quante l'ultima volta. Chi ha fretta preme un bottone e basta.
+**Il testo dice cosa succede se non premi.** Non «conferma la presenza», ma
+«altrimenti la libero alle 11:10». Una funzione che agisce da sola deve dire
+prima cosa farà.
 
-**Ordinamento per capienza crescente sopra il richiesto.** Chi cerca per 4 non
-deve vedere prima la sala da 12. Occupare una sala grande in due è l'altro modo di
-sprecare capacità, e l'ordinamento è il posto dove lo si scoraggia senza vietarlo.
+**Niente countdown.** Il PRD parla di minuto 8 e minuto 10: quelli sono numeri per
+chi implementa. Cifre che scorrono creano ansia e non aggiungono niente, l'orario
+esatto basta.
 
 ---
 
-**giulio** — Aggiungimi anche una vista calendario settimanale.
+**giulio** — Aggiungimi anche una vista calendario settimanale nella web app.
 
 🎨 Posso, ma prima ti chiedo: nella scena delle 10:58, cosa te ne fai?
 
@@ -64,13 +71,13 @@ sprecare capacità, e l'ordinamento è il posto dove lo si scoraggia senza vieta
 
 **giulio** — Niente, in effetti. Ma per chi pianifica in anticipo?
 
-🎨 Per chi pianifica in anticipo esiste già Outlook, e lo sa usare. Costruirne una
-seconda versione dentro la nostra app vuol dire mantenerne una peggiore per
-sempre, e distrarre la schermata dall'unico momento in cui è insostituibile.
+🎨 Per chi pianifica in anticipo **esiste già Outlook**, ed è dove prenota
+comunque: il nostro servizio non prenota, di proposito. Costruire una seconda
+vista calendario vuol dire mantenerne una peggiore per sempre e distrarre la
+schermata dall'unico momento in cui è insostituibile.
 
-Ti propongo di tenerla fuori dal primo rilascio e tracciarla nell'epic 2. Se dopo
-il rilascio qualcuno la chiede davvero, la facciamo con i dati d'uso in mano
-invece che per intuizione.
+Ti propongo di tenerla fuori e tracciarla. Se dopo il rilascio qualcuno la chiede
+davvero, la facciamo con i dati d'uso in mano invece che per intuizione.
 
 ---
 
@@ -87,36 +94,30 @@ stati**.
 | Stato | Cosa vede |
 |---|---|
 | Niente libero | «Niente alle 11. Alle 11:30 si liberano 2 sale.» con il bottone per spostarsi |
-| Sala presa mentre decidevo | La riga sparisce con una transizione, non con un salto |
+| Sala liberata mentre guardavo | La riga compare con una transizione, non con un salto |
+| Display senza rete | Il tocco resta in coda e parte alla riconnessione, con l'ora del tocco |
+| Ho fatto check-in ma sono in ritardo | Il tasto funziona anche dopo i 10 minuti: la finestra riguarda la liberazione, non il diritto di entrare |
 | Prima volta | Nessun onboarding. Si impara usando |
-| Rete caduta | Lista in grigio con «Dati di 30 secondi fa». Lo schermo non si svuota mai |
 
-Il secondo è quello che vi salva o vi affonda. Se premo Prenota e mi becco un
-errore rosso senza capire cosa è successo, la prossima volta prenoto largo per
-sicurezza — cioè il comportamento che stiamo cercando di eliminare.
+Il terzo è quello che vi salva o vi affonda. Un display che perde il tocco perché
+il wifi ha fatto un buco produce una persona a cui hanno dato via la sala mentre
+ci stava dentro. Quella persona non lo usa più, e ha ragione.
 
 ---
 
-**giulio** — E il check-in?
+**giulio** — E la sala liberata, chi la vede?
 
-🎨 Non è una schermata. È una riga in cima alla stessa pagina, che compare
-all'ora di inizio:
+🎨 Tre posti, e vanno detti tutti e tre perché è facile ricordarne solo uno: il
+display fuori dalla porta, la pagina «sala libera adesso», e **il calendario di
+Outlook**.
 
-```
-Sei in Sala Verde?   [ Sì, sono qui ]
-Altrimenti la libero alle 11:10
-```
+Il terzo è quello che conta di più ed è quello che si dimentica sempre, perché
+non è una nostra schermata. Se la sala torna libera solo da noi, chiunque la cerchi
+dal calendario — cioè la maggior parte delle persone — continua a vederla
+occupata. Avremmo liberato una sala che nessuno riesce a prendere.
 
-Un bottone e una frase che dice cosa succede se non lo premi.
-
-Niente countdown a cifre che scorrono: crea ansia e non aggiunge niente, l'orario
-esatto basta. Il PRD parla di «minuto 7» e «minuto 10», ma quelli sono numeri per
-chi implementa, non per chi guarda.
-
-Ho aggiunto tre vincoli che passo a Winston: la lista si aggiorna da sola, il
-check-in funziona dal telefono senza installare niente, e il conflitto di
-prenotazione deve arrivare all'utente come un messaggio leggibile e non come un
-errore generico.
+L'ho scritto nella spec come vincolo, non come nota: passa a Winston e da lì
+finisce in un requisito.
 
 ---
 
@@ -128,8 +129,11 @@ errore generico.
 
 - **La scena prima dei requisiti**: «cosa stavi facendo l'ultima volta?». È il
   metodo, non un vezzo
-- Gli stati progettati esplicitamente, incluso «sala presa mentre decidevo»
-- La riga di check-in che *non* è una schermata
+- «Non ho da disegnare un prodotto, ho da disegnare due gesti dentro un prodotto
+  che le persone conoscono» — è la differenza fra greenfield e brownfield detta
+  da chi disegna
+- Gli stati progettati esplicitamente, incluso il display senza rete
 - **Il checkpoint umano al contrario**: qui è l'agente a convincere l'umano a
   togliere la vista calendario. Da raccontare, perché rompe l'idea che il
   checkpoint serva solo a correggere la macchina
+- I tre posti dove la sala deve risultare libera, e il terzo che non è nostro

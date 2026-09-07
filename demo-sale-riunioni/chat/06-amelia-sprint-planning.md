@@ -30,19 +30,20 @@ In attesa. Rispondi con un numero, un codice o una descrizione.
 
 | # | Story | Perché qui |
 |---|---|---|
-| 1 | 1.1 Ricerca e prenotazione | Senza prenotazioni non c'è niente da liberare. Porta D3, che va prima dei dati |
-| 2 | 1.2 Check-in e liberazione | È l'ipotesi del brief |
+| 1 | 1.1 Check-in dal display | È il segnale. Senza, la liberazione non ha su cosa decidere |
+| 2 | 1.2 Liberazione automatica | È l'ipotesi del brief |
 | 3 | 1.3 Avviso | In parallelo a 1.2, sono indipendenti |
-| — | 1.4, 1.5 | Ferme: R1 dell'IR, manca la spec UX |
+| — | 1.4, 1.5 | Ferme: R1 dell'IR, manca la spec UX del pannello |
 
 Tre vincoli che attraversano le story:
 
-- **D3 va in 1.1.** Non è un dettaglio della prenotazione, è lo schema.
-  Aggiungerlo in 1.2 vuol dire migrare dati che potrebbero già violarlo.
-- **Testcontainers in piedi in 1.1.** D3 non è testabile su H2. La prima story
-  paga l'infrastruttura, le altre la ereditano.
-- **Il job di D4 idempotente dal primo commit.** Renderlo idempotente dopo
-  significa riscriverlo.
+- **La 1.2 è la prima cosa che scrive su Outlook.** Fino alla 1.1 il servizio
+  legge soltanto. Ogni scrittura passa da `PrenotazioneOutlookClient` (D2): non
+  si apre una seconda strada verso Graph.
+- **Il job idempotente dal primo commit** (D1). Renderlo idempotente dopo
+  significa riscriverlo, e vale anche per il job dell'avviso in 1.3.
+- **I permessi Graph non si toccano.** Se una story ne chiede di più si ferma e
+  passa da IT security: non è una decisione di sprint.
 
 ---
 
@@ -63,13 +64,18 @@ Rimesse in sequenza. Ho aggiunto la riga anche nel piano di sprint, non solo in
 `epics.md`: se un vincolo conta, va ripetuto nel documento che verrà letto
 davvero.
 
-Rischi:
+Rischi, e il primo lo metto in grassetto perché è l'unico che non so mitigare:
 
 | Rischio | Dove | Mitigazione |
 |---|---|---|
-| `EXCLUDE` richiede `btree_gist` | 1.1, prima migrazione | L'estensione nella prima migrazione Flyway. Se l'ambiente non la permette si scopre subito, non a metà epic |
-| Fusi orari sulle fasce | 1.1, 1.2 | Tutto UTC nel db, conversione solo in presentazione |
+| **Le occorrenze sono il 70% delle righe e la suite non le copre** | 1.2, e tutto ciò che scrive su Graph | Nessuna, in questo sprint. È R2 della IR, e lo accettiamo dichiarandolo. Chi implementa la 1.2 rilegga `architecture.md` § E4 prima di scrivere |
 | Il job libera una prenotazione con check-in | 1.2 | NFR2. Test dedicato, non opzionale |
+| Il job gira su tre repliche in cluster | 1.2 | `@SchedulerLock`, deciso qui per non farlo scoprire a metà story |
+| Fusi orari sulle fasce | 1.1, 1.2 | Tutto UTC nel db, conversione solo in presentazione |
+
+Sul primo ti dico anche cosa non è: non è una mitigazione. È un rischio scritto.
+Se la 1.2 tocca le occorrenze e nessun test le copre, l'unica rete che resta è la
+review.
 
 Piano scritto. Comincio dalla 1.1?
 
@@ -84,6 +90,8 @@ Piano scritto. Comincio dalla 1.1?
 - Il menu di Amelia ha **sette voci**: è l'agente con più superficie, e SP/CS/DS/CR
   sono quattro momenti diversi dello stesso giro
 - Il piano non ordina per stima ma per **dipendenza tecnica**
+- Il rischio in grassetto che l'agente dichiara **e non sa mitigare**, dicendolo:
+  e' lo stesso buco da cui passera' il bug tre slide dopo
 - **Il checkpoint umano**: 1.3 in parallelo. L'agente aveva ragione sul codice e
   torto sul prodotto — e lo dice, invece di limitarsi a obbedire
 - La lezione che ne trae: un vincolo va ripetuto nel documento che verrà letto
