@@ -12,12 +12,12 @@ Presentazione «**Oltre il vibe coding**», talk aziendale in **italiano**, 60 m
 pubblico misto per competenza sull'AI. Tesi: il problema non è l'AI, è l'assenza di processo;
 BMAD dà la struttura, la memoria a grafo dà il contesto.
 
-File principale: **`oltre-il-vibe-coding.html`** — 40 slide, ~3000 righe, CSS e JS inline,
+File principale: **`oltre-il-vibe-coding.html`** — 41 slide, ~3100 righe, CSS e JS inline,
 zero dipendenze a runtime tranne i font Google. Generato in origine con lo skill
 `html-slides` (plugin 0.9.4), ma ormai è divergente: **non rigenerarlo dallo skill**,
 si modifica a mano.
 
-Stato: 21 commit su `main`, working tree pulito, nessun remote.
+Stato: `main`, working tree pulito, nessun remote.
 
 ---
 
@@ -134,7 +134,7 @@ decorative, 2.35, identiche al deck di riferimento.
 ### 9. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v19`), altrimenti vecchi testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v21`), altrimenti vecchi testi
 salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
 
 ---
@@ -166,7 +166,7 @@ Da eseguire nella console del browser dopo ogni modifica, a **1440×900 e 1024×
 })()
 ```
 
-Atteso: `overflow: []`, `count: 40`, `seq: true`, `active: 1`, `notes: true`, `immagini: true`.
+Atteso: `overflow: []`, `count: 41`, `seq: true`, `active: 1`, `notes: true`, `immagini: true`.
 
 **Importante**: `finish()` sulle animazioni prima di misurare. Senza, misuri a metà
 transizione e i numeri sono spazzatura — è già successo (nodi larghi 31px invece di 104).
@@ -222,7 +222,7 @@ in fondo a `:root`. I componenti vecchi li usano ancora; funzionano, non serve m
 ### Il diagramma del loop
 
 Compare **tre volte** con lo stesso disegno e centro diverso: completo (slide 24 del
-contatore), col buco del contesto (33), col grafo che lo riempie (37). Il richiamo funziona
+contatore), col buco del contesto (34), col grafo che lo riempie (38). Il richiamo funziona
 solo se il resto è identico: **se ne modifichi uno, modificali tutti e tre**.
 
 Geometria: cerchio r=140 in viewBox 400×400, nodi a -90°/0°/90°/180° (`left/top` 50%/15%,
@@ -276,7 +276,7 @@ Idee rimaste in sospeso, mai implementate:
 ## File del repo
 
 ```
-oltre-il-vibe-coding.html   il deck (40 slide)
+oltre-il-vibe-coding.html   il deck (41 slide)
 copione-demo.md             il discorso parlato della demo, slide per slide
 README.md                   struttura del talk, contenuti, da-riempire
 CLAUDE.md                   questo file

@@ -1,7 +1,7 @@
 # Copione della demo — SaleRiunioni
 
-Slide **25-32** del deck (quelle che sul contatore in basso a destra fanno 25/40 → 32/40).
-Otto slide, otto minuti scarsi.
+Slide **25-33** del deck (quelle che sul contatore in basso a destra fanno 25/41 → 33/41).
+Nove slide, otto minuti scarsi.
 
 ---
 
@@ -11,33 +11,36 @@ Un progetto finto ma coerente: prenotazione delle sale riunioni interne. L'ho sc
 apposta — il dominio non va spiegato, in sala lo capiscono prima che tu finisca la frase, e
 così tutto il tempo se lo prende il processo invece del contesto.
 
-**La demo percorre il loop della slide 24 invece di raccontarlo.** Otto slide, e sono in
-ordine di tempo: parli a un agente, produci una story, la implementi, la fai rivedere.
+**La demo percorre il loop della slide 24 invece di raccontarlo.** Nove slide, e sono in
+ordine di tempo: parli a un agente, fissi quello che avete deciso, produci una story, la
+implementi, la fai rivedere.
 
 | Slide | Cosa succede | Chi |
 |---|---|---|
 | 25 | il caso | — |
 | 26 | attivazione e menu | Mary |
 | 27 | il checkpoint umano | Mary |
-| 28 | la story nasce | Amelia `CS` |
-| 29 | la story viene implementata | Amelia `DS` |
-| 30 | tre reviewer, tre contesti | Amelia `CR` |
-| 31 | il verdetto contraddittorio | Amelia `CR` |
-| 32 | pitfall e strategie | — |
+| 28 | la decisione sale nel contesto | John + Winston |
+| 29 | la story nasce | Amelia `CS` |
+| 30 | la story viene implementata | Amelia `DS` |
+| 31 | tre reviewer, tre contesti | Amelia `CR` |
+| 32 | il verdetto contraddittorio | Amelia `CR` |
+| 33 | pitfall e strategie | — |
 
 **La demo ha due metà, e servono a due cose diverse.**
 
-La prima (26-29) risponde alla domanda pratica che si stanno facendo tutti: *ma come ci si
+La prima (26-30) risponde alla domanda pratica che si stanno facendo tutti: *ma come ci si
 parla, a 'sta roba, e cosa mi resta in mano dopo?* Vedono il menu, vedono un agente che
 rimanda indietro una domanda invece di partire a produrre, vedono nascere una story e vedono
-dove finisce il lavoro quando chiudi il portatile.
+dove finisce il lavoro quando chiudi il portatile — e vedono una decisione presa a voce
+finire in un file che tutti gli agenti leggono.
 
-La seconda (30-31) è il motivo per cui la demo esiste. È il processo che becca un bug che
+La seconda (31-32) è il motivo per cui la demo esiste. È il processo che becca un bug che
 nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì dimostri che
 l'ordine serve a qualcosa.
 
-**Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 28 non tagliarla:
-è quella che pianta il vincolo che la 30 raccoglie. Senza, la 30 è un colpo di fortuna.
+**Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 29 non tagliarla:
+è quella che pianta il vincolo che la 31 raccoglie. Senza, la 31 è un colpo di fortuna.
 
 ---
 
@@ -128,14 +131,59 @@ Venti secondi in più qui.
 
 ---
 
-## Slide 28 — La story è un contratto
+## Slide 28 — La decisione sale nel contesto
+
+*Sullo schermo: party mode con due agenti, e in fondo il riquadro verde con la riga scritta
+in `project-context.md`.*
+
+**È una slide corta, ma non correrci sopra.** È il gesto che la slide prima lascia a metà:
+il motivo l'hai scritto nel brief, e nel brief resta. Qui lo tiri fuori e lo metti dove lo
+legge chiunque.
+
+> Un momento solo, perché quello che ho appena fatto è a metà. Il motivo l'ho scritto nel
+> brief. Ma il brief descrive *questo* prodotto: il prossimo documento non lo legge, e fra
+> due settimane io quella frase non me la ricordo.
+>
+> Allora apro party mode e mi tiro dentro John e Winston insieme. E party mode non è una
+> trovata scenica: ognuno dei due è un subagente vero, con la sua testa. Se sono d'accordo,
+> sono d'accordo davvero.
+>
+> Gli dico una cosa sola: questa regola non vale per il brief, vale per il prodotto.
+>
+> John decide il posto: `project-context.md`. Winston ci vede subito il riflesso tecnico —
+> niente endpoint che espone il ranking per persona — e se lo porta in architettura.
+>
+> *[indica le due righe grigie in fondo]*
+>
+> E adesso il pezzo che vale la slide. `project-context.md` non è un file qualsiasi: sta nei
+> **persistent\_facts** di ogni agente, riga letterale, con la glob. Ogni agente lo carica
+> all'attivazione, sempre.
+>
+> Vuol dire che quella regola dalla prossima attivazione ce l'hanno tutti, senza che io la
+> ripeta. Anche Amelia, che quando l'abbiamo decisa non era nemmeno nella stanza.
+
+**Se qualcuno chiede se è vero**: sì, ed è verificabile. In
+`.claude/skills/bmad-agent-*/customize.toml` c'è la riga
+`persistent_facts = ["file:{project-root}/**/project-context.md"]`, identica per tutti e sei
+gli agenti.
+
+**Se hai due secondi**, aggancia la slide 16: sono i quattro posti dove una decisione si
+deposita, e questo è il secondo.
+
+**Questa slide è anche il ponte verso il capitolo 04.** Qui il contesto è un file che tutti
+leggono; nel capitolo 04 il problema diventa che un file solo non basta. Non anticiparlo, ma
+sappi che stai piantando quello.
+
+---
+
+## Slide 29 — La story è un contratto
 
 *Sullo schermo: tre righe grigie in cima al terminale, poi la story appena creata con
 l'ultima riga evidenziata.*
 
 **Il ponte va detto, non saltato.** Fra il brief e la story sono successe due cose che non
 mostri, e una di queste — `architecture.md` — è il file su cui poggia tutto il finale. Se il
-pubblico non sa che esiste, alla slide 30 la battuta cade.
+pubblico non sa che esiste, alla slide 31 la battuta cade.
 
 **Poi non leggere la story.** Indichi la struttura e ti fermi sull'ultima riga.
 
@@ -168,7 +216,7 @@ pubblico non sa che esiste, alla slide 30 la battuta cade.
 
 ---
 
-## Slide 29 — Cosa resta dopo
+## Slide 30 — Cosa resta dopo
 
 *Sullo schermo: l'esecuzione di `DS`, la definition of done, il passaggio di stato in fondo.*
 
@@ -191,7 +239,7 @@ pubblico non sa che esiste, alla slide 30 la battuta cade.
 
 ---
 
-## Slide 30 — Tre reviewer, tre contesti
+## Slide 31 — Tre reviewer, tre contesti
 
 *Sullo schermo: i tre reviewer, poi due blocchi evidenziati che dicono cose opposte.*
 
@@ -222,7 +270,7 @@ Da qui rallenta.
 
 ---
 
-## Slide 31 — Corretto per la story, sbagliato per il progetto
+## Slide 32 — Corretto per la story, sbagliato per il progetto
 
 *Sullo schermo: il triage in quattro caselle, il diff, e la domanda.*
 
@@ -248,7 +296,7 @@ Da qui rallenta.
 
 ---
 
-## Slide 32 — Pitfall e strategie
+## Slide 33 — Pitfall e strategie
 
 *Sullo schermo: due colonne, rossa e verde.*
 
@@ -276,18 +324,23 @@ Da qui rallenta.
 | Tempo | Cosa fai |
 |---|---|
 | 8 min | tutto |
-| 5 min | salti la 26 e la 29, le racconti a voce mentre passi |
-| 3 min | **solo 28, 30, 31**. Il caso lo riassumi in una frase entrando |
+| 5 min | salti la 26 e la 30, le racconti a voce mentre passi |
+| 3 min | **solo 29, 31, 32**. Il caso lo riassumi in una frase entrando |
 
-Il taglio da non fare mai è la 31: senza quella, la 30 resta un bug trovato per fortuna.
+Il taglio da non fare mai è la 32: senza quella, la 31 resta un bug trovato per fortuna.
 
-E **nella versione da 3 minuti la 28 resta**, anche se sembra la più sacrificabile: è quella
-che pianta `no_show` come vincolo di progetto. Senza, la 30 non ha niente da raccogliere e
+E **nella versione da 3 minuti la 29 resta**, anche se sembra la più sacrificabile: è quella
+che pianta `no_show` come vincolo di progetto. Senza, la 31 non ha niente da raccogliere e
 il pubblico deve fidarsi sulla parola.
 
-Nella 28 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa una riga
+Nella 29 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa una riga
 sola — «in mezzo John ha fatto le epiche e Winston l'architettura, con i loro checkpoint» —
-ma `architecture.md` va nominato comunque, altrimenti la 30 non ha su cosa poggiare.
+ma `architecture.md` va nominato comunque, altrimenti la 31 non ha su cosa poggiare.
+
+**La 28 è la prima a cadere sotto i 5 minuti**, ed è una perdita vera ma sopportabile: il
+punto (una decisione va scritta dove tutti la leggono) lo puoi dire in una frase mentre
+passi. Quello che perdi è la prova — la riga nei `persistent_facts` — e il ponte verso il
+capitolo 04.
 
 ---
 

@@ -6,7 +6,7 @@ software. Pubblico aziendale, misto per competenza sull'AI.
 ## File
 
 ```
-oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 40 slide)
+oltre-il-vibe-coding.html          la presentazione (CSS e JS inline, 41 slide)
 oltre-il-vibe-coding.pdf           export statico — non versionato, si rigenera
 CLAUDE.md                          come si lavora sul deck: convenzioni e trappole
 copione-demo.md                    il discorso da dire durante la demo, slide per slide
@@ -35,11 +35,11 @@ per te: non romperla assegnando quei colori ad altro.
 | 00 · Apertura | 1-5 | ~7 min |
 | 01 · Overview dei tool | 6 | ~3 min |
 | 02 · Vibe coding e debito cognitivo | 7-14 | ~12 min |
-| 03 · BMAD | 15-32 | ~21 min, di cui ~8 di demo |
-| 04 · Trasferire conoscenza agli agenti | 33-37 | ~12 min |
-| 05 · Chiusura | 38-40 | ~4 min |
+| 03 · BMAD | 15-33 | ~21 min, di cui ~8 di demo |
+| 04 · Trasferire conoscenza agli agenti | 34-38 | ~12 min |
+| 05 · Chiusura | 39-41 | ~4 min |
 
-Il capitolo 03 sta in 18 slide (15-32), di cui **otto sono la demo** (25-32). Non è più una
+Il capitolo 03 sta in 19 slide (15-33), di cui **nove sono la demo** (25-33). Non è più una
 demo dal vivo: sono slide, quindi il tempo è prevedibile — circa un minuto l'una. Le dieci
 slide che la precedono hanno tredici minuti, quindi vanno tenute veloci.
 
@@ -86,7 +86,7 @@ esistono finché qualcuno non le scrive. Qui c'è il **requisito**; il **meccani
 memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 
 
-## Il capitolo 03, slide per slide (15-32)
+## Il capitolo 03, slide per slide (15-33)
 
 | Slide | Cosa fa |
 |---|---|
@@ -97,8 +97,8 @@ memoria a grafo) arriva nel capitolo 04, quindi non anticiparlo.
 | 23 | i cinque insieme, e la catena di artefatti che si passano |
 | 24 | il diagramma del loop coi checkpoint umani |
 | 25 | il caso della demo: sei sale, il 41%, l'ipotesi |
-| 26-31 | **la demo**, sei momenti: menu · checkpoint · story · artefatti · review · verdetto |
-| 32 | pitfall e strategie, la slide che il pubblico fotografa |
+| 26-32 | **la demo**, sette momenti: menu · checkpoint · **contesto** · story · artefatti · review · verdetto |
+| 33 | pitfall e strategie, la slide che il pubblico fotografa |
 
 La **23** (i cinque insieme) apre la strada al diagramma del loop della **24**, che riassume
 visivamente il giro. La 25 apre la demo con il caso su cui gira tutto il resto del capitolo.
@@ -107,12 +107,17 @@ Le slide su «come ci si parla con un agente» e sui quattro documenti del plann
 tolte: dicevano in astratto quello che la demo, appena dopo, mostra succedere davvero — vedi
 **Cosa è stato tolto dal capitolo 03**.
 
-Il buco che quel taglio lascia è **fra la 27 e la 28**: la demo passa dal product brief di
-Mary a `create-story` senza dire chi ha scritto `epics.md` e `architecture.md`, né cosa si è
-deciso di costruire. Costa caro perché `architecture.md` è il file su cui poggia il finale
-(30-31). Il ponte è ora in cima al terminale della **28**, tre righe grigie: John fa PRD ed
-epiche, Winston l'architettura, ognuno col suo checkpoint. Sono venti secondi parlati, non
-un momento in più della demo — il copione li ha per esteso.
+Quel taglio però lasciava un buco fra la **27** e la story: la demo passava dal product brief
+di Mary a `create-story` senza dire chi avesse scritto `epics.md` e `architecture.md`, né
+cosa si fosse deciso di costruire. Costava caro, perché `architecture.md` è il file su cui
+poggia tutto il finale (**31-32**).
+
+Adesso il buco lo chiudono due cose. La **28** è una slide nuova e mostra il gesto che
+mancava: la decisione presa a voce nel checkpoint della 27 viene tirata fuori dal brief e
+scritta in `project-context.md`, in party mode con John e Winston. Il resto del planning
+(PRD, epiche, architettura) resta fuori scena, riassunto in tre righe grigie in cima al
+terminale della **29** — venti secondi parlati, non un momento in più. Il copione ha
+entrambe per esteso.
 
 La **14** chiude il capitolo 02 con la tesi in una riga: BMAD non aggiunge intelligenza
 all'AI, aggiunge struttura al processo. È la cerniera, non l'apertura del capitolo 03.
@@ -137,6 +142,10 @@ con contesto, planning e le 21 story, `.claude/skills/bmad-agent-*/customize.tom
 
 Se cambi i percorsi, la colonna delle annotazioni va riallineata a mano: è padding di spazi
 dentro un blocco `white-space: pre`, calcolato su 37 caratteri di prefisso.
+
+I primi due posti dell'elenco tornano dal vivo nella **28**: la decisione entra in
+`project-context.md`, e quel file sta nei `persistent_facts` di ogni agente. La 16 dice
+*dove*, la 28 fa vedere *come*. Se sposti una delle due, l'altra perde l'aggancio.
 
 Nota che la slide cita PRD e architettura prima che il pubblico sappia chi li scrive: se in
 prova stona, valuta di spostarla dopo il blocco identikit (17-21), quando John e Winston sono
@@ -200,7 +209,7 @@ sotto Amelia, `bmad-check-implementation-readiness` sotto John e Winston. Se hai
 Sarah, Bob o Quinn in giro, sono di una versione diversa di BMAD: non citarli.
 
 La **23** chiude il blocco degli identikit con la tesi: quello che i cinque si passano è un
-documento, non una conversazione. La demo lo dimostra («cosa resta dopo», slide 29) ed è il
+documento, non una conversazione. La demo lo dimostra («cosa resta dopo», slide 30) ed è il
 ponte verso il capitolo 04, dove il problema diventa che quei documenti non contengono la
 conoscenza che sta fuori dal repo. Non anticiparlo qui.
 
@@ -222,7 +231,7 @@ conoscenza che sta fuori dal repo. Non anticiparlo qui.
   cosa la demo la mostra due slide dopo, sul vero — non serve un'anteprima astratta
 - **«dalla richiesta agli artefatti»** (quattro conversazioni, quattro documenti,
   «la conversazione è usa e getta»): stessa tesi già detta alla 12 e alla 16, e ridimostrata
-  dal vivo dentro la demo («cosa resta dopo», slide 29). Tre ripetizioni della stessa frase
+  dal vivo dentro la demo («cosa resta dopo», slide 30). Tre ripetizioni della stessa frase
   prima del pay-off erano troppe
 
 Se ti servisse recuperarne una, stanno nella storia git (`git log -- oltre-il-vibe-coding.html`).
@@ -240,7 +249,7 @@ La lezione resta valida per il futuro: **i titoli si controllano dopo ogni riord
 verifica va fatta sul titolo dentro `script.slide-notes`, mai sui commenti HTML — quelli
 stanno in coda al blocco precedente (vedi `CLAUDE.md`).
 
-## La demo (slide 25-32)
+## La demo (slide 25-33)
 
 Non è più una demo dal vivo: sono **otto slide** costruite sul materiale di
 `demo-sale-riunioni/`. Niente da far partire in sala, tempo prevedibile, e i momenti
@@ -251,14 +260,15 @@ salienti sono già selezionati.
 | 25 | il caso | sei sale, il 41%, l'ipotesi falsificabile |
 | 26 | attivazione e menu | tre colonne, e la terza è **lo skill che parte**: `CB` → `bmad-product-brief` |
 | 27 | il checkpoint umano | il bivio, poi la classifica tolta e il motivo che **va scritto** |
-| 28 | la story è un contratto | AC numerati, task che citano l'AC — e `no_show` piantato nelle Dev Notes |
-| 29 | cosa resta dopo | `DS`, la definition of done, e lo stato che si muove in `sprint-status.yaml` |
-| 30 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova il buco |
-| 31 | corretto per la story | il triage in quattro bucket, il diff, e «come ti è sfuggito?» |
-| 32 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
+| 28 | la decisione sale nel contesto | party mode con John e Winston: la regola esce dal brief ed entra in `project-context.md` |
+| 29 | la story è un contratto | AC numerati, task che citano l'AC — e `no_show` piantato nelle Dev Notes |
+| 30 | cosa resta dopo | `DS`, la definition of done, e lo stato che si muove in `sprint-status.yaml` |
+| 31 | tre reviewer, tre contesti | Blind / Edge Case / Acceptance Auditor. Uno approva, l'altro trova il buco |
+| 32 | corretto per la story | il triage in quattro bucket, il diff, e «come ti è sfuggito?» |
+| 33 | pitfall e strategie | cinque errori e cinque contromisure, in parallelo |
 
 Il discorso da dire, slide per slide, sta in **[`copione-demo.md`](copione-demo.md)**:
-parole vere, non appunti. Serve soprattutto per le 30-31, dove il ritmo conta.
+parole vere, non appunti. Serve soprattutto per le 31-32, dove il ritmo conta.
 
 Le otto slide sono **in ordine di tempo** e percorrono il loop della 24 invece di
 raccontarlo: parli a un agente, produci una story, la implementi, la fai rivedere. La
@@ -266,9 +276,10 @@ versione precedente spendeva quattro slide sulla fase di analisi e zero su `crea
 `dev-story`, e saltava dalla chat con Mary alla code review senza mostrare cosa c'era in
 mezzo.
 
-**Se devi tagliare**: tieni 28, 30, 31 e 32. La 28 sembra la più sacrificabile e non lo è:
-è quella che pianta `no_show` come vincolo di progetto, e senza di lei la 30 non ha niente
-da raccogliere. Le 26, 27 e 29 si raccontano a voce in un minuto.
+**Se devi tagliare**: tieni 29, 31, 32 e 33. La 29 sembra la più sacrificabile e non lo è:
+è quella che pianta `no_show` come vincolo di progetto, e senza di lei la 31 non ha niente
+da raccogliere. Le 26, 27, 28 e 30 si raccontano a voce in un minuto — la 28 è la prima a
+cadere, e quello che perdi è la prova nei `persistent_facts`.
 
 Le trascrizioni usano il componente `.term`: finestra scura, `white-space: pre`, e la
 classe **`.term-hl`** per la riga su cui deve cadere l'occhio (terracotta) o `.term-hl.olive`
@@ -302,35 +313,35 @@ reale. Il tag della 25 dice «caso di esempio» apposta. La distinzione da fare 
 questa: **il caso è finto, le meccaniche sono vere**. Detta così regge; detta a metà no.
 
 
-## Il capitolo 04, slide per slide (33-37)
+## Il capitolo 04, slide per slide (34-38)
 
 | Slide | Cosa fa |
 |---|---|
-| 33 | il limite che resta: lo stesso loop, col buco del contesto al centro |
-| 34 | l'idea: file di contesto piatto contro grafo navigabile — e le fonti che non stanno nel repo |
-| 35 | gli strumenti: Graphify, llm-wiki, le alternative, più il consiglio |
-| 36 | Graphify in pratica: cosa gli dai in pasto e cosa ti risponde |
-| 37 | il buco riempito: chi legge dal grafo e chi ci scrive |
+| 34 | il limite che resta: lo stesso loop, col buco del contesto al centro |
+| 35 | l'idea: file di contesto piatto contro grafo navigabile — e le fonti che non stanno nel repo |
+| 36 | gli strumenti: Graphify, llm-wiki, le alternative, più il consiglio |
+| 37 | Graphify in pratica: cosa gli dai in pasto e cosa ti risponde |
+| 38 | il buco riempito: chi legge dal grafo e chi ci scrive |
 
-La **34** dice che call, mail e note di corridoio diventano nodi come tutto il resto; la
-**36** lo mostra: quattro `ingest`, una domanda vera («posso cambiare il separatore
+La **35** dice che call, mail e note di corridoio diventano nodi come tutto il resto; la
+**37** lo mostra: quattro `ingest`, una domanda vera («posso cambiare il separatore
 decimale?»), e una risposta che cita quattro fonti di cui tre fuori dal repo. È il pay-off
 del punto piantato alla 13 — le decisioni prese in pausa caffè non esistono finché qualcuno
 non le scrive. Qui qualcuno le scrive in due minuti, e restano interrogabili.
 
-**Il terminale della 36 è ricostruito**, come la demo del capitolo 03. Se qualcuno chiede,
+**Il terminale della 37 è ricostruito**, come la demo del capitolo 03. Se qualcuno chiede,
 dillo.
 
-## La chiusura (slide 38-40)
+## La chiusura (slide 39-41)
 
 | Slide | Cosa fa |
 |---|---|
-| 38 | il conto: cosa guadagni e cosa paghi, due colonne affiancate |
-| 39 | il primo passo, piccolo: cosa fare lunedì mattina |
-| 40 | contatti e domande |
+| 39 | il conto: cosa guadagni e cosa paghi, due colonne affiancate |
+| 40 | il primo passo, piccolo: cosa fare lunedì mattina |
+| 41 | contatti e domande |
 
-La **38** ha sostituito una slide che elencava quattro tesi già dette («Quattro cose»).
-Al suo posto un bilancio a due colonne, con lo stesso componente `.pf-grid` della **31**:
+La **39** ha sostituito una slide che elencava quattro tesi già dette («Quattro cose»).
+Al suo posto un bilancio a due colonne, con lo stesso componente `.pf-grid` della **32**:
 oliva a sinistra, terracotta a destra.
 
 | Cosa guadagni | Cosa paghi |
@@ -343,7 +354,7 @@ I due «guadagni» in cima chiudono le promesse dei capitoli 01 e 02; il terzo �
 del 04. I tre costi sono veri e vanno detti: **una chiusura che vende solo il lato buono
 perde la sala che ha già provato e si è scottata**. La morale del parlato è che il conto
 torna quando il lavoro è abbastanza grande da doverlo ricordare — ed è la rampa per la
-**39**, che chiede un passo piccolo.
+**40**, che chiede un passo piccolo.
 
 Da lasciare proiettata durante il Q&A.
 
@@ -398,18 +409,18 @@ I segnaposto sono tra parentesi quadre `[così]` o in riquadri tratteggiati colo
   prova sfori, togli una o due delle cinque righe di **Cosa fa**, sono le più comprimibili.
   **Verifica i comandi** `/bmad-agent-*` nei badge «Esempio»: solo `bmad-agent-dev` è
   confermato dalle trascrizioni, gli altri quattro sono la convenzione standard
-- **slide 35** — Graphify, llm-wiki e le alternative: resta da confermare lo **stato di
+- **slide 36** — Graphify, llm-wiki e le alternative: resta da confermare lo **stato di
   maturità** dei primi due, e il `[X]` del consiglio finale
-- **slide 36** — il caso di Graphify in pratica è **ricostruito**: se hai una sessione vera,
+- **slide 37** — il caso di Graphify in pratica è **ricostruito**: se hai una sessione vera,
   sostituisci le righe del terminale
-- **slide 39** — link e QR code
-- **slide 40** — nome e contatto interno
+- **slide 40** — link e QR code
+- **slide 41** — nome e contatto interno
 
 ## La slide da curare
 
 La **24** (il loop BMAD) è quella che regge il talk. Compare tre volte con lo stesso disegno
-e centro diverso: completa (24), con il buco del contesto mancante (33), col grafo che lo
-riempie (37). Il richiamo funziona perché il resto dell'immagine è identico — se ne modifichi
+e centro diverso: completa (24), con il buco del contesto mancante (34), col grafo che lo
+riempie (38). Il richiamo funziona perché il resto dell'immagine è identico — se ne modifichi
 una, modificale tutte e tre.
 
 Se puoi, costruiscila in build progressive: prima il ciclo, poi i quattro checkpoint che si
