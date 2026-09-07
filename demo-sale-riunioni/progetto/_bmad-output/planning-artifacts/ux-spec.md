@@ -1,4 +1,4 @@
-# Spec UX — SaleRiunioni
+# Spec UX — Liberazione automatica
 
 Autrice: Sally (UX Designer) · Input: `prd.md`
 Revisione umana: Giulio, 2026-08-26
@@ -11,79 +11,114 @@ braccio e ho una mano sola libera. Devo trovare una sala **adesso**.
 Tutto il resto del design serve questo momento. Se funziona qui, funziona anche
 per chi prenota con calma il martedì per il giovedì.
 
-## Flusso principale — trova e prenota
+## Cosa c'è già, e non si tocca
 
-Una schermata sola. Nessun wizard, nessun passo intermedio.
+La pagina «sala libera adesso» esiste dal 2022 e funziona. Non la ridisegno: due
+gesti nuovi dentro qualcosa che le persone conoscono valgono più di una schermata
+nuova che devono imparare.
 
 ```
 ┌────────────────────────────────────────────────┐
 │  Quando   [ ora ▾ ]   Per quanto  [ 1h ▾ ]     │
 │  Quante persone  [ 4 ]                         │
 ├────────────────────────────────────────────────┤
-│  ● Sala Verde      4 posti   11:00-12:00  [Prenota] │
-│  ● Sala Arancio    6 posti   11:00-12:00  [Prenota] │
-│  ○ Sala Grande    12 posti   libera 11:30  [Prenota] │
+│  ● Sala Verde      4 posti   libera adesso     │
+│  ● Sala Arancio    6 posti   libera adesso     │
+│  ○ Sala Grande    12 posti   libera 11:30      │
 └────────────────────────────────────────────────┘
 ```
 
-I default fanno il lavoro: **ora**, **un'ora**, **il numero di partecipanti
-dell'ultima prenotazione**. Chi ha fretta preme un solo bottone.
+Quello che cambia è **cosa mostra**: da adesso in poi ci compaiono dentro anche le
+sale che il sistema ha liberato da solo. Non serve nessuna etichetta «liberata
+automaticamente»: a chi cerca una sala non interessa perché è libera.
 
-L'ordinamento è per capienza crescente sopra il richiesto: chi cerca per 4 non
-deve vedere prima la sala da 12. Occupare una sala grande in 2 è l'altro modo di
-sprecare capacità.
+## Il display di sala
 
-## Stati da progettare, non da improvvisare
-
-| Stato | Cosa vede l'utente |
-|---|---|
-| Nessuna sala libera | «Niente libero alle 11. Alle 11:30 si liberano 2 sale.» con bottone per spostarsi |
-| Sala presa mentre decidevo | «La Sala Verde è appena stata presa.» La lista si aggiorna da sola, la riga sparisce con una transizione, non con un salto |
-| Prima volta che entro | Nessun onboarding. La schermata è già utilizzabile, si impara usandola |
-| Errore di rete | La lista resta visibile in grigio con «Dati di 30 secondi fa». Non si svuota mai lo schermo |
-
-Lo stato «sala presa mentre decidevo» è quello che di solito nessuno progetta ed
-è quello che fa perdere fiducia nello strumento.
-
-## Check-in
-
-Il check-in non è una schermata: è una **riga in cima alla stessa pagina**, che
-compare all'ora di inizio.
+Il tasto di check-in vive sul display fuori dalla porta, non nella web app.
 
 ```
 ┌────────────────────────────────────────────────┐
-│  Sei in Sala Verde?   [ Sì, sono qui ]         │
+│  SALA VERDE                                    │
+│  Allineamento settimanale · 11:00-12:00        │
+│                                                │
+│         [        Sono qui        ]             │
+│                                                │
 │  Altrimenti la libero alle 11:10               │
 └────────────────────────────────────────────────┘
 ```
 
-Un bottone, una frase che dice cosa succede se non lo premi. Il countdown non si
-mostra a cifre che scorrono: crea ansia e non serve, l'orario esatto basta.
+Tre scelte, e tutte e tre discendono dalla scena:
+
+**Un bottone solo, nessun login.** Chi è in sala ha già la sala. Chiedergli le
+credenziali su un tablet appeso al muro è un attrito che fa fallire la funzione:
+se il check-in è scomodo nessuno lo fa, e liberiamo sale piene di gente.
+
+**Il testo dice cosa succede se non premi.** Non «conferma la presenza», ma
+«altrimenti la libero alle 11:10». Una funzione che agisce da sola annuncia prima
+cosa farà.
+
+**Niente countdown a cifre che scorrono.** Crea ansia e non aggiunge niente:
+l'orario esatto basta. Il PRD parla di minuto 8 e minuto 10, ma quelli sono
+numeri per chi implementa.
+
+**Il display non mostra il nome di chi ha prenotato.** Mostra il titolo della
+riunione. È la regola di prodotto in `project-context.md`, ed è anche buon senso:
+il display sta in corridoio e lo legge chiunque passi.
+
+## Stati da progettare, non da improvvisare
+
+| Stato | Cosa vede la persona |
+|---|---|
+| Nessuna sala libera | «Niente libero alle 11. Alle 11:30 si liberano 2 sale.» con bottone per spostarsi |
+| Sala liberata mentre guardavo | La riga compare con una transizione, non con un salto |
+| Display senza rete | Il tocco resta in coda e parte alla riconnessione, con l'ora del tocco e non quella dell'invio |
+| Check-in in ritardo | Il tasto funziona anche dopo i 10 minuti: la finestra riguarda la liberazione, non il diritto di entrare in sala |
+| Prima volta | Nessun onboarding. Si impara usando |
+
+Il display senza rete è quello che di solito nessuno progetta ed è quello che fa
+perdere fiducia: un tocco perso produce una persona a cui hanno dato via la sala
+mentre ci stava dentro. Quella persona non usa più lo strumento, e ha ragione.
+
+## Dove deve risultare libera una sala liberata
+
+Tre posti, e vanno detti tutti e tre perché è facile ricordarne solo uno:
+
+1. Il display fuori dalla porta
+2. La pagina «sala libera adesso»
+3. **Il calendario di Outlook**
+
+Il terzo è quello che conta di più e quello che si dimentica sempre, perché non è
+una nostra schermata. Se la sala torna libera solo da noi, chiunque la cerchi dal
+calendario — cioè la maggior parte delle persone — continua a vederla occupata, e
+avremmo liberato una sala che nessuno riesce a prendere.
+
+Questo è un vincolo, non una nota.
 
 ## Accessibilità
 
-- Tutto raggiungibile da tastiera, ordine di tab uguale all'ordine visivo
-- Il bottone «Prenota» ha come label accessibile «Prenota Sala Verde 11:00-12:00»,
-  non «Prenota»: chi usa uno screen reader sente le righe fuori contesto
+- Il display si usa con un tocco solo, senza istruzioni sullo schermo
+- Area del tasto grande almeno 44×44 mm reali: si preme camminando, con una mano
+  sola, spesso senza guardare
 - Contrasto AA su tutti i testi, stato libera/occupata mai affidato al solo colore
   (c'è il pallino pieno o vuoto)
-- Nessuna animazione sopra i 200 ms, e tutte disattivate con `prefers-reduced-motion`
+- Tutto raggiungibile da tastiera nella web app, ordine di tab uguale a quello visivo
+- Nessuna animazione sopra i 200 ms, tutte disattivate con `prefers-reduced-motion`
 
 ## Cosa passo a Winston
 
 Tre vincoli che l'architettura deve reggere:
 
-1. La lista si aggiorna da sola mentre la guardo (la riga che sparisce non è un
-   dettaglio estetico: è come si evita la doppia prenotazione percepita)
-2. Il check-in deve funzionare dal telefono senza installare niente e senza login
-   aggiuntivo: link firmato in mail, oppure la stessa web app già autenticata
-3. La prenotazione deve fallire in modo esplicito e leggibile se qualcuno arriva
-   prima: l'utente deve capire *cosa* è successo, non vedere un errore generico
+1. La sala liberata deve risultare libera **anche su Outlook**, e sulle serie
+   ricorrenti questo vale per la singola occorrenza: la ricorrenza non si tocca
+2. Il display deve poter accodare un tocco e inviarlo dopo, con l'ora del tocco
+3. La lista si aggiorna da sola mentre la guardo: la riga che compare non è un
+   dettaglio estetico, è come si evita che due persone corrano sulla stessa sala
 
 ---
 
 **Nota del revisore umano (Giulio):** avevo chiesto anche una vista a calendario
-settimanale. Sally l'ha disegnata e poi mi ha convinto a toglierla: nel momento
-delle 10:58 non serve a niente, e per chi prenota in anticipo Outlook c'è già.
-Tolta dal primo rilascio, tracciata nell'epic 2. Questa è la volta in cui
-l'agente ha avuto ragione e io torto.
+settimanale nella web app. Sally l'ha disegnata e poi mi ha convinto a toglierla:
+nel momento delle 10:58 non serve a niente, e per chi prenota in anticipo Outlook
+c'è già — ed è dove si prenota comunque, visto che il nostro servizio non prenota
+di proposito. Tolta e tracciata. Questa è la volta in cui l'agente ha avuto
+ragione e io torto.
