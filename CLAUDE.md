@@ -133,9 +133,19 @@ decorative, 2.35, identiche al deck di riferimento.
 
 ### 9. Le chiavi dell'editor sono posizionali
 
-`data-edit-key="sN-eM"` dipende dalla posizione della slide. Dopo ogni riordino **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v23`), altrimenti vecchi testi
-salvati atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato a caso.
+`data-edit-key="sN-eM"` dipende dalla posizione. **Le chiavi scritte nell'HTML non contano**:
+`editor.init()` le riassegna a runtime come `s{indice slide}-e{indice elemento}`, scorrendo
+in ordine di DOM gli elementi che matchano `EDITABLE_SELECTOR`. Quindi **togliere o
+aggiungere anche un solo elemento editabile sposta tutti quelli dopo**.
+
+Dopo ogni cambio del numero o dell'ordine degli elementi editabili di una slide **alza la
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v24`), altrimenti i testi
+salvati nel browser atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato
+a caso.
+
+Vale anche per una modifica piccola: è già successo togliendo due elementi dalla slide dei
+link, e la slide è tornata su con dentro testi di tre versioni diverse. Il sintomo è
+inconfondibile — testo che nel file non esiste più. Se capita, alza la chiave e ricarica.
 
 ---
 

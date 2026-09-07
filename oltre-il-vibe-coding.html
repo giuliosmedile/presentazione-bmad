@@ -2766,8 +2766,11 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
         <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s39-e8">●</span><span data-edit-key="s39-e9">LLM Wiki:&nbsp;<strong>https://shorturl.at/54HlP</strong></span></div>
       </div>
     </div>
-    <div class="image-frame anim-4" style="max-width:320px;">
-      <img src="assets/qrcode.png" alt="QR code con il link alle slide e al materiale del talk." class="slide-image" style="background:#fff;padding:12px;max-height:min(34vh,250px);">
+    <div class="image-frame anim-4" style="max-width:360px;">
+      <!-- Il PNG non ha quiet zone: il nero tocca il bordo. Il padding bianco
+           è il margine che lo rende scansionabile (lo standard chiede 4 moduli,
+           qui ~3,5 a piena altezza). Non toglierlo. -->
+      <img src="assets/qrcode.png" alt="QR code con il link alle slide e al materiale del talk." class="slide-image" style="background:#fff;padding:clamp(16px,2.2vw,26px);box-sizing:border-box;border-radius:4px;max-height:min(38vh,300px);">
     </div>
     <p class="subtitle anim-4" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s39-e10">Slide, materiale e contatti. <strong>Sono a disposizione</strong> per chi vuole provarci su un progetto vero.</p>
     <script type="application/json" class="slide-notes">
@@ -2940,10 +2943,13 @@ var EDITABLE_SELECTOR = [
 
 var editor = {
   isActive: false,
-  // v4: le chiavi dipendono dalla posizione della slide. Ogni volta che
-  // l'ordine cambia (qui: hook spostati in apertura, setup rimosso) serve
-  // una chiave nuova, o vecchi testi finirebbero sugli elementi sbagliati.
-  storageKey: 'oltre-il-vibe-coding-edits-v23',
+  // Le chiavi dipendono dalla POSIZIONE: init() le riassegna a runtime come
+  // s{slide}-e{indice}, quindi togliere o aggiungere un elemento editabile
+  // sposta tutto quello che viene dopo. Ogni volta che cambia il numero o
+  // l'ordine degli elementi editabili di una slide serve una chiave nuova,
+  // altrimenti i testi salvati nel browser atterrano sugli elementi
+  // sbagliati (v24: tolti due elementi dalla slide dei link).
+  storageKey: 'oltre-il-vibe-coding-edits-v24',
   fields: [],
 
   init: function() {
