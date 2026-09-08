@@ -1,7 +1,9 @@
 # Copione della demo — SaleRiunioni
 
-Slide **25-33** del deck (quelle che sul contatore in basso a destra fanno 25/41 → 33/41).
-Nove slide, otto minuti scarsi.
+Slide **24-32** del deck, su 40. Nove slide, otto minuti scarsi.
+
+(Il numero di pagina in basso a destra non c'è più: per ritrovarti usa la barra
+di avanzamento, la demo sta fra il 60% e l'80%.)
 
 ---
 
@@ -17,36 +19,36 @@ calendari delle sale da Outlook, accende i sei display fuori dalle porte, tiene 
 Quello che arriva è una feature nuova su un codice che ha quattro anni e nessun autore
 reperibile — cioè la situazione in cui è il pubblico lunedì mattina.
 
-**La demo percorre il loop della slide 24 invece di raccontarlo.** Nove slide in ordine di
+**La demo percorre il loop della slide 23 invece di raccontarlo.** Nove slide in ordine di
 tempo: parli a un agente, fissi quello che avete deciso, produci una story, la implementi,
 la fai rivedere.
 
 | Slide | Cosa succede | Chi |
 |---|---|---|
-| 25 | il caso | — |
-| 26 | attivazione e menu | Mary |
-| 27 | la feature rimandata al problema | Mary |
-| 28 | la decisione sale nel contesto | Mary → John + Winston |
-| 29 | la story nasce, e pianta il vincolo | Amelia `CS` |
-| 30 | la story viene implementata | Amelia `DS` |
-| 31 | tre reviewer, tre contesti | Amelia `CR` |
-| 32 | il verdetto contraddittorio | Amelia `CR` |
-| 33 | pitfall e strategie | — |
+| 24 | il caso | — |
+| 25 | attivazione e menu | Mary |
+| 26 | la feature rimandata al problema | Mary |
+| 27 | la decisione sale nel contesto | Mary → John + Winston |
+| 28 | la story nasce, e pianta il vincolo | Amelia `CS` |
+| 29 | la story viene implementata | Amelia `DS` |
+| 30 | tre reviewer, tre contesti | Amelia `CR` |
+| 31 | il verdetto contraddittorio | Amelia `CR` |
+| 32 | pitfall e strategie | — |
 
 **La demo ha due metà, e servono a due cose diverse.**
 
-La prima (26-30) risponde alla domanda pratica che si stanno facendo tutti: *ma come ci si
+La prima (25-29) risponde alla domanda pratica che si stanno facendo tutti: *ma come ci si
 parla, a 'sta roba, e cosa mi resta in mano dopo?* Vedono il menu, vedono un agente che
 rimanda indietro una feature invece di partire a scriverla, vedono una decisione presa a
 voce finire in un file che tutti gli agenti leggono, e vedono dove finisce il lavoro quando
 chiudi il portatile.
 
-La seconda (31-32) è il motivo per cui la demo esiste. È il processo che becca un difetto
+La seconda (30-31) è il motivo per cui la demo esiste. È il processo che becca un difetto
 che nessun test avrebbe preso. Fin lì hai raccontato un metodo ordinato; da lì dimostri che
 l'ordine serve a qualcosa.
 
-**Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 29 non
-tagliarla: è quella che pianta il vincolo che la 31 raccoglie. Senza, la 31 è un colpo di
+**Se ti resta poco tempo taglia dalla prima metà, mai dalla seconda.** Ma la 28 non
+tagliarla: è quella che pianta il vincolo che la 30 raccoglie. Senza, la 30 è un colpo di
 fortuna.
 
 ---
@@ -74,7 +76,7 @@ nostro.
 
 ---
 
-## Slide 25 — Il caso
+## Slide 24 — Il caso
 
 *Sullo schermo: tre numeri grandi. 2022, 41%, 6.*
 
@@ -100,12 +102,12 @@ nostro.
 > menu, la review, gli stati — sono quelle vere, prese da un'installazione che gira su un
 > progetto nostro.
 
-**Non spiegare adesso perché contano i display.** Si pagano da soli alla 31, e se lo
-anticipi qui la 31 diventa una conferma invece che una scoperta.
+**Non spiegare adesso perché contano i display.** Si pagano da soli alla 30, e se lo
+anticipi qui la 30 diventa una conferma invece che una scoperta.
 
 ---
 
-## Slide 26 — Attivazione e menu
+## Slide 25 — Attivazione e menu
 
 *Sullo schermo: il terminale con l'attivazione di Mary e il menu a tre colonne.*
 
@@ -129,7 +131,7 @@ altri agenti leggeranno.
 
 ---
 
-## Slide 27 — Ti ho chiesto una feature. Lei chiede il problema
+## Slide 26 — Ti ho chiesto una feature. Lei chiede il problema
 
 *Sullo schermo: il bivio in mezzo, e in fondo il blocco verde oliva.*
 
@@ -168,7 +170,7 @@ Venti secondi in più qui.
 
 ---
 
-## Slide 28 — La decisione sale nel contesto
+## Slide 27 — La decisione sale nel contesto
 
 *Sullo schermo: la conferma in alto, poi party mode con due agenti, e in fondo il riquadro
 verde con la riga scritta in `project-context.md`.*
@@ -212,7 +214,7 @@ riga che pianta tutto il finale.
 `persistent_facts = ["file:{project-root}/**/project-context.md"]`, identica per tutti e sei
 gli agenti.
 
-**Se hai due secondi**, aggancia la slide 16: sono i quattro posti dove una decisione si
+**Se hai due secondi**, aggancia la slide 15: sono i quattro posti dove una decisione si
 deposita, e questo è il secondo.
 
 **Questa slide è anche il ponte verso il capitolo 04.** Qui il contesto è un file che tutti
@@ -220,7 +222,7 @@ leggono; nel capitolo 04 il problema diventa che un file solo non basta.
 
 ---
 
-## Slide 29 — La story è un contratto
+## Slide 28 — La story è un contratto
 
 *Sullo schermo: tre righe grigie in cima al terminale, poi la story appena creata con
 l'ultima riga evidenziata.*
@@ -268,7 +270,7 @@ questa story.
 
 ---
 
-## Slide 30 — Cosa resta dopo
+## Slide 29 — Cosa resta dopo
 
 *Sullo schermo: l'esecuzione di `DS`, la riga del display scritta a mano, la definition of
 done, il passaggio di stato in fondo.*
@@ -301,11 +303,11 @@ done, il passaggio di stato in fondo.*
 > a muoverlo è il workflow.
 
 **Il task 5 va letto, non sottolineato.** Se lo annunci come indizio, il pubblico capisce
-che c'è una trappola e la 31 perde la sorpresa. Leggilo come una cosa normale, perché lo è.
+che c'è una trappola e la 30 perde la sorpresa. Leggilo come una cosa normale, perché lo è.
 
 ---
 
-## Slide 31 — Tre reviewer, tre contesti
+## Slide 30 — Tre reviewer, tre contesti
 
 *Sullo schermo: i tre reviewer, poi due blocchi evidenziati che dicono cose opposte.*
 
@@ -343,7 +345,7 @@ righe fa più effetto di qualunque frase tu possa dire adesso.
 
 ---
 
-## Slide 32 — Corretto per la story, sbagliato per il progetto
+## Slide 31 — Corretto per la story, sbagliato per il progetto
 
 *Sullo schermo: il triage in quattro caselle, il diff, il prima/dopo sullo schermo, la
 domanda.*
@@ -385,7 +387,7 @@ quello che quella classe esiste.
 
 ---
 
-## Slide 33 — Pitfall e strategie
+## Slide 32 — Pitfall e strategie
 
 *Sullo schermo: due colonne, rossa e verde, sei voci per parte.*
 
@@ -418,13 +420,13 @@ quello che quella classe esiste.
 | Tempo | Cosa fai |
 |---|---|
 | 8 min | tutto |
-| 5 min | salti la 26 e la 30, le racconti a voce mentre passi |
+| 5 min | salti la 25 e la 29, le racconti a voce mentre passi |
 | 3 min | **solo 29, 31, 32**. Il caso lo riassumi in una frase entrando |
 
-Il taglio da non fare mai è la 32: senza quella, la 31 resta un difetto trovato per fortuna.
+Il taglio da non fare mai è la 31: senza quella, la 30 resta un difetto trovato per fortuna.
 
-E **nella versione da 3 minuti la 29 resta**, anche se sembra la più sacrificabile: è quella
-che pianta il vincolo sui display. Senza, la 31 non ha niente da raccogliere e il pubblico
+E **nella versione da 3 minuti la 28 resta**, anche se sembra la più sacrificabile: è quella
+che pianta il vincolo sui display. Senza, la 30 non ha niente da raccogliere e il pubblico
 deve fidarsi sulla parola.
 
 Nella 29 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa una riga sola
@@ -433,11 +435,11 @@ Nella 29 il pezzo che si comprime è il ponte, non la story. A 3 minuti diventa 
 
 **La 28 è la prima a cadere sotto i 5 minuti**, ed è una perdita vera: perdi la prova (la
 riga nei `persistent_facts`), il ponte verso il capitolo 04, e soprattutto la riga di Winston
-che nomina i display. Se la tagli, quella riga va detta comunque entrando nella 29: «e nel
+che nomina i display. Se la tagli, quella riga va detta comunque entrando nella 28: «e nel
 progetto c'è già una regola sui display, dal 2022, che nessuno di loro ha scritto».
 
-Se salti la 30, il fatto che il dev abbia scritto il testo a mano va detto a voce entrando
-nella 31: senza, la risposta di Amelia alla 32 non ha appiglio.
+Se salti la 29, il fatto che il dev abbia scritto il testo a mano va detto a voce entrando
+nella 30: senza, la risposta di Amelia alla 31 non ha appiglio.
 
 ---
 

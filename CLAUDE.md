@@ -12,7 +12,7 @@ Presentazione «**Oltre il vibe coding**», talk aziendale in **italiano**, 60 m
 pubblico misto per competenza sull'AI. Tesi: il problema non è l'AI, è l'assenza di processo;
 BMAD dà la struttura, la memoria a grafo dà il contesto.
 
-File principale: **`oltre-il-vibe-coding.html`** — 41 slide, ~3100 righe, CSS e JS inline,
+File principale: **`oltre-il-vibe-coding.html`** — 40 slide, ~3100 righe, CSS e JS inline,
 zero dipendenze a runtime tranne i font Google. Generato in origine con lo skill
 `html-slides` (plugin 0.9.4), ma ormai è divergente: **non rigenerarlo dallo skill**,
 si modifica a mano.
@@ -123,8 +123,8 @@ Per il testo scorrevole usa flusso normale + `::before` in `position:absolute`.
 `--color-accent` (#c67139) regge solo nel testo grande. Per etichette piccole scendi a
 `--color-accent-700`. Sotto 3:1 in proiezione spariscono.
 
-L'unica eccezione tollerata è `.np-buttons` (le iconcine `− □ ×` della finestra Blocco note):
-decorative, 2.35, identiche al deck di riferimento.
+(L'eccezione tollerata era `.np-buttons` della finestra Blocco note: quelle due slide
+non ci sono più, e con loro il CSS.)
 
 ### 8. Il font emoji va prima del generico
 
@@ -139,7 +139,7 @@ in ordine di DOM gli elementi che matchano `EDITABLE_SELECTOR`. Quindi **toglier
 aggiungere anche un solo elemento editabile sposta tutti quelli dopo**.
 
 Dopo ogni cambio del numero o dell'ordine degli elementi editabili di una slide **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v25`), altrimenti i testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v26`), altrimenti i testi
 salvati nel browser atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato
 a caso.
 
@@ -176,7 +176,7 @@ Da eseguire nella console del browser dopo ogni modifica, a **1440×900 e 1024×
 })()
 ```
 
-Atteso: `overflow: []`, `count: 41`, `seq: true`, `active: 1`, `notes: true`, `immagini: true`.
+Atteso: `overflow: []`, `count: 40`, `seq: true`, `active: 1`, `notes: true`, `immagini: true`.
 
 **Importante**: `finish()` sulle animazioni prima di misurare. Senza, misuri a metà
 transizione e i numeri sono spazzatura — è già successo (nodi larghi 31px invece di 104).
@@ -221,7 +221,7 @@ in fondo a `:root`. I componenti vecchi li usano ancora; funzionano, non serve m
 |---|---|
 | `.term` + `.term-body` | terminale simulato, `pre`, con `.term-hl` per la riga chiave |
 | `.term-take` | fascia sotto il terminale con la morale (Strategia / Capacità / Pitfall / La tesi) |
-| `.code-window` / `.np-window` | blocco codice scuro / finestra Blocco note chiara |
+| `.code-window` | blocco codice scuro |
 | `.loop-diagram.quad` | anello a 4 nodi con checkpoint, in 3 varianti |
 | `.sev-decision/-patch/-defer/-dismiss` | i 4 bucket del triage di `bmad-code-review` |
 | `.idkit` | identikit degli agenti BMAD |
@@ -231,8 +231,8 @@ in fondo a `:root`. I componenti vecchi li usano ancora; funzionano, non serve m
 
 ### Il diagramma del loop
 
-Compare **tre volte** con lo stesso disegno e centro diverso: completo (slide 24 del
-contatore), col buco del contesto (34), col grafo che lo riempie (38). Il richiamo funziona
+Compare **tre volte** con lo stesso disegno e centro diverso: completo (slide 23 del
+contatore), col buco del contesto (33), col grafo che lo riempie (37). Il richiamo funziona
 solo se il resto è identico: **se ne modifichi uno, modificali tutti e tre**.
 
 Geometria: cerchio r=140 in viewBox 400×400, nodi a -90°/0°/90°/180° (`left/top` 50%/15%,
@@ -300,7 +300,7 @@ Idee rimaste in sospeso, mai implementate:
 ## File del repo
 
 ```
-oltre-il-vibe-coding.html   il deck (41 slide)
+oltre-il-vibe-coding.html   il deck (40 slide)
 copione-demo.md             il discorso parlato della demo, slide per slide
 README.md                   struttura del talk, contenuti, da-riempire
 CLAUDE.md                   questo file
