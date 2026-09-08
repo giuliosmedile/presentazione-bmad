@@ -1006,8 +1006,24 @@ body.editing [contenteditable="true"]:focus {
 .pf-item::before { content: '—'; position: absolute; left: 0; opacity: 0.5; }
 .pf-item strong { font-weight: 700; color: inherit; }
 
+/* Le trascrizioni piu' lunghe (la slide del bivio e quella della story) non
+   ci stanno sotto i ~1020px di altezza, e siccome .term ha overflow:hidden il
+   flex le comprime e taglia le ultime righe **senza dirlo**: niente scrollbar,
+   niente errore, il testo semplicemente non c'e'. Due livelli, perche' a 1000px
+   mancano 20px e a 830 ne mancano 170.
+   Il caso che conta: 1920x1080 proiettato al 130% fa un viewport di 1477x831. */
+@media (max-height: 1020px) {
+  .term-body { font-size: clamp(10px, 0.82vw, 12px); line-height: 1.52; padding: 15px 20px; }
+  .term-hl { padding: 4px 11px; margin: 4px 0 4px -11px; }
+}
+@media (max-height: 920px) {
+  .term-body { font-size: clamp(9px, 0.76vw, 11px); line-height: 1.44; padding: 13px 18px; }
+  .term-hl { padding: 3px 10px; margin: 3px 0 3px -10px; }
+  .term-bar { padding: 8px 16px; }
+  .term-take { margin-top: 8px; font-size: clamp(11px, 1vw, 14px); }
+}
 @media (max-height: 700px) {
-  .term-body { line-height: 1.5; padding: 12px 16px; }
+  .term-body { line-height: 1.4; padding: 12px 16px; }
 }
 @media (max-height: 600px) {
   .term-body { font-size: clamp(8px, 0.78vw, 10.5px); line-height: 1.42; padding: 10px 14px; }

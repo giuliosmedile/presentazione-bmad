@@ -131,7 +131,26 @@ non ci sono più, e con loro il CSS.)
 `monospace` intercetta ogni carattere e uccide il fallback. Nella stack:
 `'JetBrains Mono', 'Segoe UI Emoji', …, ui-monospace, monospace`.
 
-### 9. Le chiavi dell'editor sono posizionali
+### 9. Il `.term` taglia il testo in silenzio, e i bordi della slide non lo dicono
+
+`.slide` è un flex column con `overflow: hidden`, e `.term` non ha altezza massima: quando
+la trascrizione non ci sta, **il flex comprime il terminale** e siccome anche `.term` ha
+`overflow: hidden` le ultime righe spariscono. Niente scrollbar, niente errore in console,
+nessuno sforamento dai bordi della slide: il testo semplicemente non c'è.
+
+Il controllo che misura `getBoundingClientRect()` dei figli **non lo vede**, perché il
+contenuto è già stato clippato. Serve confrontare `scrollHeight` con l'altezza reale del
+contenitore — è la riga `tagliati` nel giro di verifica.
+
+È rimasto nascosto a lungo perché si verificava solo a 1440×900 e 1024×576: a 900 il taglio
+c'era (13px sulla slide del bivio) ma nessuno lo misurava, e a 576 le media query più strette
+lo coprivano. È saltato fuori proiettando a 1920×1080 al 130%, cioè un viewport di 1477×831,
+dove mancavano 168px — otto righe.
+
+Le compattazioni delle trascrizioni stanno in due livelli, `max-height: 1020px` e `920px`,
+prima di quelle storiche a 700/600/500.
+
+### 10. Le chiavi dell'editor sono posizionali
 
 `data-edit-key="sN-eM"` dipende dalla posizione. **Le chiavi scritte nell'HTML non contano**:
 `editor.init()` le riassegna a runtime come `s{indice slide}-e{indice elemento}`, scorrendo
@@ -151,11 +170,12 @@ inconfondibile — testo che nel file non esiste più. Se capita, alza la chiave
 
 ## Il giro di verifica
 
-Da eseguire nella console del browser dopo ogni modifica, a **1440×900 e 1024×576**.
+Da eseguire nella console del browser dopo ogni modifica, a **1477×831** (il caso vero:
+1920×1080 proiettato al 130%), **1440×900** e **1024×576**.
 
 ```javascript
 (() => {
-  const sl=[...document.querySelectorAll('.slide')], over=[];
+  const sl=[...document.querySelectorAll('.slide')], over=[], tagliati=[];
   sl.forEach((s,i)=>{
     goTo(i); document.getAnimations().forEach(a=>{try{a.finish()}catch(e){}});
     const sr=s.getBoundingClientRect(); let top=Infinity,bot=-Infinity;
@@ -166,9 +186,14 @@ Da eseguire nella console del browser dopo ogni modifica, a **1440×900 e 1024×
       top=Math.min(top,r.top); bot=Math.max(bot,r.bottom);});
     const a=Math.round(sr.top-top), b=Math.round(bot-sr.bottom);
     if(a>2||b>2) over.push({i,sopra:a,sotto:b});
+    // Contenuto compresso DENTRO un contenitore con overflow:hidden.
+    // Non si vede dai bordi della slide: va misurato a parte.
+    s.querySelectorAll('.term,.code-window,.pf-grid').forEach(c=>{
+      const d=c.scrollHeight-Math.round(c.getBoundingClientRect().height);
+      if(d>2) tagliati.push({i,el:c.className.split(' ')[0],nascosti:d});});
   });
   goTo(0);
-  return {overflow:over, count:sl.length,
+  return {overflow:over, tagliati, count:sl.length,
     seq:sl.every((s,i)=>s.dataset.slide===String(i)),
     active:document.querySelectorAll('.slide.active').length,
     notes:sl.every(s=>{try{JSON.parse(s.querySelector('script.slide-notes').textContent);return true}catch(e){return false}}),
@@ -176,7 +201,8 @@ Da eseguire nella console del browser dopo ogni modifica, a **1440×900 e 1024×
 })()
 ```
 
-Atteso: `overflow: []`, `count: 40`, `seq: true`, `active: 1`, `notes: true`, `immagini: true`.
+Atteso: `overflow: []`, **`tagliati: []`**, `count: 40`, `seq: true`, `active: 1`,
+`notes: true`, `immagini: true`.
 
 **Importante**: `finish()` sulle animazioni prima di misurare. Senza, misuri a metà
 transizione e i numeri sono spazzatura — è già successo (nodi larghi 31px invece di 104).
