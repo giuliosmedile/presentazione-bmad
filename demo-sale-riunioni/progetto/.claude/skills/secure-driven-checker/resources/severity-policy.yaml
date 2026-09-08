@@ -1,0 +1,59 @@
+# Severity policy for secure-driven-checker v2
+#
+# Order (low -> high): INFO < WARNING < CRITICAL < BLOCKER
+#
+# Resolution order, first match wins:
+#   1. id_overrides
+#   2. tipo_overrides (Requisito vs Raccomandazione)
+#   3. category_defaults (by `ambito` resolved at parse time)
+#   4. default_severity
+
+default_severity: WARNING
+
+# By document attribute `Tipo`
+tipo_overrides:
+  Raccomandazione: INFO       # downgraded by default; can be promoted via id_overrides
+
+# By document attribute `Ambito` (extracted from the source document)
+category_defaults:
+  "Interoperabilità tecnica":        CRITICAL
+  "Sicurezza dell'interoperabilità": BLOCKER     # HTTPS/TLS/protocol allow-list
+  "Trattamento dei dati":            CRITICAL    # Privacy
+  "Metodologia":                     INFO        # process / UX
+  "Uncategorized":                   WARNING
+
+# Per-requirement overrides (highest priority).
+# Use when the default by category does not capture the real impact of the requirement.
+id_overrides:
+
+  # ----- Sicurezza dell'interoperabilità (par.3) -----
+  R534: BLOCKER   # HTTPS obbligatorio
+  R535: WARNING   # "dovrebbero" usare SOAP e REST — project already satisfies (REST present)
+
+  # ----- Privacy & log hygiene (Uncategorized / Trattamento dati) -----
+  R576: BLOCKER   # anonimizzazione dati identificativi nei log
+  R622: CRITICAL  # tag classificazione dati fondati su fatti
+  R623: CRITICAL  # tag classificazione dati fondati su valutazione
+  R563: INFO      # raccomandazione: health endpoint dedicato
+
+  # ----- Interoperabilità tecnica — escalations -----
+  # Error semantics / input validation are the high-impact subset of REST blocking RPC.
+  R412: CRITICAL  # input validation
+  R413: CRITICAL  # HTTP 400 on bad data
+  R417: CRITICAL  # HTTP 5xx for server-side errors
+  R419: CRITICAL  # do not leak technical/sensitive details
+
+  # ----- Interoperabilità tecnica — downgrades (style / UX, not safety) -----
+  # CRUD REST patterns where the requirement is "is preferable" / not strictly mandatory.
+  # The source wording uses "è preferibile" — explicit downgrade.
+  R500: WARNING
+  R501: WARNING
+  R502: WARNING
+  R503: WARNING
+  R504: WARNING
+  R505: WARNING
+  R506: WARNING
+  R507: WARNING
+  R508: WARNING
+  R509: WARNING
+  R510: WARNING

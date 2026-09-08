@@ -1,0 +1,463 @@
+# Applicability rules for secure-driven-checker v2 — tailored to TIRRENO BE_TRRN codebase
+#
+# Maps file path patterns -> set of requirement IDs that ARE applicable to that file role.
+# The skill consults this file in step-03 to filter the verification matrix and avoid
+# false positives.
+#
+# Patterns are glob-style, matched against paths RELATIVE to {project-root}, forward slashes.
+#
+# ---------------------------------------------------------------------------------------
+# CODEBASE FACTS (as of the latest inspection — keep this comment block in sync with reality)
+# ---------------------------------------------------------------------------------------
+# Tech stack:
+#   - Spring Boot application (com.leonardo.trrn.TrrnGraphApplication)
+#   - HYBRID HTTP API:
+#       * Spring MVC REST endpoints      → @Controller + @GetMapping/@PostMapping/etc.
+#         + ResponseEntity (e.g. EdgeController, GraphQlUtilsController)
+#       * Spring GraphQL endpoints       → @Controller + @QueryMapping/@MutationMapping
+#         (e.g. InvestigazioneGraphController)
+#     The two coexist inside `controller/**/*Controller.java` files. A single Controller
+#     class may host either kind. The verification step (step-04) MUST inspect annotations
+#     PER METHOD to decide which requirements apply (REST status-code requirements only
+#     apply to Spring MVC handlers, not to GraphQL handlers).
+#   - GraphQL schema: src/main/resources/graphql/*.graphqls (acts as the API contract for
+#     the GraphQL surface, equivalent in role to OpenAPI for REST).
+#   - Persistence (polyglot):
+#       * ArangoDB (graph DB) via com.arangodb.springframework — entities are documents:
+#         @com.arangodb.springframework.annotation.Document on *Node classes.
+#       * Relational DB currently MySQL (entity/mysql/), planned migration to PostgreSQL.
+#   - Build: Maven (pom.xml)
+#
+# Implications for the interoperability requirements declared in the source guidelines document:
+#   - REST blocking RPC (R406-R419) and CRUD REST (R500-R521) and byte-range (R522-R533)
+#     apply to Spring MVC handlers. They are EVALUATED on every Controller file; the
+#     verification step skips the requirement per-method when a method is GraphQL-only.
+#   - SOAP (R420-R429): no SOAP surface in code. Out-of-scope.
+#   - REST callback async (R430-R439): no async callback handler in code. Out-of-scope.
+#   - HTTPS (R534): applies to configuration (properties + Spring Config). BLOCKER.
+#   - REST/SOAP only (R535): the project DOES expose REST, so this is satisfied. Still
+#     evaluated as a confirmation check on the configuration / API surface.
+#   - Privacy R622/R623 (data classification tags): applies to entity and DTO files
+#     carrying domain data (factual vs evaluative). CRITICAL.
+#   - Log anonymization (R576): applies wherever `log.info/warn/error` carries user
+#     identifiers or PII. BLOCKER.
+#   - Health/monitoring (R563): applies to controllers and to actuator config.
+#   - Documentation-only requirements (R572 archiviazione+firma, R573 doc formato log,
+#     R604/R605 prototipi/usabilità) are out-of-scope for code audit; they belong to
+#     process/documentation review.
+#
+# Source-file inventory (high-level):
+#   controllers (REST + GraphQL mix): src/main/java/com/leonardo/trrn/controller/**/*Controller.java
+#   GraphQL schemas:                  src/main/resources/graphql/*.graphqls
+#   DTOs:                             src/main/java/com/leonardo/trrn/dto/**/*.java
+#   ArangoDB entities (documents):    src/main/java/com/leonardo/trrn/entity/arangodb/*.java
+#                                     (@Document of com.arangodb.springframework; suffix *Node.java
+#                                     OR base names like BaseGraph, Luogo, Profilo, MezzoDiComunicazione)
+#   ArangoDB edges:                   src/main/java/com/leonardo/trrn/entity/arangodb/edges/*.java
+#   ArangoDB value objects:           src/main/java/com/leonardo/trrn/entity/arangodb/valueObjects/**/*.java
+#                                     (no ValueObject/Vo suffix; bare class names)
+#   ArangoDB enums:                   src/main/java/com/leonardo/trrn/entity/arangodb/enums/*.java
+#   ArangoDB raw rows:                src/main/java/com/leonardo/trrn/entity/arangodb/raw/*.java
+#   Relational entities (MySQL/PG):   src/main/java/com/leonardo/trrn/entity/mysql/*.java
+#   Repositories:                     src/main/java/com/leonardo/trrn/repository/**/*Repository.java
+#   Services:                         src/main/java/com/leonardo/trrn/service/**/*Service.java
+#   Mappers:                          src/main/java/com/leonardo/trrn/mapper/*Mapper.java
+#   DAO:                              src/main/java/com/leonardo/trrn/dao/*Dao.java
+#   Config:                           src/main/java/com/leonardo/trrn/config/*Config.java + DatabaseSeeder.java
+#   Properties:                       src/main/resources/application*.properties
+#   Test:                             src/test/**/*.java
+
+excluded_paths:
+  - "**/target/**"
+  - "**/build/**"
+  - "**/node_modules/**"
+  - "**/.git/**"
+  - "**/.bmad-cache/**"
+  - "**/_bmad-output/**"
+  - "**/.claude/_archive/**"
+  - "**/.mvn/**"
+  - "**/*.png"
+  - "**/*.jpg"
+  - "**/*.jpeg"
+  - "**/*.gif"
+  - "**/*.pdf"
+  - "**/*.xlsx"
+  - "**/*.lock"
+  - "**/*.class"
+  - "**/Thumbs.db"
+  - "**/HELP.md"
+
+rule_groups:
+
+  # ====================================================================================
+  # Controllers — REST (Spring MVC) + GraphQL (Spring GraphQL) coexist in the same files.
+  # ====================================================================================
+
+  - name: "Controllers (REST + GraphQL surface)"
+    description: >
+      Hybrid surface: Spring MVC REST handlers and Spring GraphQL handlers can coexist in
+      the same Controller class. The verification step (step-04) MUST inspect annotations
+      per-method to decide what applies:
+        * REST handler  (@GetMapping/@PostMapping/@PutMapping/@DeleteMapping/@PatchMapping
+                         /@RequestMapping/@RestController) → ALL R4xx/R5xx REST IDs below
+                         are evaluated against the method body.
+        * GraphQL handler (@QueryMapping/@MutationMapping/@SchemaMapping/@SubscriptionMapping)
+                         → only R411 (status code semantics — limited), R412 (input
+                         validation), R419 (no info leak in errors) apply. The other
+                         REST-only requirements are reported in the "Skipped per file"
+                         section for that method, NOT in the global out-of-scope bucket.
+        * Class-level only (no handler annotation) → not relevant for endpoint requirements
+                         but still subject to cross-cutting R576 (log anonymization) and
+                         R419 if logging is present.
+      Bulk byte-range (R522-R533) is included in the applicable set; almost certainly NO
+      handler will use Range headers in this codebase, so most violations there will be
+      "skipped at method level" rather than "violated".
+    patterns:
+      - "src/main/java/com/leonardo/trrn/controller/**/*Controller.java"
+    excludes:
+      - "src/main/java/com/leonardo/trrn/controller/utils/**"
+    requirement_ids:
+      # Blocking RPC REST (par.4.1)
+      - "R406"
+      - "R407"
+      - "R408"
+      - "R409"
+      - "R410"
+      - "R411"
+      - "R412"
+      - "R413"
+      - "R414"
+      - "R415"
+      - "R416"
+      - "R417"
+      - "R418"
+      - "R419"
+      # CRUD REST (par.6)
+      - "R500"
+      - "R501"
+      - "R502"
+      - "R503"
+      - "R504"
+      - "R505"
+      - "R506"
+      - "R507"
+      - "R508"
+      - "R509"
+      - "R510"
+      - "R511"
+      - "R512"
+      - "R513"
+      - "R514"
+      - "R515"
+      - "R516"
+      - "R517"
+      - "R518"
+      - "R519"
+      - "R520"
+      - "R521"
+      # Bulk / byte-range (par.7)
+      - "R522"
+      - "R523"
+      - "R524"
+      - "R525"
+      - "R526"
+      - "R527"
+      - "R528"
+      - "R529"
+      - "R530"
+      - "R531"
+      - "R532"
+      - "R533"
+      # Monitoring / health endpoint (Uncategorized)
+      - "R563"
+      # Log anonymization (privacy, Uncategorized)
+      - "R576"
+
+  - name: "GraphQL schemas (.graphqls)"
+    description: >
+      GraphQL schema files declare types, queries, mutations and subscriptions. This is the
+      GraphQL equivalent of an OpenAPI contract; the source-document requirements about "declaring all
+      status codes / request schemas / response schemas" map to "every query/mutation must
+      declare a return type and typed arguments".
+    patterns:
+      - "src/main/resources/graphql/**/*.graphqls"
+    requirement_ids:
+      - "R407"   # declare all response shapes (types)
+      - "R408"   # declare request schema (typed @Argument)
+
+  - name: "DTO classes (API I/O carriers)"
+    description: >
+      DTOs cross the HTTP/GraphQL boundary as inputs (@RequestBody, @Argument) and as outputs.
+      Two compliance surfaces:
+        * Input validation (R412) — Bean Validation annotations (@NotNull, @Size, @Valid, ...)
+        * Privacy data classification (R622/R623) — domain DTOs that carry factual or
+          evaluative data should carry classification tags
+    patterns:
+      - "src/main/java/com/leonardo/trrn/dto/**/*.java"
+    requirement_ids:
+      - "R412"
+      - "R622"
+      - "R623"
+
+  # ====================================================================================
+  # Persistence — ArangoDB documents/edges/value objects + relational entities
+  # ====================================================================================
+
+  - name: "ArangoDB documents (nodes) — domain entities"
+    description: >
+      Graph node entities persisted in ArangoDB (@com.arangodb.springframework.annotation.Document).
+      No API surface, but domain data classification (R622/R623) applies because these
+      entities carry factual/evaluative attributes that the platform stores.
+    patterns:
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/*Node.java"
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/BaseGraph.java"
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/Luogo.java"
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/MezzoDiComunicazione.java"
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/Profilo.java"
+    requirement_ids:
+      - "R622"   # tag for factual data
+      - "R623"   # tag for evaluative data
+
+  - name: "ArangoDB edges"
+    description: >
+      Graph edges. Carry relational data; same data-classification surface as nodes.
+    patterns:
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/edges/*.java"
+    requirement_ids:
+      - "R622"
+      - "R623"
+
+  - name: "ArangoDB value objects (no suffix)"
+    description: >
+      Embedded value objects under entity/arangodb/valueObjects/. NO ValueObject/Vo suffix —
+      bare class names (Caratteristica, Metadata, LuogoNascita, ...). May carry domain
+      attributes subject to classification.
+    patterns:
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/valueObjects/**/*.java"
+    requirement_ids:
+      - "R622"
+      - "R623"
+
+  - name: "ArangoDB enums and raw projection rows"
+    description: "Enums and raw projection rows from AQL queries. No compliance surface."
+    patterns:
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/enums/*.java"
+      - "src/main/java/com/leonardo/trrn/entity/arangodb/raw/*.java"
+    requirement_ids: []
+
+  - name: "Relational DB entities (MySQL today, PostgreSQL planned)"
+    description: >
+      JPA-style entities for the relational store. Currently MySQL, planned migration to
+      PostgreSQL. Same data-classification surface as ArangoDB documents.
+    patterns:
+      - "src/main/java/com/leonardo/trrn/entity/mysql/*.java"
+      - "src/main/java/com/leonardo/trrn/entity/postgres/*.java"   # ready for migration
+      - "src/main/java/com/leonardo/trrn/entity/rdbms/*.java"      # alternative naming, harmless if empty
+    requirement_ids:
+      - "R622"
+      - "R623"
+
+  # ====================================================================================
+  # Application layer — Service / DAO / Repository / Mapper
+  # ====================================================================================
+
+  - name: "Services (cross-cutting compliance surface)"
+    description: >
+      Services orchestrate business logic and produce exceptions / log entries that may
+      surface at the API boundary.
+        - R412: input validation when accepting external payloads
+        - R419: error messages must not leak technical/sensitive details
+        - R576: log entries with user identifiers must be anonymized
+    patterns:
+      - "src/main/java/com/leonardo/trrn/service/**/*Service.java"
+    requirement_ids:
+      - "R412"
+      - "R419"
+      - "R576"
+
+  - name: "DAO / Repository"
+    description: >
+      Data access layer (custom DAO + Spring Data repositories).
+        - R412: validate inputs before query construction (AQL/SQL injection)
+        - R419: do not leak DB driver / AQL / SQL error details
+        - R576: log entries with identifiers must be anonymized
+    patterns:
+      - "src/main/java/com/leonardo/trrn/dao/*Dao.java"
+      - "src/main/java/com/leonardo/trrn/repository/**/*Repository.java"
+    requirement_ids:
+      - "R412"
+      - "R419"
+      - "R576"
+
+  - name: "Mappers"
+    description: "DTO <-> Entity mappers. Almost no compliance surface; only log anonymization in case they log."
+    patterns:
+      - "src/main/java/com/leonardo/trrn/mapper/*Mapper.java"
+    requirement_ids:
+      - "R576"
+
+  # ====================================================================================
+  # Configuration layer
+  # ====================================================================================
+
+  - name: "Spring configuration classes"
+    description: >
+      Java @Configuration / @Bean classes. Surface:
+        - R406: blocking RPC pattern adoption (when configuring web layer)
+        - R534: HTTPS / TLS configuration
+        - R535: REST/SOAP only (no rogue protocols enabled)
+    patterns:
+      - "src/main/java/com/leonardo/trrn/config/*Config.java"
+      - "src/main/java/com/leonardo/trrn/config/**/*.java"
+    excludes:
+      - "src/main/java/com/leonardo/trrn/config/DatabaseSeeder.java"   # not a config bean, just a runner
+    requirement_ids:
+      - "R406"
+      - "R534"
+      - "R535"
+
+  - name: "DatabaseSeeder (runtime bootstrap)"
+    description: "DatabaseSeeder runs at startup. Has log surface; R576 (log anonymization) applies."
+    patterns:
+      - "src/main/java/com/leonardo/trrn/config/DatabaseSeeder.java"
+    requirement_ids:
+      - "R576"
+
+  - name: "Application properties"
+    description: >
+      Externalized configuration. Relevant for:
+        - R406: blocking RPC pattern
+        - R534: HTTPS / TLS (server.ssl.*, security headers)
+        - R535: only REST/SOAP transports enabled
+        - R563: actuator health endpoint exposed and reachable
+    patterns:
+      - "src/main/resources/application*.properties"
+      - "src/main/resources/application*.yml"
+      - "src/main/resources/application*.yaml"
+      - "src/main/resources/bootstrap*.properties"
+      - "src/main/resources/bootstrap*.yml"
+    requirement_ids:
+      - "R406"
+      - "R534"
+      - "R535"
+      - "R563"
+
+  - name: "Application entrypoint"
+    description: "@SpringBootApplication main class. No compliance surface beyond what config covers."
+    patterns:
+      - "src/main/java/com/leonardo/trrn/*Application.java"
+    requirement_ids: []
+
+  # ====================================================================================
+  # Test sources (exempt)
+  # ====================================================================================
+
+  - name: "Test sources (exempt from runtime compliance)"
+    description: "Test code is exempt from interop runtime requirements declared in the source guidelines document."
+    patterns:
+      - "src/test/**/*.java"
+      - "**/*Test.java"
+      - "**/*IT.java"
+    requirement_ids: []
+
+# ----------------------------------------------------------------------------------------
+# Out-of-scope requirement bucket
+# ----------------------------------------------------------------------------------------
+# Requirements that do not apply to this codebase as it stands. They are listed ONCE in
+# the "Out-of-scope requirements" section of the report instead of being repeated per-file.
+
+out_of_scope_requirement_ids:
+
+  # --- SOAP (R420-R429) — the codebase exposes REST + GraphQL only; no SOAP surface.
+  - "R420"
+  - "R421"
+  - "R422"
+  - "R423"
+  - "R424"
+  - "R425"
+  - "R426"
+  - "R427"
+  - "R428"
+  - "R429"
+
+  # --- REST callback async / RPC PUSH (R430-R453) — no async callback handler in code.
+  # The block spans R430-R453 in the source document (par.5.1+). Listed conservatively.
+  - "R430"
+  - "R431"
+  - "R432"
+  - "R433"
+  - "R434"
+  - "R435"
+  - "R436"
+  - "R437"
+  - "R438"
+  - "R439"
+  - "R440"
+  - "R441"
+  - "R442"
+  - "R443"
+  - "R444"
+  - "R445"
+  - "R446"
+  - "R447"
+  - "R448"
+  - "R449"
+  - "R450"
+  - "R451"
+  - "R452"
+  - "R453"
+  - "R454"
+  - "R455"
+  - "R456"
+  - "R457"
+  - "R458"
+  - "R459"
+  - "R460"
+  - "R461"
+  - "R462"
+  - "R463"
+  - "R464"
+  - "R465"
+  - "R466"
+  - "R467"
+  - "R468"
+  - "R469"
+  - "R470"
+  - "R471"
+  - "R472"
+  - "R473"
+  - "R474"
+  - "R475"
+  - "R476"
+  - "R477"
+  - "R478"
+  - "R479"
+  - "R480"
+  - "R481"
+  - "R482"
+  - "R483"
+  - "R484"
+  - "R485"
+  - "R486"
+  - "R487"
+  - "R488"
+  - "R489"
+  - "R490"
+  - "R491"
+  - "R492"
+  - "R493"
+  - "R494"
+  - "R495"
+  - "R496"
+  - "R497"
+  - "R498"
+  - "R499"
+  # NOTE: spot-check the ranges above against the source document on the next run — they
+  # are the consecutive block between R430 (REST callback) and R500 (CRUD REST). Some IDs
+  # may not exist in the source. The cache step (step-01) is the authoritative truth.
+
+  # --- Documentation / process requirements (no code surface, audited elsewhere) ---
+  - "R572"   # archiviazione messaggi con firma digitale (process)
+  - "R573"   # documentare formato log (process / documentation)
+  - "R604"   # prototipi di scenari d'uso (UX / process)
+  - "R605"   # test di usabilità (UX / process)

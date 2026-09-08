@@ -139,7 +139,7 @@ in ordine di DOM gli elementi che matchano `EDITABLE_SELECTOR`. Quindi **toglier
 aggiungere anche un solo elemento editabile sposta tutti quelli dopo**.
 
 Dopo ogni cambio del numero o dell'ordine degli elementi editabili di una slide **alza la
-versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v24`), altrimenti i testi
+versione** di `storageKey` (adesso `oltre-il-vibe-coding-edits-v25`), altrimenti i testi
 salvati nel browser atterrano su elementi sbagliati. Testo perso è meglio di testo spalmato
 a caso.
 

@@ -162,10 +162,6 @@ html, body {
   border-radius: 0 999px 999px 0;
   transition: width 0.4s ease;
 }
-.slide-counter {
-  position: fixed; bottom: 20px; right: 32px; font-size: 13px;
-  font-weight: 600; color: var(--color-neutral-600); z-index: 100; font-variant-numeric: tabular-nums;
-}
 /* ===========================================
    TIPOGRAFIA
    =========================================== */
@@ -1488,7 +1484,6 @@ body.editing [contenteditable="true"]:focus {
 <div class="branding"><div class="branding-icon">V</div> Oltre il vibe coding</div>
 <div class="chapter-mark" id="chapterMark"></div>
 <div class="progress-bar" id="progress"></div>
-<div class="slide-counter" id="counter"></div>
 
 <!-- Controlli della modalità editing -->
 <div class="edit-hotzone"></div>
@@ -2760,17 +2755,20 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
     <h2 class="anim-1" data-edit-key="s39-e0">Link utili!</h2>
     <div class="cta-box anim-3">
       <div style="display:flex;flex-direction:column;gap:9px;font-size:clamp(12px,1.2vw,16px);text-align:left;">
-        <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s39-e2">●</span><span data-edit-key="s39-e3">Prendi <strong>un</strong>&nbsp;piccolo progetto<strong> e</strong> inizializza <strong>BMAD</strong></span></div>
         <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-2-700);" data-edit-key="s39-e4">●</span><span data-edit-key="s39-e5">Documentazione BMAD: <span data-edit-key="s39-e3"><strong>https://docs.bmad-method.org</strong></span></span></div>
         <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-600);" data-edit-key="s39-e6">●</span><span data-edit-key="s39-e7">Graphify: <span data-edit-key="s39-e3"><strong>https://graphify.com/</strong></span></span></div>
         <div style="display:flex;gap:10px;align-items:baseline;"><span style="color:var(--color-accent-700);" data-edit-key="s39-e8">●</span><span data-edit-key="s39-e9">LLM Wiki:&nbsp;<strong>https://shorturl.at/54HlP</strong></span></div>
       </div>
     </div>
     <div class="image-frame anim-4" style="max-width:360px;">
-      <!-- Il PNG non ha quiet zone: il nero tocca il bordo. Il padding bianco
-           è il margine che lo rende scansionabile (lo standard chiede 4 moduli,
-           qui ~3,5 a piena altezza). Non toglierlo. -->
-      <img src="assets/qrcode.png" alt="QR code con il link alle slide e al materiale del talk." class="slide-image" style="background:#fff;padding:clamp(16px,2.2vw,26px);box-sizing:border-box;border-radius:4px;max-height:min(38vh,300px);">
+      <!-- Il PNG non ha quiet zone: il nero tocca il bordo. Per la lettura non
+           serve bianco — il quiet zone dev'essere chiaro, e la carta (#f5ead8)
+           lo è: verificato decodificando il codice su questo sfondo a margine
+           zero, anche alla dimensione più piccola. Il bordo bianco qui sotto è
+           una scelta grafica, per staccare il codice dalla carta e alzare il
+           contrasto. Se un giorno il QR finisce su un fondo scuro, allora
+           diventa necessario. -->
+      <img src="assets/qrcode.png" alt="QR code con il link alle slide e al materiale del talk: https://giuliosmedile.github.io/presentazione-bmad/" class="slide-image" style="background:#fff;padding:clamp(8px,0.9vw,12px);box-sizing:border-box;border-radius:2px;max-height:min(38vh,300px);">
     </div>
     <p class="subtitle anim-4" style="font-size:clamp(12px,1.2vw,16px);" data-edit-key="s39-e10">Slide, materiale e contatti. <strong>Sono a disposizione</strong> per chi vuole provarci su un progetto vero.</p>
     <script type="application/json" class="slide-notes">
@@ -2812,7 +2810,6 @@ for (let i = 0; i < 30; i++) {
 // Navigazione
 const slides = document.querySelectorAll('.slide');
 const progress = document.getElementById('progress');
-const counter = document.getElementById('counter');
 const chapterMark = document.getElementById('chapterMark');
 let current = 0;
 const total = slides.length;
@@ -2830,7 +2827,6 @@ const CHAPTERS = [
 
 function updateUI() {
   progress.style.width = ((current+1)/total*100)+'%';
-  counter.textContent = (current+1) + ' / ' + total;
   const ch = slides[current].getAttribute('data-chapter');
   if (ch !== null && CHAPTERS[+ch]) {
     chapterMark.innerHTML = '<span class="cm-num">' + String(ch).padStart(2,'0') + '</span> ' + CHAPTERS[+ch];
@@ -2948,8 +2944,8 @@ var editor = {
   // sposta tutto quello che viene dopo. Ogni volta che cambia il numero o
   // l'ordine degli elementi editabili di una slide serve una chiave nuova,
   // altrimenti i testi salvati nel browser atterrano sugli elementi
-  // sbagliati (v24: tolti due elementi dalla slide dei link).
-  storageKey: 'oltre-il-vibe-coding-edits-v24',
+  // sbagliati (v25: tolto anche un bullet dalla slide dei link).
+  storageKey: 'oltre-il-vibe-coding-edits-v25',
   fields: [],
 
   init: function() {
@@ -3017,8 +3013,6 @@ var editor = {
     if (banner) { banner.classList.remove('show'); banner.innerHTML = ''; }
     var mark = clone.querySelector('#chapterMark');
     if (mark) mark.innerHTML = '';
-    var cnt = clone.querySelector('#counter');
-    if (cnt) cnt.textContent = '';
     var prg = clone.querySelector('#progress');
     if (prg) prg.removeAttribute('style');
     clone.querySelectorAll('.slide').forEach(function(s, i) { s.classList.toggle('active', i === 0); });
