@@ -892,6 +892,7 @@ body.editing [contenteditable="true"]:focus {
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 .term:hover { transform: translateY(-2px); box-shadow: 0 18px 44px rgba(46,43,37,0.28); }
+.term.narrow { max-width: 760px; }
 .term-bar {
   display: flex; align-items: center; gap: 8px;
   padding: 10px 18px; background: var(--color-neutral-800);
@@ -2486,32 +2487,30 @@ body.editing [contenteditable="true"]:focus {
   <div class="slide" data-slide="32" data-chapter="4">
     <p class="slide-tag anim-1" data-edit-key="s32-e0">addendum - Il limite che resta</p>
     <h2 class="anim-2" data-edit-key="s32-e1">La struttura della <span class="highlight-red">conoscenza.</span></h2>
-    <div class="loop-diagram quad anim-3">
-      <svg class="loop-svg" viewBox="0 0 400 400" aria-hidden="true">
-        <circle class="loop-track" cx="200" cy="200" r="140"></circle>
-        <path class="loop-arc" d="M 256.9 72.1 A 140 140 0 0 1 327.9 143.1" marker-end="url(#loopArrow)"></path>
-        <path class="loop-arc" d="M 327.9 256.9 A 140 140 0 0 1 256.9 327.9" marker-end="url(#loopArrow)"></path>
-        <path class="loop-arc" d="M 143.1 327.9 A 140 140 0 0 1 72.1 256.9" marker-end="url(#loopArrow)"></path>
-        <path class="loop-arc" d="M 72.1 143.1 A 140 140 0 0 1 143.1 72.1" marker-end="url(#loopArrow)"></path>
-      </svg>
-      <div class="loop-pos loop-pos-center" style="left:50%;top:50%;">
-        <div class="loop-hole anim-4">
-          <span class="lh-mark">?</span>
-          <span class="lh-text" data-edit-key="s32-e2">contesto</span>
-        </div>
+    <div class="code-window compact anim-3">
+      <div class="code-titlebar">
+        <div class="code-dot red"></div>
+        <div class="code-dot yellow"></div>
+        <div class="code-dot green"></div>
+        <span class="code-filename">CONVENZIONI.md · 3 482 righe</span>
       </div>
-      <div class="loop-pos" style="left:50%;top:15%;"><div class="loop-node node-green bounce-1"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path><path d="M14 2v5h5"></path><path d="M9 13h6"></path><path d="M9 17h4"></path></svg></div><div class="loop-label" data-edit-key="s32-e3">Pianifica</div><div class="loop-detail" data-edit-key="s32-e4">da zero, ogni volta</div></div></div>
-      <div class="loop-pos" style="left:85%;top:50%;"><div class="loop-node node-green bounce-2"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m3 5 1.5 1.5L7 4"></path><path d="m3 12 1.5 1.5L7 11"></path><path d="m3 19 1.5 1.5L7 18"></path><path d="M11 5h10"></path><path d="M11 12h10"></path><path d="M11 19h10"></path></svg></div><div class="loop-label" data-edit-key="s32-e5">Frammenta</div><div class="loop-detail" data-edit-key="s32-e6">da zero, ogni volta</div></div></div>
-      <div class="loop-pos" style="left:50%;top:85%;"><div class="loop-node node-green bounce-3"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg></div><div class="loop-label" data-edit-key="s32-e7">Implementa</div><div class="loop-detail" data-edit-key="s32-e8">da zero, ogni volta</div></div></div>
-      <div class="loop-pos" style="left:15%;top:50%;"><div class="loop-node node-green bounce-4"><div class="loop-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.7 8.9a1 1 0 0 1-.6 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1 1 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div><div class="loop-label" data-edit-key="s32-e9">Verifica</div><div class="loop-detail" data-edit-key="s32-e10">da zero, ogni volta</div></div></div>
-          <div class="loop-check c1" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
-      <div class="loop-check c2" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
-      <div class="loop-check c3" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
-      <div class="loop-check c4" title="checkpoint umano"><svg class="ic" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></svg></div>
+      <div class="code-body"><span class="ln">1</span>## Convenzioni
+<span class="ln">2</span>Usare sempre il repository pattern per l'accesso ai dati.
+<span class="ln">3</span>Non chiamare mai il client HTTP direttamente dai controller.
+<span class="ln">4</span>I nomi dei file in kebab-case.
+<span class="ln">5</span>Eccezione: i moduli legacy sotto src/legacy usano camelCase, non toccarli.
+<span class="ln comment">⋮</span>
+<span class="ln">318</span>ADR-014 impone la virgola decimale nei report.
+<span class="ln">319</span>Vedi anche ADR-021 che parzialmente supera ADR-014 per i tracciati esteri.
+<span class="ln comment">⋮</span>
+<span class="ln">1904</span>Il servizio ordini NON deve importare da fatturazione: usare l'evento.
+<span class="ln">1905</span>Aggiornato il 3/2024, nota: la regola sopra non vale più dopo il refactor di giugno, ma resta per riferimento storico.
+<span class="ln comment">⋮</span>
+<span class="ln">3482</span>— fine file —</div>
     </div>
-    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s32-e11">Convenzioni del team, decisioni passate, il perché di quella scelta strana di due anni fa: <strong>niente di tutto questo sopravvive al giro precedente.</strong></p>
+    <p class="subtitle anim-5" style="font-size:clamp(12px,1.2vw,16px);margin-top:clamp(6px,1.2vh,14px);" data-edit-key="s32-e2">Le convenzioni finiscono in un file che cresce e basta: oggi tremila righe, fra un anno il doppio. <strong>Un agente lo deve leggere tutto, ogni volta, per trovare una riga sola.</strong></p>
     <script type="application/json" class="slide-notes">
-    {"title":"Il limite che resta","script":"Stesso diagramma di prima, con un buco al centro. Perché anche con tutta la struttura di BMAD, gli agenti ripartono ogni volta da zero sul contesto: le convenzioni del team, le decisioni architetturali passate, il perché di quella scelta strana fatta due anni fa. E un buon processo applicato a un contesto assente produce comunque risultati sbagliati: solo in modo più ordinato.","notes":["Riprende il diagramma della slide del loop, con un vuoto al centro","Il contesto di progetto non sopravvive fra un giro e l'altro","Processo corretto su contesto assente produce errori ordinati","Riusare un'immagine già vista rende percepibile la progressione"]}
+    {"title":"Il limite che resta","script":"Anche con tutta la struttura di BMAD resta un problema: dove mettete le convenzioni del team, le decisioni architetturali passate, il perché di quella scelta strana fatta due anni fa? La risposta più ovvia è un file. E funziona, finché è corto. Poi cresce, si contraddice da solo — la riga 1905 supera la 319 e nessuno lo segnala — e un agente deve comunque caricarlo tutto per trovare la riga che gli serve. Un buon processo applicato a un contesto fatto così produce comunque risultati sbagliati: solo in modo più ordinato.","notes":["Stesso capitolo del loop, ma il problema ora è concreto: un file solo, enorme","La riga 1905 contraddice la 319: è il file stesso che invecchia male","L'agente non ha modo di sapere quale delle due regole vale ancora","Prepara la prossima slide: il grafo come alternativa a questo file"]}
     </script>
   </div>
 
@@ -2588,7 +2587,7 @@ Usare sempre il repository pattern per l accesso ai dati. Non chiamare mai il cl
   <div class="slide" data-slide="35" data-chapter="4">
     <p class="slide-tag anim-1" data-edit-key="s35-e0">In pratica — esempio ricostruito</p>
     <h2 class="anim-2" data-edit-key="s35-e1">Cosa gli dai in pasto, e cosa <span class="highlight-green">ti risponde</span></h2>
-    <div class="term anim-3">
+    <div class="term narrow anim-3">
       <div class="term-bar">
         <div class="code-dot red"></div><div class="code-dot yellow"></div><div class="code-dot green"></div>
         <span class="term-name">graphify — progetto sale-riunioni</span>
@@ -2882,7 +2881,7 @@ var editor = {
   // l'ordine degli elementi editabili di una slide serve una chiave nuova,
   // altrimenti i testi salvati nel browser atterrano sugli elementi
   // sbagliati (v26: via le due slide del blocco note, tutto slitta di uno).
-  storageKey: 'oltre-il-vibe-coding-edits-v26',
+  storageKey: 'oltre-il-vibe-coding-edits-v27',
   fields: [],
 
   init: function() {
